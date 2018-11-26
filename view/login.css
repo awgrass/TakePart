@@ -1,0 +1,32 @@
+.vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+
+    display: flex;
+    align-items: center;
+}
+
+.panel-heading {
+    font-size: 20px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 10px;
+    width: 75%;
+    margin-left: 10%;
+}
+
+#remember {
+    margin-left: 10%;
+
+}
+
+.rememberPw {
+    font-size: 11px;
+}
+
+button {
+    width: 75%;
+    margin-left: 10%;
+}
