@@ -18,7 +18,7 @@ function renderLogin(){
             let password = document.getElementById('password').value;
             console.log(email);
             console.log(password);
-
+            AuthenticateUser(email, password);
         });
 
     };
