@@ -1,0 +1,53 @@
+ul {
+    list-style-type: none;
+}
+
+.list-element {
+    background-color: #337ab7;
+    margin-bottom: 2.5rem;
+    color: white;
+    font-size: 14px;
+    height: 95px;
+    padding-left: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 9px 10px 5px -2px rgba(0,0,0,0.63);
+}
+
+.list-element:hover {
+    cursor: pointer;
+}
+
+.course-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.course-add {
+    font-size: 24px;
+    font-weight: bold;
+    position: relative;
+    padding-left: 45px;
+}
+
+.fa-plus-circle {
+    font-size: 35px;
+    position: absolute;
+}
+
+.attendance {
+    position: fixed;
+    left: 78%;
+
+}
+
+.attendance-percentage {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 2.5rem;
+}
+
+.statictics {
+    color: #337ab7;
+}
