@@ -1,13 +1,15 @@
 var auth = firebase.auth();
-var userReferece = firebase.database().ref().child('users');// TODO will be moved
+var currentUser = null;
 /**
  * @param {string} email
  * @param {string} password
+ * @param handleSuccessfullLogin
  */
-function AuthenticateUser(email, password) {
+function authenticateUser(email, password, handleSuccessfullLogin) {
     auth.signInWithEmailAndPassword(email, password)
         .then(function() {
-            console.log("Signed In");
+            currentUser = getUser(auth.currentUser.uid);
+            handleSuccessfullLogin();
         })
         .catch(function (error){console.log(error);});
 }
@@ -15,31 +17,23 @@ function AuthenticateUser(email, password) {
 /**
  * @param {string} email
  * @param {string} password
+ * @param first_name
+ * @param last_name
+ * @param isAdmin
  */
-function RegisterUser(email, password) {
+function registerUser(email, password, first_name, last_name, isAdmin) {
     auth.createUserWithEmailAndPassword(email, password)
         .then(function() {
             console.log("Registered");
-            createUser(email);
+            let user = new User(email, first_name, last_name, isAdmin);
+            saveUser(user);
         })
         .catch(function (error){console.log(error);});
 }
 
-function SignOutUser() {
+function signOutUser() {
     auth.signOut().catch(function (err) {})
         .then(function() { console.log('Signed Out');},
             function(error) { console.error('Sign Out Error', error);
-    });
-}
-
-function getCurrentUser() {
-    return auth.currentUser;
-}
-/*TODO this function will be moved in proper file*/
-function createUser(email) {
-    let userId = userReferece.push().key;
-    userReferece(userId).set({
-        email: email,
-        admin : false
     });
 }
