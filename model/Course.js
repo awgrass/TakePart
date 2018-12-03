@@ -3,4 +3,4 @@ var Course = {
     participants: [],
     dates: [],
     statistics: []
-}
+};

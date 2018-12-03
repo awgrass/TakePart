@@ -32,8 +32,7 @@ function handleLogin(){
     let isChecked = document.getElementById('remember-me').checked;
 
     authenticateUser(email, password, function(){
-        var user = auth.currentUser;
-        if (user) {
+        if (currentUser) {
             if(isChecked){
                 setCookie("session", user.uid, 7);
             }
