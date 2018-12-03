@@ -7,12 +7,11 @@ ul {
     margin-bottom: 2.5rem;
     color: white;
     font-size: 14px;
-    height: 95px;
+    height: 100px;
+    width: 88%;
     padding-left: 25px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     box-shadow: 9px 10px 5px -2px rgba(0,0,0,0.63);
+    padding-top: 12px;
 }
 
 .list-element:hover {
@@ -36,12 +35,6 @@ ul {
     position: absolute;
 }
 
-.attendance {
-    position: fixed;
-    left: 78%;
-
-}
-
 .attendance-percentage {
     font-size: 18px;
     font-weight: bold;
@@ -50,4 +43,12 @@ ul {
 
 .statictics {
     color: #337ab7;
+}
+
+.add {
+    margin-top: 2%;
+}
+
+.right {
+    padding-left: 45px;
 }
