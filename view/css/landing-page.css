@@ -43,6 +43,7 @@ ul {
 
 .statictics {
     color: #337ab7;
+    text-align: center;
 }
 
 .add {
@@ -50,5 +51,5 @@ ul {
 }
 
 .right {
-    padding-left: 45px;
+    padding-left: 30px;
 }
