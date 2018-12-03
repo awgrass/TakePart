@@ -14,6 +14,7 @@ function saveUser(user){
 }
 
 function getUser(userId) {
+
     return firebase.database().ref('/users/' + userId).once('value')
         .then(function() {
             console.log("User exists.");

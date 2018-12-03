@@ -32,9 +32,9 @@ function handleLogin(){
     let isChecked = document.getElementById('remember-me').checked;
 
     authenticateUser(email, password, function(){
-        if (currentUser) {
+        if (auth.currentUser) {
             if(isChecked){
-                setCookie("session", user.uid, 7);
+                setCookie("session", auth.currentUser.uid, 7);
             }
         } else {
             console.log("no user :(");
