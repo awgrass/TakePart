@@ -11,6 +11,11 @@ ul {
     padding-left: 25px;
     box-shadow: 9px 10px 5px -2px rgba(0,0,0,0.63);
     padding-top: 12px;
+    opacity: 1;
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 1.2px;
+    border-color: black;
 }
 
 .list-element:hover {
@@ -43,6 +48,11 @@ ul {
 .statictics {
     color: #337ab7;
     text-align: center;
+
+}
+
+.bordered_text {
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .add {
@@ -50,7 +60,7 @@ ul {
 }
 
 .right {
-    padding-left: 40px;
+    padding-left: 34px;
 }
 
 .course-list {
