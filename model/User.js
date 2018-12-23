@@ -1,6 +1,8 @@
-var userReference = firebase.database().ref().child('users');
+var userRef = firestore.collection("users");
+
 class User {
-    constructor(_email, _first_name, _last_name, _isAdmin) {
+    constructor(_uid, _email, _first_name, _last_name, _isAdmin) {
+        this.uid = _uid;
         this.email = _email;
         this.first_name = _first_name;
         this.last_name = _last_name;
@@ -8,17 +10,30 @@ class User {
     }
 }
 
-function saveUser(user){
-    let userId = userReference.push().key;
-    userReference(userId).set({user});
+function writeUser(userId)
+{
+    userRef.doc(userId).set({
+        uid: 123,
+        email: "",
+        first_name: "",
+        last_name: "",
+        isAdmin: false
+    });
 }
 
-function getUser(userId) {
-
-    return firebase.database().ref('/users/' + userId).once('value')
-        .then(function() {
-            console.log("User exists.");
-        }).catch(function () {
-            console.log("User does not exists.")
-        });
+function readUserById(userId, onSuccess) {
+    let docRef = userRef.doc(userId);
+    docRef.get().then(function(doc) {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+            let dbUser = doc.data();
+            currentUser = new User(dbUser.uid, dbUser.email, dbUser.first_name, dbUser.last_name, dbUser.isAdmin);
+            onSuccess();
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
 }

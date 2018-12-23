@@ -3,13 +3,14 @@ var currentUser = null;
 /**
  * @param {string} email
  * @param {string} password
- * @param handleSuccessfullLogin
+ * @param handleSuccessfullAuthentication
  */
-function authenticateUser(email, password, handleSuccessfullLogin) {
+function authenticateUser(email, password, handleSuccessfullAuthentication) {
     auth.signInWithEmailAndPassword(email, password)
         .then(function() {
-            currentUser = getUser(auth.currentUser.uid);
-            handleSuccessfullLogin();
+            currentUser = auth.currentUser;
+            handleSuccessfullAuthentication();
+            console.log("Authenticated user: ", currentUser);
         })
         .catch(function (error){console.log(error);});
 }
@@ -26,7 +27,7 @@ function registerUser(email, password, first_name, last_name, isAdmin) {
         .then(function() {
             console.log("Registered");
             let user = new User(email, first_name, last_name, isAdmin);
-            saveUser(user);
+            writeUser(user);
         })
         .catch(function (error){console.log(error);});
 }

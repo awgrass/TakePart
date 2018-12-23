@@ -36,10 +36,10 @@ function handleLogin(){
             if(isChecked){
                 setCookie("session", auth.currentUser.uid, 7);
             }
+            readUserById(auth.currentUser.uid, renderLandingPage);
         } else {
             console.log("no user :(");
         }
-        renderLandingPage();
     });
 }
 
