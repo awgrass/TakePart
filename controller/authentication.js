@@ -24,9 +24,9 @@ function authenticateUser(email, password, handleSuccessfullAuthentication) {
  */
 function registerUser(email, password, first_name, last_name, isAdmin) {
     auth.createUserWithEmailAndPassword(email, password)
-        .then(function() {
+        .then(function(userData) {
             console.log("Registered");
-            let user = new User(email, first_name, last_name, isAdmin);
+            let user = new User(userData.user.uid, email, first_name, last_name, isAdmin);
             writeUser(user);
         })
         .catch(function (error){console.log(error);});

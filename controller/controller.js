@@ -38,7 +38,7 @@ function handleLogin(){
             }
             readUserById(auth.currentUser.uid, renderLandingPage);
         } else {
-            console.log("no user :(");
+            console.log("Authentication failed.");
         }
     });
 }
@@ -65,7 +65,8 @@ function getCookie(name) {
     return null;
 }
 
-function renderLandingPage(){
+function renderLandingPage(user){
+    currentUser = user;
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'landing-page.html', true);
     xhr.onreadystatechange= function() {

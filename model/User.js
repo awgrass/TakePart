@@ -10,28 +10,27 @@ class User {
     }
 }
 
-function writeUser(userId)
+function writeUser(user)
 {
-    userRef.doc(userId).set({
-        uid: 123,
-        email: "",
-        first_name: "",
-        last_name: "",
-        isAdmin: false
-    });
+    userRef.doc(user.uid).set({
+        uid: user.uid,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        isAdmin: user.isAdmin
+    }).then(console.log("ok"));
 }
 
 function readUserById(userId, onSuccess) {
     let docRef = userRef.doc(userId);
     docRef.get().then(function(doc) {
         if (doc.exists) {
-            console.log("Document data:", doc.data());
+            console.log("User data:", doc.data());
             let dbUser = doc.data();
-            currentUser = new User(dbUser.uid, dbUser.email, dbUser.first_name, dbUser.last_name, dbUser.isAdmin);
-            onSuccess();
+            onSuccess(new User(dbUser.uid, dbUser.email, dbUser.first_name, dbUser.last_name, dbUser.isAdmin));
         } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
+            console.log("No such user in database!");
         }
     }).catch(function(error) {
         console.log("Error getting document:", error);
