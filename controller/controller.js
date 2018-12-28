@@ -36,7 +36,7 @@ function handleLogin(){
             if(isChecked){
                 setCookie("session", auth.currentUser.uid, 7);
             }
-            readUserById(auth.currentUser.uid, renderLandingPage);
+            getUserById(auth.currentUser.uid, renderLandingPage);
         } else {
             console.log("Authentication failed.");
         }

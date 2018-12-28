@@ -21,7 +21,7 @@ function writeUser(user)
     }).then(console.log("ok"));
 }
 
-function readUserById(userId, onSuccess) {
+function getUserById(userId, onSuccess) {
     let docRef = userRef.doc(userId);
     docRef.get().then(function(doc) {
         if (doc.exists) {
@@ -33,6 +33,6 @@ function readUserById(userId, onSuccess) {
             console.log("No such user in database!");
         }
     }).catch(function(error) {
-        console.log("Error getting document:", error);
+        console.log("Error: ", error);
     });
 }
