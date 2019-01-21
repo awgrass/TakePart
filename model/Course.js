@@ -1,8 +1,8 @@
 var courseRef = firestore.collection("courses");
 
+//class course object TODO maybe name not needed
 class Course {
-    constructor(_id, _name, _dates, _participants, _statistics) {
-        this.cid = _id;
+    constructor(_name, _dates, _participants, _statistics) {
         this.name = _name;
         this.dates = _dates;
         this.participants = _participants;
@@ -10,25 +10,45 @@ class Course {
     }
 }
 
-function createCourse(name, dates, participants, statistics)
-{
-    let newCourseRef = courseRef.doc();
-    newCourseRef.set({
-        id: newCourseRef.id,
-        name: name,
-        dates: dates,
-        participants: participants,
-        statistics: statistics
-    });
+//This function creates a new course in the database
+function createCourse(name, dates, participants, statistics){
+    let newCourseRef = courseRef.doc(name);
+    newCourseRef.get()
+        .then((docSnapshot) => {
+            if (docSnapshot.exists) {
+                console.log('Document already exists.')
+            } else {
+                newCourseRef.set({
+                    dates: dates,
+                    participants: participants,
+                    statistics: statistics
+                });
+                console.log('Document created.')
+            }
+        });
 }
 
-function getCourseById(courseId, onSuccess) {
-    let docRef = courseRef.doc(courseId);
+//This function gets all courses of the current user
+function getCoursesOfUser(userid) {
+    courseRef
+        .where("participants", "array-contains", userid)
+        .onSnapshot(function(snapshot) {
+            snapshot.forEach(item => {
+                console.log(item.data().name);
+            })
+        }, function(error) {
+            console.log("Error");
+        });
+}
+
+//TODO function not needed yet
+function getCourseById(courseName, onSuccess) {
+    let docRef = courseRef.doc(courseName);
     docRef.get().then(function(doc) {
         if (doc.exists) {
             console.log("Document data:", doc.data());
             let dbCourse = doc.data();
-            var course = new Course(dbCourse.id, dbCourse.name, dbCourse.dates, dbCourse.participants, dbCourse.statistics);
+            let course = new Course(dbCourse.id, dbCourse.name, dbCourse.dates, dbCourse.participants, dbCourse.statistics);
             onSuccess(course);
         } else {
             console.log("No such document!");
