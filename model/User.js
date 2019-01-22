@@ -10,8 +10,7 @@ class User {
     }
 }
 
-function writeUser(user)
-{
+function writeUser(user){
     userRef.doc(user.uid).set({
         uid: user.uid,
         email: user.email,
@@ -21,7 +20,7 @@ function writeUser(user)
     }).then(console.log("ok"));
 }
 
-function getUserById(userId, onSuccess) {
+function getUserById(userId, onSuccess){
     let docRef = userRef.doc(userId);
     docRef.get().then(function(doc) {
         if (doc.exists) {
