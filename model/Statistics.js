@@ -14,28 +14,24 @@ function addStatistic(name, date, regParticipants){
 
     // Add a new document with a generated id.
     ref.add({
-        name: "name",
+        name: name,
         date: date,
         numParticipants: 0,
         numRegistered: regParticipants
     }).then(function(docRef) {
-            console.log("Document written with ID: ", docRef.id);
+            console.log("Statistic written ", docRef.id);
         }).catch(function(error) {
-            console.error("Error adding document: ", error);
+            console.error("Error adding statistic: ", error);
         });
 }
 
-function addStatistic2(name, date, regParticipants){
+function updateStatistic(amount, increase) {
     let ref = firestore
         .collection("courses")
-        .doc(name);
+        .doc(name).collection("statistics");
 
-
-    return ref.update({
-        statistics: {
-            amount: 0,
-            totalamount: 5
-        }
+    ref.update({
+        numParticipants: increase ? amount + 1 : amount - 1
     })
         .then(function() {
             console.log("Document successfully updated!");

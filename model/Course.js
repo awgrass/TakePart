@@ -2,11 +2,10 @@ var courseRef = firestore.collection("courses");
 
 //class course object TODO maybe name not needed
 class Course {
-    constructor(_name, _dates, _participants, _statistics) {
+    constructor(_name, _dates, _participants) {
         this.name = _name;
         this.dates = _dates;
         this.participants = _participants;
-        this.statistics = new Statistics();
     }
 }
 
@@ -58,6 +57,17 @@ function getCoursesOfUser(userid) {
         }, function(error) {
             console.log("Error");
         });
+}
+
+function getAllCourses(onSuccess) {
+    return courseRef.get().then(snapshot => {
+        let courses = [];
+        snapshot.forEach(doc => {
+            courses.push(new Course(doc.data().name, doc.data().dates, doc.data().participants));
+        });
+        console.log(courses);
+        onSuccess(courses);
+    });
 }
 
 //This function gets two arrays ( one with sorted users of this course and second with sorted timestamps)
