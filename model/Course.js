@@ -41,7 +41,7 @@ function addDate(date, name) {
 function addParticipant(name, coursename) {
     let course = courseRef.doc(name);
     course.update({
-        users: firebase.firestore.FieldValue.arrayUnion(name)
+        participants: firebase.firestore.FieldValue.arrayUnion(name)
     }).then(function() {
         console.log("Participant added.");
     });;
@@ -66,7 +66,7 @@ function getCourseDataByCoursName(courseName) {
     docRef.get().then(function(doc) {
         if (doc.exists) {
             console.log("Document data:", doc.data());
-            let users = doc.data().users.sort();
+            let participants = doc.data().users.sort();
             let timestamps = doc.data().dates.sort();
         } else {
             console.log("No such document!");
