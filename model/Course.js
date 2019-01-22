@@ -6,7 +6,7 @@ class Course {
         this.name = _name;
         this.dates = _dates;
         this.participants = _participants;
-        this.statistics = _statistics;
+        this.statistics = new Statistics();
     }
 }
 
@@ -20,7 +20,7 @@ function createCourse(name){
             } else {
                 newCourseRef.set({
                     dates: [],
-                    participants: []
+                    participants: [],
                 });
                 console.log('Document created.')
             }
