@@ -7,10 +7,9 @@ var currentUser = null;
  */
 function authenticateUser(email, password, handleSuccessfullAuthentication) {
     auth.signInWithEmailAndPassword(email, password)
-        .then(function() {
+        .then(function(){
             currentUser = auth.currentUser;
             handleSuccessfullAuthentication();
-            console.log("Authenticated user: ", currentUser);
         })
         .catch(function (error){console.log(error);});
 }
