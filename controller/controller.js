@@ -1,7 +1,15 @@
 window.onload = function(){
-    var cookie = getCookie("session");
+    let cookie = getCookie("session");
     if (cookie !== null){
-        renderLandingPage();
+        //TODO: check if uid stored in cookie is in database
+        let splittedCookie = cookie.split("|");
+        let email = splittedCookie[0];
+        let password = splittedCookie[1];
+        authenticateUser(email, password, function(){
+            if (auth.currentUser){
+                renderLandingPage();
+            }
+        });
     }
     else{
         renderLogin();
@@ -32,9 +40,12 @@ function handleLogin(){
     let isChecked = document.getElementById('remember-me').checked;
 
     authenticateUser(email, password, function(){
-        if (auth.currentUser) {
+        if (auth.currentUser){
             if(isChecked){
-                setCookie("session", auth.currentUser.uid, 7);
+                //TODO: we need a better way to set the currentUser global variable...
+                let cookieVal = email + "|" + password;
+                let days = 7;
+                setCookie("session", cookieVal, days);
             }
             getUserById(auth.currentUser.uid, renderLandingPage);
         } else {
@@ -42,7 +53,6 @@ function handleLogin(){
         }
     });
 }
-
 
 function setCookie(name,value,days) {
     var expires = "";
