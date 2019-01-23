@@ -1,5 +1,7 @@
 var auth = firebase.auth();
 var currentUser = null;
+
+
 /**
  * @param {string} email
  * @param {string} password
@@ -12,6 +14,26 @@ function authenticateUser(email, password, handleSuccessfullAuthentication) {
             handleSuccessfullAuthentication();
         })
         .catch(function (error){console.log(error);});
+}
+
+function handleLogin(){
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
+    let isChecked = document.getElementById('remember-me').checked;
+
+    authenticateUser(email, password, function(){
+        if (auth.currentUser){
+            if(isChecked){
+                //TODO: we need a better way to set the currentUser global variable...
+                let cookieVal = email + "|" + password;
+                let days = 7;
+                setCookie("session", cookieVal, days);
+            }
+            getUserById(auth.currentUser.uid, renderLandingPage);
+        } else {
+            console.log("Authentication failed.");
+        }
+    });
 }
 
 /**
