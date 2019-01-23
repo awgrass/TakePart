@@ -1,7 +1,7 @@
 window.onload = function(){
     let cookie = getCookie("session");
     if (cookie !== null){
-        //TODO: check if uid stored in cookie is in database
+        //TODO: check if user stored in cookie is in database
         let splittedCookie = cookie.split("|");
         let email = splittedCookie[0];
         let password = splittedCookie[1];
@@ -17,21 +17,24 @@ window.onload = function(){
 
 };
 
-function renderLogin(){
+function requestFileAsynchronously(file, callback){
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'login.html', true);
-    xhr.onreadystatechange= function() {
-        if (this.readyState !== 4){
-            return;
+    xhr.open('GET', file, true);
+    xhr.onreadystatechange = function(){
+        if ((this.readyState === 4) && (this.status === 200)){
+            callback(this);
         }
-        if (this.status !== 200){
-            return
-        }
-        document.getElementById('root').innerHTML= this.responseText;
-        document.getElementById('submit-button').addEventListener('click', handleLogin);
-
     };
     xhr.send();
+}
+
+
+function renderLogin(){
+    requestFileAsynchronously('login.html', function(caller) {
+        document.getElementById('root').innerHTML= caller.responseText;
+        document.getElementById('submit-button').addEventListener('click', handleLogin);
+
+    });
 }
 
 function handleLogin(){
@@ -75,20 +78,45 @@ function getCookie(name) {
     return null;
 }
 
-function renderLandingPage(user){
-    currentUser = user;
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'landing-page.html', true);
-    xhr.onreadystatechange= function() {
-        if (this.readyState !== 4){
-            return;
-        }
-        if (this.status !== 200){
-            return
-        }
-        document.getElementById('root').innerHTML= this.responseText;
-        //document.getElementById('submit-button').addEventListener('click', handleLogin);
-
-    };
-    xhr.send();
+function HTMLToElement(html) {
+    let template = document.createElement('template');
+    //html = html.trim();
+    template.innerHTML = html;
+    return template.content.firstChild;
 }
+
+function secondsToDate(seconds){
+    let myDate = new Date( seconds *1000);
+    return myDate.toLocaleDateString();
+}
+
+function renderLandingPage(){
+    requestFileAsynchronously('landing-page.html', function(caller) {
+        document.getElementById('root').innerHTML= caller.responseText;
+        //document.getElementById('submit-button').addEventListener('click', handleLogin);
+        requestFileAsynchronously('course-item.html', function(caller){
+            let courseList = document.getElementById('course-list');
+            console.log(courseList);
+            let itemTemplate = HTMLToElement(caller.responseText);
+            getAllCourses(function(courses){
+                courses.forEach(course => {
+                    let item = itemTemplate.cloneNode(true);
+                    let title = course.name;
+                    let numParticipants = course.participants.length;
+                    let nextDate = course.dates.sort()[course.dates.length - 1];
+
+                    item.getElementsByClassName('course-title')[0].innerHTML = title;
+                    item.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
+                    item.getElementsByClassName('course-date')[0].innerHTML = secondsToDate(nextDate.seconds);
+
+                    courseList.appendChild(item);
+                })
+            });
+
+
+        })
+
+
+    });
+}
+
