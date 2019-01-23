@@ -1,0 +1,66 @@
+/* general styles */
+
+ul {
+    list-style-type: none;
+}
+
+/* container boxes styles */
+
+.list-element {
+    background-color: #337ab7;
+    margin-bottom: 2.5rem;
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    height: 12rem;
+    width: 90%;
+    padding: 0.8rem 2.5rem 0 2.5rem;
+    box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
+    opacity: 1;
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: black;
+    text-shadow: -0.1rem 0 black, 0 0.1rem black, 0.1rem 0 black, 0 -0.1rem black;
+
+}
+.list-element:hover {
+    cursor: pointer;
+}
+
+
+/* elements on left side of boxes*/
+
+.top-margin {
+    margin-top: 3rem;
+}
+
+.fa-plus-circle {
+    font-size: 4.5rem;
+    position: absolute;
+}
+
+.add-course {
+    font-size: 3rem;
+    font-weight: bold;
+    padding-left: 5.5rem;
+    margin-top: 0.5rem;
+}
+
+.course-title {
+    font-size: 2.4rem;
+    font-weight: bold;
+}
+
+/* elements on right of boxes */
+
+.attendance-percentage {
+    font-weight: bold;
+    text-align: center;
+}
+
+.statistics-button {
+    color: #337ab7;
+    font-size: 1.5rem;
+    width: auto;
+    margin-top: 4rem;
+}
