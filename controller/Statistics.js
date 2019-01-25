@@ -39,16 +39,16 @@ function convertRatioToRealY(ratio){
     return 100 - (ratio * 100) + 10;
 }
 
-function createStat1(courseName){
+function createStat1(courseName, callback){
     requestFileAsynchronously("stat1.html", function(caller){
         let svgElement = HTMLToElement(caller.responseText);
         let xLabelsAxis = svgElement.getElementsByClassName("x-labels")[0];
         let lines = svgElement.getElementsByClassName("stat1-lines")[0];
         getCourseByName(courseName, function(course){
+            console.log(courseName);
             const numberOfPastEvents = course.statistics.length;
             const xTicks = getXTicks(15, 205, numberOfPastEvents);
             let dataPoints = [];
-
             //TODO: how can we now the dates are in the right order? sort?
             for (let i = 0; i < numberOfPastEvents; ++i){
                 dataPoints.push(course.statistics[i].numParticipants / course.statistics[i].numRegistered);
@@ -64,7 +64,7 @@ function createStat1(courseName){
                 let line = createLine(xTicks[i], realYs[i], xTicks[i+1], realYs[i+1])
                 lines.appendChild(line);
             }
-            return svgElement;
+            callback(svgElement);
         });
     });
 }
