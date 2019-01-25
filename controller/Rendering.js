@@ -50,7 +50,7 @@ function renderInfoContainer(e){
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
         insertAfter(infoContainer, e.target);
         e.target.setAttribute("has-info-container", "yes");
-        focusElement('info-container');
+        focusElement('info-container-' + courseNameOfCurrentItem);
     });
 }
 
@@ -74,6 +74,7 @@ function handleStatisticsButtonClick(e){
             statisticsContainer.setAttribute('id', "statistics-container-" + courseNameOfCurrentItem);
             insertAfter(statisticsContainer, document.getElementById('list-item-' + courseNameOfCurrentItem));
             listItem.setAttribute("has-statistics-container", "yes");
+            focusElement('statistics-container-' + courseNameOfCurrentItem);
         });
 
     });
