@@ -1,3 +1,5 @@
+/* general styles*/
+
 html,
 body {
     min-height: 100%;
@@ -25,6 +27,26 @@ p {
 
 .text-center {
     text-align: center;
+}
+
+.layout-spaces {
+    padding-left: 10%;
+    margin-bottom: 5%;
+}
+
+.element-color {
+    background-color: #337ab7;
+
+}
+
+.text-shadow {
+    text-shadow: -0.1rem 0 black, 0 0.1rem black, 0.1rem 0 black, 0 -0.1rem black;
+}
+
+.layout-styles {
+    width: 90%;
+    color: #FFFFFF;
+    opacity: 1;
 }
 
 /* header styles */
@@ -60,5 +82,4 @@ p {
 
 .list-item {
     margin-top: 4%;
-    padding-left: 10%;
 }

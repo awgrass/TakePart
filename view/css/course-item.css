@@ -7,20 +7,15 @@ ul {
 /* container boxes styles */
 
 .list-element {
-    background-color: #337ab7;
     margin-bottom: 2.5rem;
-    color: #FFFFFF;
     font-size: 1.5rem;
     height: 8.5em;
-    width: 90%;
     padding: 0.8rem 2.5rem 0 2.5rem;
     box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
-    opacity: 1;
     border-radius: 1rem;
     border-style: solid;
     border-width: 0.1rem;
     border-color: black;
-    text-shadow: -0.1rem 0 black, 0 0.1rem black, 0.1rem 0 black, 0 -0.1rem black;
 
 }
 .list-element:hover {
@@ -34,12 +29,12 @@ ul {
     margin-top: 3rem;
 }
 
-.fa-plus-circle {
+#plus-icon-course {
     font-size: 4.5rem;
     position: absolute;
 }
 
-.add-course {
+#add-course {
     font-size: 3rem;
     font-weight: bold;
     padding-left: 5.5rem;
@@ -63,4 +58,8 @@ ul {
     font-size: 1.5rem;
     width: auto;
     margin-top: 4rem;
+}
+
+.statistics-button:hover {
+    color: #0e3e6b;
 }
