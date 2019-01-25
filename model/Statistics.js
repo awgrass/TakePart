@@ -1,8 +1,7 @@
 class Statistics {
-    constructor(_name, _date, _registered) {
-        this.name = _name;
+    constructor(_date, _participants, _registered) {
         this.date = _date;
-        this.participants = 0;
+        this.participants = _participants;
         this.registered = _registered;
     }
 }
