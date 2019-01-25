@@ -35,7 +35,7 @@ function closeStatisticsContainer(listItem, itemCourseName){
     listItem.setAttribute("has-statistics-container", "no");
 }
 
-//TODO: kind of a hack...
+
 function renderInfoContainer(e){
     let courseNameOfCurrentItem = e.target.getAttribute("course");
     if (e.target.getAttribute("has-info-container") === "yes"){
@@ -50,7 +50,6 @@ function renderInfoContainer(e){
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
         insertAfter(infoContainer, e.target);
         e.target.setAttribute("has-info-container", "yes");
-        focusElement('info-container-' + courseNameOfCurrentItem);
     });
 }
 
@@ -74,7 +73,7 @@ function handleStatisticsButtonClick(e){
             statisticsContainer.setAttribute('id', "statistics-container-" + courseNameOfCurrentItem);
             insertAfter(statisticsContainer, document.getElementById('list-item-' + courseNameOfCurrentItem));
             listItem.setAttribute("has-statistics-container", "yes");
-            focusElement('statistics-container-' + courseNameOfCurrentItem);
+            //focusElement('statistics-container-' + courseNameOfCurrentItem);
         });
 
     });

@@ -27,12 +27,21 @@ function createText(x, y, text){
     return textElement;
 }
 
+function createCircle(x, y, r){
+    let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute("cx", x);
+    circle.setAttribute("cy", y);
+    circle.setAttribute("r", r);
+    circle.setAttribute("fill", "black");
+    return circle;
+}
+
 function createGraphTitle(title){
-    //createText("Durchschnittliche ")
+    return createText(60, 7.5, title);
 }
 
 function createXLabel(xCoord, text){
-    return createText(xCoord, 115, text);
+    return createText(xCoord-5, 115, text);
 }
 
 function convertRatioToRealY(ratio){
@@ -42,13 +51,12 @@ function convertRatioToRealY(ratio){
 function createStat1(courseName, callback){
     requestFileAsynchronously("stat1.html", function(caller){
         let svgElement = HTMLToElement(caller.responseText);
-        let xLabelsAxis = svgElement.getElementsByClassName("x-labels")[0];
-        let lines = svgElement.getElementsByClassName("stat1-lines")[0];
         getCourseByName(courseName, function(course){
             console.log(courseName);
             const numberOfPastEvents = course.statistics.length;
             const xTicks = getXTicks(15, 205, numberOfPastEvents);
             let dataPoints = [];
+            let xLabelsAxis = svgElement.getElementsByClassName("x-labels")[0];
             //TODO: how can we now the dates are in the right order? sort?
             for (let i = 0; i < numberOfPastEvents; ++i){
                 dataPoints.push(course.statistics[i].numParticipants / course.statistics[i].numRegistered);
@@ -60,10 +68,17 @@ function createStat1(courseName, callback){
             for (let i = 0; i < numberOfPastEvents; ++i) {
                 realYs.push(convertRatioToRealY(dataPoints[i]));
             }
+            let lines = svgElement.getElementsByClassName("stat1-lines")[0];
             for (let i = 0; i < numberOfPastEvents - 1; ++i){
-                let line = createLine(xTicks[i], realYs[i], xTicks[i+1], realYs[i+1])
+                let line = createLine(xTicks[i], realYs[i], xTicks[i+1], realYs[i+1]);
                 lines.appendChild(line);
             }
+            for (let i = 0; i < numberOfPastEvents; ++i){
+                let circle = createCircle(xTicks[i], realYs[i], 0.7);
+                lines.append(circle);
+            }
+            let title = svgElement.getElementsByClassName('title')[0];
+            title.appendChild(createGraphTitle("Teilnehmer in Prozent pro Einheit"));
             callback(svgElement);
         });
     });
