@@ -7,7 +7,7 @@ li.add-feature-row {
     background-image: none;
     background-color: #0F4170;
     color: white;
-    margin-top: 2.5rem;
+    margin-top: 2em;
 }
 
 .add-feature-row:hover {
@@ -37,8 +37,9 @@ li.add-feature-row {
 
 @media (min-width:360px) and (max-width: 992px)
 {
-    .scrollable {
-        max-height: 65%;
+
+    i#plus-icon-attendees, i#plus-icon-dates {
+        margin-left: 4rem;
     }
 }
 
@@ -59,7 +60,7 @@ li.add-feature-row {
 }
 
 .attendees-list, .dates-list {
-    padding: 1.6rem 0 1.6rem 0;
+    padding: 1em 0 1em 0;
     border-left: 2px solid black;
     border-right: 2px solid black;
     border-bottom: 2px solid black;
