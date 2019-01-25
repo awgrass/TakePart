@@ -37,24 +37,26 @@ function closeStatisticsContainer(listItem, itemCourseName){
 
 
 function renderInfoContainer(e){
-    let courseNameOfCurrentItem = e.target.getAttribute("course");
-    if (e.target.getAttribute("has-info-container") === "yes"){
-        closeInfoContainer(e.target, courseNameOfCurrentItem);
+    let courseName = e.target.innerHTML;
+    let courseItemNode = document.getElementById("list-item-" + courseName);
+    let courseNameOfCurrentItem = courseItemNode.getAttribute("course");
+    if (courseItemNode.getAttribute("has-info-container") === "yes"){
+        closeInfoContainer(courseItemNode, courseNameOfCurrentItem);
         return;
     }
-    if (e.target.getAttribute("has-statistics-container") === "yes"){
-        closeStatisticsContainer(e.target, courseNameOfCurrentItem);
+    if (courseItemNode.getAttribute("has-statistics-container") === "yes"){
+        closeStatisticsContainer(courseItemNode, courseNameOfCurrentItem);
     }
     requestFileAsynchronously('info-container.html', function(caller){
         let infoContainer = HTMLToElement(caller.responseText);
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
-        insertAfter(infoContainer, e.target);
-        e.target.setAttribute("has-info-container", "yes");
+        insertAfter(infoContainer, courseItemNode);
+        courseItemNode.setAttribute("has-info-container", "yes");
     });
 }
 
 
-function handleStatisticsButtonClick(e){
+function renderStatisticsContainer(e){
     e.stopPropagation();
     let courseNameOfCurrentItem = e.target.getAttribute('button-of');
     let listItem = document.getElementById("list-item-" + courseNameOfCurrentItem);
@@ -79,36 +81,44 @@ function handleStatisticsButtonClick(e){
     });
 }
 
+function createCourseItem(courseObject, itemTemplate){
+    let title = courseObject.name;
+    let numParticipants = courseObject.participants.length;
+    let nextDate = courseObject.dates.sort()[courseObject.dates.length - 1];
+
+    let titleParagraph = itemTemplate.getElementsByClassName('course-title')[0];
+    titleParagraph.addEventListener("click", renderInfoContainer);
+    titleParagraph.innerHTML = title;
+
+    itemTemplate.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
+    itemTemplate.getElementsByClassName('course-date')[0].innerHTML = secondsToDate(nextDate.seconds);
+
+    let button = itemTemplate.getElementsByClassName('statistics-button')[0];
+    button.setAttribute('button-of', title);
+    button.addEventListener("click", renderStatisticsContainer);
+
+    let id = "list-item-" + title;
+    itemTemplate.setAttribute("id", id);
+    itemTemplate.setAttribute("has-info-container", "no");
+    itemTemplate.setAttribute("course", title);
+    //itemTemplate.addEventListener("click", renderInfoContainer);
+
+    return itemTemplate;
+}
+
 function renderLandingPage(){
     requestFileAsynchronously('landing-page.html', function(caller) {
         document.getElementById('root').innerHTML= caller.responseText;
+        document.getElementById("logout").addEventListener("click", handleLogout);
         //document.getElementById('submit-button').addEventListener('click', handleLogin);
         requestFileAsynchronously('course-item.html', function(caller){
             let courseList = document.getElementById('course-list');
             let itemTemplate = HTMLToElement(caller.responseText);
             getAllCourses(function(courses){
+                console.log(courses);
                 courses.forEach(course => {
-                    let item = itemTemplate.cloneNode(true);
-                    let title = course.name;
-                    let numParticipants = course.participants.length;
-                    let nextDate = course.dates.sort()[course.dates.length - 1];
-
-                    item.getElementsByClassName('course-title')[0].innerHTML = title;
-                    item.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
-                    item.getElementsByClassName('course-date')[0].innerHTML = secondsToDate(nextDate.seconds);
-
-                    let button = item.getElementsByClassName('statistics-button')[0];
-                    button.setAttribute('button-of', title);
-                    button.addEventListener("click", handleStatisticsButtonClick);
-
-                    let id = "list-item-" + title;
-                    item.setAttribute("id", id);
-                    item.setAttribute("has-info-container", "no");
-                    item.setAttribute("course", title);
-                    item.addEventListener("click", renderInfoContainer);
+                    let item = createCourseItem(course, itemTemplate.cloneNode(true));
                     courseList.appendChild(item);
-
-                    //createStat1("Mustersport");
                 })
             });
 
