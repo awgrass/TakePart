@@ -41,3 +41,11 @@ function secondsToDate(seconds){
     let myDate = new Date( seconds *1000);
     return myDate.toLocaleDateString();
 }
+
+function insertAfter(newNode, referenceNode) {
+    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
+function removeElementByID(id){
+    document.getElementById(id).outerHTML = "";
+}
