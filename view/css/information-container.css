@@ -1,0 +1,86 @@
+/* general styles*/
+
+div.add-feature-row {
+    display: flex;
+    align-items: center;
+    border-top: 2px solid black;
+
+}
+
+.add-feature-row:hover {
+    cursor: pointer;
+}
+
+
+.left-margin {
+    margin-left: -2.5rem;
+}
+
+/* container styles*/
+
+.information-container {
+    height: 20em;
+    box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: black;
+    margin-left: 2rem;
+    background-color: #337ab7;
+
+}
+
+.scrollable {
+    overflow: scroll;
+    margin-top: 2.5rem;
+    height: 85%;
+}
+
+/* styles for left list*/
+
+.attendees-information {
+    float: left;
+    width: 50%;
+}
+
+.add-attendees, .add-dates {
+    margin-left: 1rem;
+}
+
+div.attendees-list {
+    width: 96.5%;
+    margin-left: 1.5rem;
+}
+
+div.dates-list {
+    width: 91%;
+    margin-left: 2.5rem;
+}
+
+#plus-icon-attendees, #plus-icon-dates {
+    font-size: 2.5rem;
+    margin-left: 10rem;
+}
+
+.attendees-list, .dates-list {
+    padding: 1.4rem 0 1.4rem 0;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    background-image: linear-gradient( #ffffff, #d8d8d8 );
+    text-align: center;
+    width: 100%;
+    color: #114e87;
+
+}
+
+/* styles for right list*/
+
+.dates-information {
+    float: right;
+    width: 50%;
+}
+
+.dates-list {
+    margin-left: -1.5rem;
+}

@@ -2,19 +2,73 @@
     <h1 id="appName">TakePart</h1>
     <span class="header-right">
         <p class="right-elements">Neue Registrierung</p>
-        <p class="right-elements">Placeholder</p>
         <p class="right-elements">Abmelden</p>
     </span>
 </header>
-<div class="container">
-    <ul class="list-item" id="course-list">
-        <li class="list-element row">
+<div class="container layout-spaces">
+
+    <!-- TODO: Alex -> change id of course list-->
+
+    <ul class="list-item layout-styles text-shadow" id="course-list">
+        <li class="list-element row element-color">
             <div class="col-lg-12 top-margin">
-                <i class="fas fa-plus-circle"></i>
-                <p class="add-course">
+                <i class="fas fa-plus-circle" id="plus-icon-course"></i>
+                <p id="add-course">
                     Kurs hinzufügen
                 </p>
             </div>
         </li>
     </ul>
+
+    <!-- TODO: information-container part should be new html file and loaded after clicking on specific course -->
+
+    <div class="information-container layout-styles">
+        <div class="scrollable attendees-information">
+            <div class="attendees-list add-feature-row ">
+                <i class="fas fa-plus-circle" id="plus-icon-attendees"></i>
+                <p class="add-attendees">Teilnehmer hinzufügen</p>
+            </div>
+            <div>
+            <ul class="left-margin">
+                <li class="attendees-list ">
+                    <p>Max Mustermann</p>
+                </li>
+                <li class="attendees-list ">
+                    <p>Thomas Andersen</p>
+                </li>
+                <li class="attendees-list ">
+                    <p>Hans Peter</p>
+                </li>
+                <li class="attendees-list ">
+                    <p>Hans Peter</p>
+                </li>
+                <li class="attendees-list ">
+                    <p>Hans Peter</p>
+                </li>
+                <li class="attendees-list ">
+                    <p>Hans Peter</p>
+                </li>
+            </ul>
+            </div>
+        </div>
+        <div class="dates-information">
+            <div class="scrollable ">
+                <div class="dates-list add-feature-row">
+                    <i class="fas fa-plus-circle" id="plus-icon-dates"></i>
+                    <p class="add-dates">Datum hinzufügen</p>
+                </div>
+                <ul>
+                    <li class="dates-list row">
+                        <p>1.12.2019</p>
+                    </li>
+                    <li class="dates-list row ">
+                        <p>2.12.2019</p>
+                    </li>
+                    <li class="dates-list row ">
+                        <p>3.13.2019</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
