@@ -24,7 +24,7 @@ function getUserById(userId, onSuccess){
     let docRef = userRef.doc(userId);
     docRef.get().then(function(doc) {
         if (doc.exists) {
-            console.log("User data:", doc.data());
+            //console.log("User data:", doc.data());
             let dbUser = doc.data();
             onSuccess(new User(dbUser.uid, dbUser.email, dbUser.first_name, dbUser.last_name, dbUser.isAdmin));
         } else {

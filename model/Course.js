@@ -1,11 +1,12 @@
-var courseRef = firestore.collection("courses");
+const courseRef = firestore.collection("courses");
 
 //class course object TODO maybe name not needed
 class Course {
-    constructor(_name, _dates, _participants) {
+    constructor(_name, _dates, _participants, _statistics) {
         this.name = _name;
         this.dates = _dates;
         this.participants = _participants;
+        this.statistics = _statistics;
     }
 }
 
@@ -59,14 +60,43 @@ function getCoursesOfUser(userid) {
         });
 }
 
-function getAllCourses(onSuccess) {
-    return courseRef.get().then(snapshot => {
-        let courses = [];
-        snapshot.forEach(doc => {
-            courses.push(new Course(doc.data().name, doc.data().dates, doc.data().participants));
+function getStatisticByCourseName(courseName, callback){
+    const statCollection = "courses/" + courseName + "/statistics";
+    let statisticsRef = firestore.collection(statCollection);
+    let statistics = []
+    statisticsRef.get().then(snapshot => {
+        snapshot.forEach(stat => {
+            statistics.push(stat.data());
         });
-        console.log(courses);
-        onSuccess(courses);
+        callback(statistics);
+    });
+
+}
+
+function getAllCourses(onSuccess) {
+    courseRef.get().then(snapshot => {
+        let coursesList = [];
+        let numberOfCourses = snapshot.docs.length;
+        snapshot.forEach(doc => {
+            getStatisticByCourseName(doc.data().name, function(statistic) {
+                coursesList.push(new Course(doc.data().name, doc.data().dates, doc.data().participants, statistic));
+                if (coursesList.length === numberOfCourses){
+                    onSuccess(coursesList);
+                }
+            });
+        });
+
+
+    });
+}
+
+function getCourseByName(courseName, callback){
+    getAllCourses(function(courses){
+        courses.forEach(course => {
+            if (course.name.localeCompare(courseName) === 0){
+                callback(course);
+            }
+        })
     });
 }
 

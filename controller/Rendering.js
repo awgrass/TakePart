@@ -44,8 +44,9 @@ function renderLandingPage(){
                     item.getElementsByClassName('course-title')[0].innerHTML = title;
                     item.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
                     item.getElementsByClassName('course-date')[0].innerHTML = secondsToDate(nextDate.seconds);
-
                     courseList.appendChild(item);
+
+                    //createStat1("Mustersport");
                 })
             });
 
