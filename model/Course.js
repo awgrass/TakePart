@@ -19,6 +19,7 @@ function createCourse(name){
                 console.log('Document already exists.')
             } else {
                 newCourseRef.set({
+                    name: name,
                     dates: [],
                     participants: [],
                 });
@@ -91,12 +92,26 @@ function getAllCourses(onSuccess) {
 }
 
 function getCourseByName(courseName, callback){
-    getAllCourses(function(courses){
-        courses.forEach(course => {
-            if (course.name.localeCompare(courseName) === 0){
-                callback(course);
-            }
-        })
+    let docRef = courseRef.doc(courseName);
+    docRef.get().then((doc) => {
+        if (doc.exists) {
+            docRef.collection("statistics").get().then((snap) => {
+                let stats = [];
+                snap.forEach(function(doc) {
+                    console.log(doc.id, " => ", doc.data());
+                    stats.push(new Statistics(doc.data().date, doc.data().numParticipants, doc.data().numRegistered));
+                });
+                callback(new Course(
+                    doc.data().name,
+                    doc.data().dates,
+                    doc.data().participants,
+                    stats
+                ));
+            });
+        }
+        else {
+            console.log("Course not found.")
+        }
     });
 }
 
