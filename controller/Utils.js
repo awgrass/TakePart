@@ -49,3 +49,7 @@ function insertAfter(newNode, referenceNode) {
 function removeElementByID(id){
     document.getElementById(id).outerHTML = "";
 }
+
+function focusElement(id){
+    window.location.hash = '#' + id;
+}
