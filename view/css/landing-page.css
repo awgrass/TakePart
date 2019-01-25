@@ -36,7 +36,6 @@ p {
 
 .element-color {
     background-color: #337ab7;
-
 }
 
 .text-shadow {
@@ -47,6 +46,10 @@ p {
     width: 90%;
     color: #FFFFFF;
     opacity: 1;
+}
+
+.container-margins {
+    margin-bottom: 2.5rem;
 }
 
 /* header styles */
