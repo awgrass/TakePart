@@ -15,10 +15,6 @@ ul {
     border-width: 0.1rem;
     border-color: black;
 }
-.list-element:hover {
-    cursor: pointer;
-}
-
 
 /* elements on left side of boxes*/
 
@@ -45,6 +41,12 @@ ul {
 .course-title {
     font-size: 2.4rem;
     font-weight: bold;
+    display: inline-block;
+}
+
+.course-title:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /* elements on right of boxes */

@@ -88,7 +88,7 @@ p {
 }
 
 /* TODO: maybe separate css file */
-/* styling for the element if course starts in 10 min */
+/* styling for the attendance button */
 
 .attendance-affirmation {
     border: 1px solid black;
@@ -99,6 +99,10 @@ p {
     justify-content: center;
     align-items: center;
     font-size: 2rem;
+}
+
+.attendance-affirmation:hover {
+    cursor: pointer;
 }
 
 .fa-check-circle {
