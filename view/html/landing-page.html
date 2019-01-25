@@ -11,11 +11,28 @@
 
     <ul class="list-item layout-styles" id="course-list">
         <li class="list-element row element-color text-shadow container-margins">
-            <div class="col-lg-12 top-margin">
+            <div class="col-lg-12 top-margin course-data">
                 <i class="fas fa-plus-circle" id="plus-icon-course"></i>
                 <p id="add-course">
                     Kurs hinzufügen
                 </p>
+            </div>
+        </li>
+
+        <!-- TODO: should be loaded 10 min before the course starts -->
+
+        <li class="list-element row element-color text-shadow container-margins">
+            <div class="col-xs-5 col-md-6 course-data">
+                <p class="course-title">Karate</p>
+                <p>Teilnehmer: <span class="course-attendees"></span>50</p>
+                <p>Datum: <span class="course-date"></span>1.12.2019</p>
+            </div>
+            <div class="col-xs-3 col-md-2">
+                <button type="button" class="btn btn-light statistics-button">Statistiken</button>
+            </div>
+            <div class="col-xs-4 col-md-4 attendance-affirmation">
+                <i class="fas fa-check-circle"></i>
+                <p>teilnehmen</p>
             </div>
         </li>
     </ul>

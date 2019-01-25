@@ -86,3 +86,21 @@ p {
 .list-item {
     margin-top: 4%;
 }
+
+/* TODO: maybe separate css file */
+/* styling for the element if course starts in 10 min */
+
+.attendance-affirmation {
+    border: 1px solid black;
+    height: 100%;
+    border-radius: 0.5rem;
+    background-color: #0F4170;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+}
+
+.fa-check-circle {
+    padding-right: 0.5em;
+}
