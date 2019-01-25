@@ -41,7 +41,8 @@ function createGraphTitle(title){
 }
 
 function createXLabel(xCoord, text){
-    return createText(xCoord-5, 115, text);
+    let offset = 5; //offset to place label in the middle
+    return createText(xCoord-offset, 115, text);
 }
 
 function convertRatioToRealY(ratio){
@@ -52,14 +53,14 @@ function createStat1(courseName, callback){
     requestFileAsynchronously("stat1.html", function(caller){
         let svgElement = HTMLToElement(caller.responseText);
         getCourseByName(courseName, function(course){
-            console.log(courseName);
+            console.log(course);
             const numberOfPastEvents = course.statistics.length;
             const xTicks = getXTicks(15, 205, numberOfPastEvents);
             let dataPoints = [];
             let xLabelsAxis = svgElement.getElementsByClassName("x-labels")[0];
             //TODO: how can we now the dates are in the right order? sort?
             for (let i = 0; i < numberOfPastEvents; ++i){
-                dataPoints.push(course.statistics[i].numParticipants / course.statistics[i].numRegistered);
+                dataPoints.push(course.statistics[i].participants / course.statistics[i].registered);
                 let labelText = secondsToDate(course.statistics[i].date.seconds);
                 let label = createXLabel(xTicks[i], labelText);
                 xLabelsAxis.appendChild(label);
@@ -77,7 +78,7 @@ function createStat1(courseName, callback){
                 let circle = createCircle(xTicks[i], realYs[i], 0.7);
                 lines.append(circle);
             }
-            let title = svgElement.getElementsByClassName('title')[0];
+            let title = svgElement.getElementsByClassName('stat1-title')[0];
             title.appendChild(createGraphTitle("Teilnehmer in Prozent pro Einheit"));
             callback(svgElement);
         });
