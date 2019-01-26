@@ -11,7 +11,7 @@ class Course {
 }
 
 //This function creates a new course in the database
-function createCourse(name){
+function createCourse(name, dates, participants){
     let newCourseRef = courseRef.doc(name);
     newCourseRef.get()
         .then((docSnapshot) => {
@@ -20,8 +20,8 @@ function createCourse(name){
             } else {
                 newCourseRef.set({
                     name: name,
-                    dates: [],
-                    participants: [],
+                    dates: dates,
+                    participants: participants,
                 });
                 console.log('Document created.')
             }
@@ -45,7 +45,7 @@ function addParticipant(name, coursename) {
         participants: firebase.firestore.FieldValue.arrayUnion(name)
     }).then(function() {
         console.log("Participant added.");
-    });;
+    });
 }
 
 //This function gets all courses of the current user
@@ -99,13 +99,13 @@ function getCourseByName(courseName, callback){
                 let stats = [];
                 snap.forEach(function(doc) {
                     console.log(doc.id, " => ", doc.data());
-                    stats.push(new Statistics(doc.data().date, doc.data().numParticipants, doc.data().numRegistered));
+                    stats.push(new Statistics(new Date(doc.data().date), doc.data().numParticipants, doc.data().numRegistered));
                 });
                 callback(new Course(
                     doc.data().name,
                     doc.data().dates,
                     doc.data().participants,
-                    stats
+                    stats.sort(function(a,b){return a.date.getTime() - b.date.getTime()})
                 ));
             });
         }
