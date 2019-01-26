@@ -1,12 +1,12 @@
 class Statistics {
-    constructor(_date, _participants, _registered) {
-        this.date = _date;
-        this.participants = _participants;
-        this.registered = _registered;
+    constructor(date, participated, registeredAtThisTime) {
+        this.date = date;
+        this.participated = participated;
+        this.registeredAtThisTime = registeredAtThisTime;
     }
 }
 
-function addStatistic(name, date, regParticipants){
+function addStatistic(name, date, registeredAtThisTime){
     let ref = firestore
         .collection("courses")
         .doc(name).collection("statistics");
@@ -15,8 +15,8 @@ function addStatistic(name, date, regParticipants){
     ref.add({
         name: name,
         date: date,
-        numParticipants: 0,
-        numRegistered: regParticipants
+        participated: 0,
+        registeredAtThisTime: registeredAtThisTime
     }).then(function(docRef) {
             console.log("Statistic written ", docRef.id);
         }).catch(function(error) {
@@ -30,7 +30,7 @@ function updateStatistic(amount, increase) {
         .doc(name).collection("statistics");
 
     ref.update({
-        numParticipants: increase ? amount + 1 : amount - 1
+        participated: increase ? amount + 1 : amount - 1
     })
         .then(function() {
             console.log("Document successfully updated!");
