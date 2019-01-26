@@ -53,12 +53,31 @@
     width: 50%;
 }
 
+.user-list {
+    margin-right: 2em;
+}
+
 /* styles for right box */
 
 .drag-box {
     border: 1px solid white;
     height: 36.4rem;
     width: 90%;
-    margin-left: 2rem;
     margin-top: 8%;
+}
+
+.submit-adding-attendees {
+    color: #337ab7;
+    font-size: 1.5rem;
+    width: 8em;
+    float: right;
+    margin: 2em;
+}
+
+.back-adding-attendees {
+    color: #337ab7;
+    font-size: 1.5rem;
+    width: 8em;
+    float: left;
+    margin: 2em 2em 2em 3em;
 }
