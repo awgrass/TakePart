@@ -93,7 +93,8 @@ p {
 .attendance-affirmation {
     border: 1px solid black;
     height: 100%;
-    border-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
     background-color: #0F4170;
     display: flex;
     justify-content: center;
