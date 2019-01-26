@@ -30,7 +30,7 @@ p {
 }
 
 .layout-spaces {
-    padding-left: 10%;
+    padding-left: 5%;
     margin-bottom: 5%;
 }
 
@@ -45,7 +45,6 @@ p {
 .layout-styles {
     width: 90%;
     color: #FFFFFF;
-    opacity: 1;
 }
 
 .container-margins {
@@ -85,6 +84,7 @@ p {
 
 .list-item {
     margin-top: 4%;
+    //display: none;
 }
 
 /* TODO: maybe separate css file */

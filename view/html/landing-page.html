@@ -24,8 +24,8 @@
         <li class="list-element row element-color text-shadow container-margins">
             <div class="col-xs-5 col-md-6 course-data">
                 <p class="course-title">Karate</p>
-                <p>Teilnehmer: <span class="course-attendees"></span>50</p>
-                <p>Datum: <span class="course-date"></span>1.12.2019</p>
+                <p>Teilnehmer: <span class="course-attendees">50</span></p>
+                <p>Datum: <span class="course-date">1.12.2019</span></p>
             </div>
             <div class="col-xs-3 col-md-2">
                 <button type="button" class="btn btn-light statistics-button">Statistiken</button>
@@ -35,5 +35,35 @@
                 <p>teilnehmen</p>
             </div>
         </li>
+    </ul>
+
+    <ul class="creation-container layout-styles">
+    <li class="information-container layout-styles container-margins element-color row" id="info-container">
+        <h1 class="text-center text-shadow" id="creation-title">Neuen User anlegen</h1>
+        <form name="registration">
+            <div class="form-group">
+                <label class="text-shadow">
+                    Name
+                </label>
+                <input type="text" name="firstname" placeholder="Vorname">
+                <input type="text" name="lastname" placeholder="Nachname">
+            </div>
+            <div class="form-group">
+                <label class="text-shadow">
+                    Aktuelle E-Mail
+                </label>
+                <input type="email" name="email" placeholder="E-Mail">
+            </div>
+            <div class="form-group">
+                <label class="text-shadow">
+                    Passwort erstellen
+                </label>
+                <input type="password" name="password" placeholder="Passwort">
+                <input type="password" name="password-confirmation" placeholder="Passwort bestätigen">
+            </div>
+            <input type="checkbox" name="admin"><label class="text-shadow">Admin User</label>
+            <button type="submit" class="btn btn-light submit-creation">Registrieren</button>
+        </form>
+    </li>
     </ul>
 </div>
