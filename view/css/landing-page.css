@@ -54,10 +54,12 @@ p {
 /* header styles */
 
 #appName {
+    width: 0;
     font-size: 6rem;
     color: #FFFFFF;
     margin: 1.5rem 0;
     text-shadow: -0.1rem 0 black, 0 0.1rem black, 0.1rem 0 black, 0 -0.1rem black;
+    cursor: pointer;
 }
 
 .header-right {

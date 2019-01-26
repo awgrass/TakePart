@@ -1,33 +1,33 @@
-<ul class="registration-list layout-styles" id="registration-container">
+<ul class="registration-list layout-styles" id="creation-container">
     <li class="registration-container layout-styles container-margins element-color row" id="info-container">
         <div class="registration-title row">
             <h1 class="text-center text-shadow" id="creation-title">Neuen Benutzer registrieren</h1>
         </div>
         <div class="form-container">
-            <form name="registration" class="registration">
+            <form name="registration" class="registration" id="registration-form">
                 <div class="form-group">
                     <label class="text-shadow">
                         Name
                     </label>
-                    <input type="text" class="form-control form-margin" name="firstname" placeholder="Vorname">
-                    <input type="text" class="form-control form-margin"  name="lastname" placeholder="Nachname">
+                    <input type="text" class="form-control form-margin" name="firstname" placeholder="Vorname" id="first-name">
+                    <input type="text" class="form-control form-margin"  name="lastname" placeholder="Nachname" id="last-name">
                 </div>
                 <div class="form-group">
                     <label class="text-shadow">
                         Aktuelle E-Mail
                     </label>
-                    <input type="email" class="form-control form-margin"  name="email" placeholder="E-Mail">
+                    <input type="email" class="form-control form-margin"  name="email" placeholder="E-Mail" id="email">
                 </div>
                 <div class="form-group">
                     <label class="text-shadow">
                         Passwort erstellen
                     </label>
-                    <input type="password"  class="form-control form-margin" name="password" placeholder="Passwort">
-                    <input type="password"  class="form-control form-margin" name="password-confirmation" placeholder="Passwort bestätigen">
+                    <input type="password"  class="form-control form-margin" name="password" placeholder="Passwort" id="password">
+                    <input type="password"  class="form-control form-margin" name="password-confirmation" placeholder="Passwort bestätigen" id="password-check">
                 </div>
                 <div class="checkbox">
                     <label class="text-shadow">
-                        <input type="checkbox" name="admin"> Admin Profil
+                        <input type="checkbox" name="admin" id="is-admin-check"> Admin Profil
                     </label>
                 </div>
                 <button type="submit" class="btn btn-light submit-creation">Registrieren</button>

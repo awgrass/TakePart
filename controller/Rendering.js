@@ -7,7 +7,10 @@ window.onload = function(){
         let password = splittedCookie[1];
         authenticateUser(email, password, function(){
             if (auth.currentUser){
-                renderLandingPage();
+                getUserById(auth.currentUser.uid, function(user){
+                    console.log(user);
+                    renderLandingPage(user.isAdmin);
+                });
             }
         });
     }
@@ -138,14 +141,17 @@ function renderCreationPage(){
         document.getElementById("course-list").style.display = "none";
         let registerBox = HTMLToElement(caller.responseText);
         document.getElementById("main-container").appendChild(registerBox);
+        document.getElementById("registration-form").onsubmit = handleRegister;
     })
 }
 
-function renderLandingPage(){
+function renderLandingPage(isAdmin){
+    console.log(isAdmin);
     requestFileAsynchronously('landing-page.html', function(caller) {
         document.getElementById('root').innerHTML= caller.responseText;
         document.getElementById("logout").addEventListener("click", handleLogout);
         document.getElementById("register").addEventListener("click", renderCreationPage);
+        document.getElementById("appName").addEventListener("click", renderLandingPage);
         requestFileAsynchronously('course-item.html', function(caller){
             let courseList = document.getElementById('course-list');
             let itemTemplate = HTMLToElement(caller.responseText);
