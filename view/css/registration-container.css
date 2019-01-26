@@ -50,10 +50,31 @@ label {
 .submit-creation {
     color: #337ab7;
     font-size: 1.5rem;
-    width: auto;
+    width: 8em;
     float: right;
 }
 
 .submit-creation:hover {
     color: #0e3e6b;
+}
+
+.back {
+    color: #337ab7;
+    font-size: 1.5rem;
+    width: 8em;
+    float: left;
+}
+
+.back:hover {
+    color: #0e3e6b;
+}
+
+@media (min-width:360px) and (max-width: 992px)
+{
+    .submit-creation {
+        width: 7em;
+    }
+    .back {
+        width: 5em;
+    }
 }
