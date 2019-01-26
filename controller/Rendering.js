@@ -1,3 +1,5 @@
+let containerIsLoading = false;
+
 window.onload = function(){
     let cookie = getCookie("session");
     if (cookie !== null){
@@ -14,7 +16,6 @@ window.onload = function(){
     else{
         renderLogin();
     }
-
 };
 
 function renderLogin(){
@@ -36,6 +37,32 @@ function closeStatisticsContainer(listItem, itemCourseName){
 }
 
 
+function renderInfoContainerContent(courseName){
+    let infoContainer = document.getElementById("info-container-" + courseName);
+    getCourseDataByCoursName(courseName, function(participants, timestamps){
+        let attendeesList = infoContainer.getElementsByClassName("attendees-list-view")[0];
+        participants.forEach(name => {
+            addInfoContainerItem(attendeesList, ["attendees-list"], name);
+        });
+        let datesList = infoContainer.getElementsByClassName("dates-list-view")[0];
+        timestamps.forEach(timestamp => {
+            addInfoContainerItem(datesList, ["dates-list", "row"], timestampToDate(timestamp));
+        });
+
+    });
+}
+
+function addInfoContainerItem(list, classNameArray, value){
+    let listEntry = document.createElement("li");
+    classNameArray.forEach(className => {
+        listEntry.classList.add(className);
+    });
+    let p = document.createElement("p");
+    p.innerHTML = value;
+    listEntry.appendChild(p);
+    list.appendChild(listEntry);
+}
+
 function renderInfoContainer(e){
     let courseName = e.target.innerHTML;
     let courseItemNode = document.getElementById("list-item-" + courseName);
@@ -52,9 +79,9 @@ function renderInfoContainer(e){
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
         insertAfter(infoContainer, courseItemNode);
         courseItemNode.setAttribute("has-info-container", "yes");
+        renderInfoContainerContent(courseName);
     });
 }
-
 
 function renderStatisticsContainer(e){
     e.stopPropagation();
@@ -91,7 +118,7 @@ function createCourseItem(courseObject, itemTemplate){
     titleParagraph.innerHTML = title;
 
     itemTemplate.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
-    itemTemplate.getElementsByClassName('course-date')[0].innerHTML = secondsToDate(nextDate.seconds);
+    itemTemplate.getElementsByClassName('course-date')[0].innerHTML = timestampToDate(nextDate);
 
     let button = itemTemplate.getElementsByClassName('statistics-button')[0];
     button.setAttribute('button-of', title);
@@ -101,7 +128,6 @@ function createCourseItem(courseObject, itemTemplate){
     itemTemplate.setAttribute("id", id);
     itemTemplate.setAttribute("has-info-container", "no");
     itemTemplate.setAttribute("course", title);
-    //itemTemplate.addEventListener("click", renderInfoContainer);
 
     return itemTemplate;
 }
@@ -119,12 +145,8 @@ function renderLandingPage(){
                 courses.forEach(course => {
                     let item = createCourseItem(course, itemTemplate.cloneNode(true));
                     courseList.appendChild(item);
-                })
+                });
             });
-
         });
-
-
     });
 }
-

@@ -16,8 +16,8 @@ function HTMLToElement(html) {
     return template.content.firstChild;
 }
 
-function secondsToDate(seconds){
-    let myDate = new Date( seconds *1000);
+function timestampToDate(timestamp){
+    let myDate = new Date( timestamp.seconds *1000);
     return myDate.toLocaleDateString();
 }
 

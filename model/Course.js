@@ -116,13 +116,14 @@ function getCourseByName(courseName, callback){
 }
 
 //This function gets two arrays ( one with sorted users of this course and second with sorted timestamps)
-function getCourseDataByCoursName(courseName) {
+function getCourseDataByCoursName(courseName, callback) {
     let docRef = courseRef.doc(courseName);
     docRef.get().then(function(doc) {
         if (doc.exists) {
             console.log("Document data:", doc.data());
-            let participants = doc.data().users.sort();
+            let participants = doc.data().participants.sort();
             let timestamps = doc.data().dates.sort();
+            callback(participants, timestamps);
         } else {
             console.log("No such document!");
         }
