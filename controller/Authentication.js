@@ -31,11 +31,17 @@ function handleLogin(){
     });
 }
 
-
-
 function handleLogout(){
     setCookie("session", "", -1);
+    signOutUser();
     renderLogin();
+}
+
+function signOutUser() {
+    auth.signOut().catch(function (err) {})
+        .then(function() { console.log('Signed Out');},
+            function(error) { console.error('Sign Out Error', error);
+            });
 }
 
 function setCookie(name,value,days) {
@@ -59,20 +65,20 @@ function getCookie(name) {
     return null;
 }
 
-function registerUser(email, password, first_name, last_name, isAdmin) {
+function handleRegister(isAdmin){
+    //get firstname, lastname, email, password
+    //registerUser(firstName, lastName, email, password, false);
+}
+
+function registerUser(firstName, lastName, email, password, isAdmin) {
     auth.createUserWithEmailAndPassword(email, password)
         .then(function(userData) {
             console.log("Registered");
-            let user = new User(userData.user.uid, email, first_name, last_name, isAdmin);
+            console.log(userData);
+            let user = new User(userData.user.uid, firstName, lastName, email, isAdmin);
             writeUser(user);
         })
         .catch(function (error){console.log(error);});
 }
 
-function signOutUser() {
-    auth.signOut().catch(function (err) {})
-        .then(function() { console.log('Signed Out');},
-            function(error) { console.error('Sign Out Error', error);
-    });
-}
 

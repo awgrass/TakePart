@@ -1,12 +1,13 @@
 const courseRef = firestore.collection("courses");
 
 //class course object TODO maybe name not needed
+
 class Course {
-    constructor(_name, _dates, _participants, _statistics) {
-        this.name = _name;
-        this.dates = _dates;
-        this.participants = _participants;
-        this.statistics = _statistics;
+    constructor(name, dates, participants, statistics) {
+        this.name = name;
+        this.dates = dates;
+        this.participants = participants;
+        this.statistics = statistics;
     }
 }
 
@@ -95,17 +96,18 @@ function getCourseByName(courseName, callback){
     let docRef = courseRef.doc(courseName);
     docRef.get().then((doc) => {
         if (doc.exists) {
-            docRef.collection("statistics").orderBy("date", "asc").get().then((snap) => {
+            docRef.collection("statistics").get().then((snap) => {
                 let stats = [];
                 snap.forEach(function(doc) {
                     console.log(doc.id, " => ", doc.data());
-                    stats.push(new Statistics(new Date(doc.data().date), doc.data().numParticipants, doc.data().numRegistered));
+                    stats.push(new Statistics(doc.data().date, doc.data().participated, doc.data().registeredAtThisTime));
+                    console.log(stats);
                 });
                 callback(new Course(
                     doc.data().name,
                     doc.data().dates,
                     doc.data().participants,
-                    stats
+                    stats.sort(function(a,b){return a.date.seconds - b.date.seconds})
                 ));
             });
         }

@@ -1,5 +1,3 @@
-let containerIsLoading = false;
-
 window.onload = function(){
     let cookie = getCookie("session");
     if (cookie !== null){
@@ -108,42 +106,53 @@ function renderStatisticsContainer(e){
     });
 }
 
-function createCourseItem(courseObject, itemTemplate){
+function createListCourseElement(courseObject, elementToInitialize){
     let title = courseObject.name;
     let numParticipants = courseObject.participants.length;
     let nextDate = courseObject.dates.sort()[courseObject.dates.length - 1];
 
-    let titleParagraph = itemTemplate.getElementsByClassName('course-title')[0];
+    let titleParagraph = elementToInitialize.getElementsByClassName('course-title')[0];
     titleParagraph.addEventListener("click", renderInfoContainer);
     titleParagraph.innerHTML = title;
 
-    itemTemplate.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
-    itemTemplate.getElementsByClassName('course-date')[0].innerHTML = timestampToDate(nextDate);
+    elementToInitialize.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
+    elementToInitialize.getElementsByClassName('course-date')[0].innerHTML = timestampToDate(nextDate);
 
-    let button = itemTemplate.getElementsByClassName('statistics-button')[0];
+    let button = elementToInitialize.getElementsByClassName('statistics-button')[0];
     button.setAttribute('button-of', title);
     button.addEventListener("click", renderStatisticsContainer);
 
     let id = "list-item-" + title;
-    itemTemplate.setAttribute("id", id);
-    itemTemplate.setAttribute("has-info-container", "no");
-    itemTemplate.setAttribute("course", title);
+    elementToInitialize.setAttribute("id", id);
+    elementToInitialize.setAttribute("has-info-container", "no");
+    elementToInitialize.setAttribute("course", title);
 
-    return itemTemplate;
+    return elementToInitialize;
+}
+
+function renderCreationPage(){
+    if (document.getElementById("creation-container")){
+        return;
+    }
+    requestFileAsynchronously("creation-container.html", function(caller){
+        document.getElementById("course-list").style.display = "none";
+        let registerBox = HTMLToElement(caller.responseText);
+        document.getElementById("main-container").appendChild(registerBox);
+    })
 }
 
 function renderLandingPage(){
     requestFileAsynchronously('landing-page.html', function(caller) {
         document.getElementById('root').innerHTML= caller.responseText;
         document.getElementById("logout").addEventListener("click", handleLogout);
-        //document.getElementById('submit-button').addEventListener('click', handleLogin);
+        document.getElementById("register").addEventListener("click", renderCreationPage);
         requestFileAsynchronously('course-item.html', function(caller){
             let courseList = document.getElementById('course-list');
             let itemTemplate = HTMLToElement(caller.responseText);
             getAllCourses(function(courses){
                 console.log(courses);
                 courses.forEach(course => {
-                    let item = createCourseItem(course, itemTemplate.cloneNode(true));
+                    let item = createListCourseElement(course, itemTemplate.cloneNode(true));
                     courseList.appendChild(item);
                 });
             });

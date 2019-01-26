@@ -1,0 +1,22 @@
+
+/* container styles */
+.creation-container {
+    margin-top: 4%;
+}
+
+/* inside container */
+
+#creation-title {
+    font-size: 4rem;
+}
+
+.submit-creation {
+    color: #337ab7;
+    font-size: 1.5rem;
+    width: auto;
+    margin-top: 3em;
+}
+
+.submit-creation:hover {
+    color: #0e3e6b;
+}

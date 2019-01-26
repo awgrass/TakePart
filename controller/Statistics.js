@@ -53,13 +53,14 @@ function createStat1(courseName, callback){
     requestFileAsynchronously("stat1.html", function(caller){
         let svgElement = HTMLToElement(caller.responseText);
         getCourseByName(courseName, function(course){
+            console.log(course);
             const numberOfPastEvents = course.statistics.length;
             const xTicks = getXTicks(15, 205, numberOfPastEvents);
             let dataPoints = [];
             let xLabelsAxis = svgElement.getElementsByClassName("x-labels")[0];
             //TODO: how can we now the dates are in the right order? sort?
             for (let i = 0; i < numberOfPastEvents; ++i){
-                dataPoints.push(course.statistics[i].participants / course.statistics[i].registered);
+                dataPoints.push(course.statistics[i].participated / course.statistics[i].registeredAtThisTime);
                 let labelText = timestampToDate(course.statistics[i].date);
                 let label = createXLabel(xTicks[i], labelText);
                 xLabelsAxis.appendChild(label);
