@@ -1,0 +1,64 @@
+/* container styles */
+.add-attendee-list {
+    margin-top: 4%;
+}
+
+.add-attendee-container {
+    height: 40em;
+    box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: black;
+    width: auto;
+}
+
+/* inside container */
+
+.add-attendee-title {
+    background-color: #0e3e6b;
+    margin-left: 0;
+    margin-right: 0;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.user-list-container {
+    overflow: scroll;
+    margin-top: 4%;
+    height: 26em;
+    float: left;
+    width: 50%;
+}
+
+.user-list-element {
+    padding: 1em 0 1em 0;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    background-image: linear-gradient( #ffffff, #d8d8d8 );
+    text-align: center;
+    width: 100%;
+    color: #114e87;
+}
+
+.user-list-element:hover {
+    cursor: grab;
+}
+
+/* styles for left list */
+
+.course-container {
+    float: right;
+    width: 50%;
+}
+
+/* styles for right box */
+
+.drag-box {
+    border: 1px solid white;
+    height: 36.4rem;
+    width: 90%;
+    margin-left: 2rem;
+    margin-top: 8%;
+}
