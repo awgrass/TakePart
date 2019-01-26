@@ -1,7 +1,7 @@
 const courseRef = firestore.collection("courses");
+var courses = [];
 
 //class course object TODO maybe name not needed
-
 class Course {
     constructor(name, dates, participants, statistics) {
         this.name = name;
@@ -51,15 +51,19 @@ function addParticipant(name, coursename) {
 
 //This function gets all courses of the current user
 function getCoursesOfUser(userid) {
-    courseRef
-        .where("participants", "array-contains", userid)
-        .onSnapshot(function(snapshot) {
-            snapshot.forEach(item => {
-                console.log(item.data().name);
-            })
-        }, function(error) {
-            console.log("Error");
+    courseRef.where("participants", "array-contains", userid)
+        .get().then(snapshot => {
+        let coursesList = [];
+        let numberOfCourses = snapshot.docs.length;
+        snapshot.forEach(doc => {
+            getStatisticByCourseName(doc.data().name, function(statistic) {
+                coursesList.push(new Course(doc.data().name, doc.data().dates, doc.data().participants, statistic));
+                if (coursesList.length === numberOfCourses){
+                    courses = coursesList;
+                }
+            });
         });
+    });
 }
 
 function getStatisticByCourseName(courseName, callback){
@@ -87,8 +91,6 @@ function getAllCourses(onSuccess) {
                 }
             });
         });
-
-
     });
 }
 
@@ -132,4 +134,27 @@ function getCourseDataByCoursName(courseName, callback) {
     }).catch(function(error) {
         console.log("Error getting document:", error);
     });
+}
+
+function addStatisticListenter() {
+    courseRef.where("participants", "array-contains", userid)
+        .get()
+        .then(function(snap){
+            snap.forEach(function(doc) {
+                courseRef.doc(doc.id).collection("statistics")
+                    .onSnapshot(function(snapshot) {
+                        snapshot.docChanges().forEach(function(change) {
+                            if (change.type === "added") {
+                                console.log("New city: ", change.doc.data());
+                            }
+                            if (change.type === "modified") {
+                                console.log("Modified city: ", change.doc.data());
+                            }
+                            if (change.type === "removed") {
+                                console.log("Removed city: ", change.doc.data());
+                            }
+                        });
+                    });
+            });
+        });
 }
