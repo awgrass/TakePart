@@ -12,7 +12,7 @@ class Course {
 }
 
 //This function creates a new course in the database
-function createCourse(name, dates, participants){
+function createCourse(name, dates, participants, callback){
     let newCourseRef = courseRef.doc(name);
     newCourseRef.get()
         .then((docSnapshot) => {
@@ -27,6 +27,7 @@ function createCourse(name, dates, participants){
                 console.log('Document created.')
             }
         });
+    callback();
 }
 
 //This function adds a course date to a specific course

@@ -99,7 +99,7 @@ p {
     cursor: pointer;
 }
 
-#add-course {
+#add-course-p {
     font-size: 3rem;
     font-weight: bold;
     padding-left: 5.5rem;
@@ -107,7 +107,7 @@ p {
     display: inline-block;
 }
 
-#add-course:hover {
+#add-course-p:hover {
     cursor: pointer;
     text-decoration: underline;
 }
