@@ -131,10 +131,10 @@ function createListCourseElement(courseObject, elementToInitialize){
 }
 
 function renderCreationPage(){
-    if (document.getElementById("creation-container")){
+    if (document.getElementById("registration-container")){
         return;
     }
-    requestFileAsynchronously("creation-container.html", function(caller){
+    requestFileAsynchronously("registration-container.html", function(caller){
         document.getElementById("course-list").style.display = "none";
         let registerBox = HTMLToElement(caller.responseText);
         document.getElementById("main-container").appendChild(registerBox);

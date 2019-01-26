@@ -4,11 +4,11 @@ label {
 }
 
 /* container styles */
-.creation-list {
+.registration-list {
     margin-top: 4%;
 }
 
-.creation-container {
+.registration-container {
     height: 35em;
     box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
     border-radius: 1rem;
