@@ -65,16 +65,16 @@ function getCookie(name) {
     return null;
 }
 
-function handleRegister(){
+function handleRegister(isAdmin){
     //get firstname, lastname, email, password
-    //create uID = email
-    //registerUser(firstName, lastName, email, password, isAdmin);
+    //registerUser(firstName, lastName, email, password, false);
 }
 
 function registerUser(firstName, lastName, email, password, isAdmin) {
     auth.createUserWithEmailAndPassword(email, password)
         .then(function(userData) {
             console.log("Registered");
+            console.log(userData);
             let user = new User(userData.user.uid, firstName, lastName, email, isAdmin);
             writeUser(user);
         })

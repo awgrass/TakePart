@@ -1,14 +1,11 @@
 <header>
     <h1 id="appName">TakePart</h1>
     <span class="header-right">
-        <p class="right-elements">Neue Registrierung</p>
+        <p class="right-elements" id="register">Neue Registrierung</p>
         <p class="right-elements" id="logout">Abmelden</p>
     </span>
 </header>
-<div class="container layout-spaces">
-
-    <!-- TODO: Alex -> change id of course list-->
-
+<div class="container layout-spaces" id="main-container">
     <ul class="list-item layout-styles" id="course-list">
         <li class="list-element row element-color text-shadow container-margins">
             <div class="col-lg-12 top-margin course-data">
@@ -19,7 +16,7 @@
             </div>
         </li>
 
-        <!-- TODO: should be loaded 10 min before the course starts -->
+        <!-- TODO: should be loaded 30 min before the course starts -->
 
         <li class="list-element row element-color text-shadow container-margins">
             <div class="col-xs-5 col-md-6 course-data">
@@ -37,33 +34,4 @@
         </li>
     </ul>
 
-    <ul class="creation-container layout-styles">
-    <li class="information-container layout-styles container-margins element-color row" id="info-container">
-        <h1 class="text-center text-shadow" id="creation-title">Neuen User anlegen</h1>
-        <form name="registration">
-            <div class="form-group">
-                <label class="text-shadow">
-                    Name
-                </label>
-                <input type="text" name="firstname" placeholder="Vorname">
-                <input type="text" name="lastname" placeholder="Nachname">
-            </div>
-            <div class="form-group">
-                <label class="text-shadow">
-                    Aktuelle E-Mail
-                </label>
-                <input type="email" name="email" placeholder="E-Mail">
-            </div>
-            <div class="form-group">
-                <label class="text-shadow">
-                    Passwort erstellen
-                </label>
-                <input type="password" name="password" placeholder="Passwort">
-                <input type="password" name="password-confirmation" placeholder="Passwort bestätigen">
-            </div>
-            <input type="checkbox" name="admin"><label class="text-shadow">Admin User</label>
-            <button type="submit" class="btn btn-light submit-creation">Registrieren</button>
-        </form>
-    </li>
-    </ul>
 </div>
