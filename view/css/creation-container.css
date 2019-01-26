@@ -36,11 +36,15 @@ label {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80%;
+    height: 85%;
 }
 
 .registration {
     width: 40%;
+}
+
+.form-margin {
+    margin-bottom: 0.2rem;
 }
 
 .submit-creation {
