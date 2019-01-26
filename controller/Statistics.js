@@ -53,7 +53,6 @@ function createStat1(courseName, callback){
     requestFileAsynchronously("stat1.html", function(caller){
         let svgElement = HTMLToElement(caller.responseText);
         getCourseByName(courseName, function(course){
-            console.log(course);
             const numberOfPastEvents = course.statistics.length;
             const xTicks = getXTicks(15, 205, numberOfPastEvents);
             let dataPoints = [];
