@@ -65,9 +65,23 @@ function getCookie(name) {
     return null;
 }
 
-function handleRegister(isAdmin){
-    //get firstname, lastname, email, password
-    //registerUser(firstName, lastName, email, password, false);
+function passwordInvalid(){
+    //TODO: implement
+}
+
+function handleRegister(e){
+    e.preventDefault();
+    let firstName = document.getElementById("first-name");
+    let lastName = document.getElementById("last-name");
+    let email = document.getElementById("email");
+    let password = document.getElementById("password");
+    let password_check = document.getElementById("password-check");
+    let isAdmin = document.getElementById("is-admin-check").checked;
+
+    if (password !== password_check){
+        passwordInvalid();
+    }
+    registerUser(firstName, lastName, email, password, isAdmin);
 }
 
 function registerUser(firstName, lastName, email, password, isAdmin) {
