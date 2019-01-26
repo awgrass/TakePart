@@ -35,3 +35,15 @@ function getUserById(userID, onSuccess){
         console.log("Error: ", error);
     });
 }
+
+function getUsers(callback) {
+    userRef.get().then(snapshot => {
+        var users = [];
+        snapshot.forEach(doc => {
+            users.push(new User(doc.uID, doc.firstName, doc.lastName, doc.email, doc.isAdmin))
+        })
+        callback(users)
+    }).catch(function(error) {
+        console.log("Error: ", error);
+    });
+}
