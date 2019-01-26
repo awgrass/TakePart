@@ -26,18 +26,6 @@ ul {
     margin-top: 3rem;
 }
 
-#plus-icon-course {
-    font-size: 4.5rem;
-    position: absolute;
-}
-
-#add-course {
-    font-size: 3rem;
-    font-weight: bold;
-    padding-left: 5.5rem;
-    margin-top: 0.5rem;
-}
-
 .course-title {
     font-size: 2.4rem;
     font-weight: bold;

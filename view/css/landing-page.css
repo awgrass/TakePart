@@ -87,6 +87,29 @@ p {
     //display: none;
 }
 
+
+#plus-icon-course {
+    font-size: 4.5rem;
+    position: absolute;
+}
+
+#plus-icon-course:hover {
+    cursor: pointer;
+}
+
+#add-course {
+    font-size: 3rem;
+    font-weight: bold;
+    padding-left: 5.5rem;
+    margin-top: 0.5rem;
+    display: inline-block;
+}
+
+#add-course:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 /* TODO: maybe separate css file */
 /* styling for the attendance button */
 
