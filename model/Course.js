@@ -95,7 +95,7 @@ function getCourseByName(courseName, callback){
     let docRef = courseRef.doc(courseName);
     docRef.get().then((doc) => {
         if (doc.exists) {
-            docRef.collection("statistics").get().then((snap) => {
+            docRef.collection("statistics").orderBy("date", "asc").get().then((snap) => {
                 let stats = [];
                 snap.forEach(function(doc) {
                     console.log(doc.id, " => ", doc.data());
@@ -105,7 +105,7 @@ function getCourseByName(courseName, callback){
                     doc.data().name,
                     doc.data().dates,
                     doc.data().participants,
-                    stats.sort(function(a,b){return a.date.getTime() - b.date.getTime()})
+                    stats
                 ));
             });
         }
