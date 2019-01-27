@@ -1,0 +1,21 @@
+/* container styles */
+
+.add-dates-container {
+    height: 20rem;
+}
+
+.datepicker-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.create-date {
+    width: 40%;
+}
+
+.date {
+    width: 100%;
+    margin-left: 0;
+}
