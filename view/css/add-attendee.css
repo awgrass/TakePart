@@ -53,9 +53,6 @@
     width: 50%;
 }
 
-.user-list {
-    margin-right: 2em;
-}
 
 /* styles for right box */
 
@@ -64,6 +61,7 @@
     height: 36.4rem;
     width: 90%;
     margin-top: 8%;
+    margin-left: 2%;
 }
 
 .submit-adding-attendees {
@@ -71,7 +69,7 @@
     font-size: 1.5rem;
     width: 8em;
     float: right;
-    margin: 2em;
+    margin: 2em 2.4em 2em 2em;
 }
 
 .back-adding-attendees {
@@ -80,4 +78,11 @@
     width: 8em;
     float: left;
     margin: 2em 2em 2em 3em;
+}
+
+@media (min-width:360px) and (max-width: 992px)
+{
+    .submit-adding-attendees {
+        margin-right: 1.5em;
+    }
 }
