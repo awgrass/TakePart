@@ -32,7 +32,7 @@ ul {
     display: inline-block;
 }
 
-.course-title:hover {
+.course-title-underline:hover {
     cursor: pointer;
     text-decoration: underline;
 }
