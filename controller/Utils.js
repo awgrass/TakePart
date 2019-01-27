@@ -37,3 +37,23 @@ function focusElement(id){
     window.location.hash = '#' + id;
 }
 
+//attention: only call this function for unique class names!
+function getChildByClassName(node, classNameOfChild){
+    return node.getElementsByClassName(classNameOfChild)[0];
+}
+
+function getObjectListFromRefList(refList, callback){
+    let objectList = [];
+    refList.forEach(ref => {
+        ref.get().then(function(doc){
+            objectList.push(doc.data());
+            if (objectList.length === refList.length){
+                callback(objectList);
+            }
+        })
+    })
+}
+
+function isSameUser(user1, user2){
+    return user1.uID === user2.uID;
+}

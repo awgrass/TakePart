@@ -38,18 +38,6 @@ function getUserById(userID, onSuccess){
     });
 }
 
-function getObjectListFromRefList(refList, callback){
-    let objectList = []
-    refList.forEach(ref => {
-        ref.get().then(function(doc){
-            objectList.push(doc.data());
-            if (objectList.length === refList.length){
-                callback(objectList);
-            }
-        })
-    })
-}
-
 function getCoursesOfCurrentUser(userID, callback){
     getUserById(userID, function(user){
         getObjectListFromRefList(user.courses, callback);
@@ -58,11 +46,14 @@ function getCoursesOfCurrentUser(userID, callback){
 
 function getUsers(callback) {
     userRef.get().then(snapshot => {
-        var users = [];
+        let users = [];
         snapshot.forEach(doc => {
-            users.push(new User(doc.uID, doc.firstName, doc.lastName, doc.email, doc.courses, doc.isAdmin))
+            users.push(new User(doc.data().uID, doc.data().firstName, doc.data().lastName,
+                doc.data().email, doc.data().courses, doc.data().isAdmin));
+            if (snapshot.docs.length === users.length){
+                callback(users);
+            }
         });
-        callback(users)
     }).catch(function(error) {
         console.log("Error: ", error);
     });

@@ -45,25 +45,66 @@ function renderInfoContainerContent(courseName){
     getCourseDataByCoursName(courseName, function(participants, timestamps){
         let attendeesList = infoContainer.getElementsByClassName("attendees-list-view")[0];
         participants.forEach(name => {
-            addInfoContainerItem(attendeesList, ["attendees-list"], name);
+            genericAddListItem(attendeesList, ["attendees-list"], name, null, false);
         });
         let datesList = infoContainer.getElementsByClassName("dates-list-view")[0];
         timestamps.forEach(timestamp => {
-            addInfoContainerItem(datesList, ["dates-list", "row"], timestampToDate(timestamp));
+            genericAddListItem(datesList, ["dates-list", "row"], timestampToDate(timestamp), null, false);
         });
 
     });
 }
 
-function addInfoContainerItem(list, classNameArray, value){
+function genericAddListItem(list, classNameArray, value, id, isDraggable){
     let listEntry = document.createElement("li");
     classNameArray.forEach(className => {
         listEntry.classList.add(className);
     });
     let p = document.createElement("p");
     p.innerHTML = value;
+    if (isDraggable){
+        listEntry.setAttribute("draggable", "true");
+    }
+    if(id){
+        listEntry.setAttribute("user-id", id);
+    }
     listEntry.appendChild(p);
     list.appendChild(listEntry);
+}
+
+function handleAddAttendees(){
+    requestFileAsynchronously("add-attendee-container.html", function(caller){
+        let attendeeContainer = HTMLToElement(caller.responseText);
+        getChildByClassName(attendeeContainer, "course-name").innerHTML = courseName;
+    });
+}
+
+function handleAddDates(courseName){
+}
+
+function renderAttendeesContainer(attendeesContainerElement, courseName, courseItemNode){
+    getChildByClassName(attendeesContainerElement, "course-name").innerHTML = courseName;
+    let userListElement = getChildByClassName(attendeesContainerElement, "user-list");
+    // 1)get course object
+    getCourseByName(courseName, function(course){
+        // 2)get all participants of the course
+        getObjectListFromRefList(course.participants, function(participants){
+            // 3)get all users
+            getUsers(function(users){
+                users.forEach(user => {
+                    if (!participants.some(participant => isSameUser(participant, user))){
+                        let userName = user.firstName + " " + user.lastName;
+                        // 4)add user difference between 3) and 2) to attendeesContainer
+                        genericAddListItem(userListElement, ["user-list-element"], userName, user.uID, true);
+                    }
+                });
+                //let mainContainer = document.getElementById("main-container");
+                insertAfter(attendeesContainerElement, courseItemNode);
+                removeElementByID("info-container-" + courseName);
+            });
+
+        });
+    });
 }
 
 function renderInfoContainer(e){
@@ -74,6 +115,7 @@ function renderInfoContainer(e){
         closeInfoContainer(courseItemNode, courseNameOfCurrentItem);
         return;
     }
+    console.log(courseName + "====" + courseNameOfCurrentItem);
     if (courseItemNode.getAttribute("has-statistics-container") === "yes"){
         closeStatisticsContainer(courseItemNode, courseNameOfCurrentItem);
     }
@@ -82,6 +124,16 @@ function renderInfoContainer(e){
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
         insertAfter(infoContainer, courseItemNode);
         courseItemNode.setAttribute("has-info-container", "yes");
+        //add-attendeee
+        getChildByClassName(infoContainer, "add-attendees").addEventListener("click", function(){
+            requestFileAsynchronously("add-attendee-container.html", function(caller){
+                let attendeesContainer = HTMLToElement(caller.responseText);
+                renderAttendeesContainer(attendeesContainer, courseNameOfCurrentItem, courseItemNode);
+
+            });
+        });
+        //add-date
+        getChildByClassName(infoContainer, "add-dates").addEventListener("click", handleAddDates);
         renderInfoContainerContent(courseName);
     });
 }
