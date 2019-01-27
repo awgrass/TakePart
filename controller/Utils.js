@@ -29,6 +29,11 @@ function removeElementByID(id){
     document.getElementById(id).outerHTML = "";
 }
 
+function disableButton(buttonID){
+    document.getElementById("buttonID").disabled = true;
+}
+
 function focusElement(id){
     window.location.hash = '#' + id;
 }
+

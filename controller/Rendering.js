@@ -6,17 +6,20 @@ window.onload = function(){
         let email = splittedCookie[0];
         let password = splittedCookie[1];
         authenticateUser(email, password, function(){
-            if (auth.currentUser){
-                getUserById(auth.currentUser.uid, function(user){
-                    renderLandingPage(user.isAdmin);
-                });
-            }
+            renderLandingPageDistinctly();
         });
     }
     else{
         renderLogin();
     }
 };
+
+function renderLandingPageDistinctly(){
+    getUserById(auth.currentUser.uid, function(user){
+        console.log(user);
+        renderLandingPage(user.isAdmin);
+    });
+}
 
 function renderLogin(){
     requestFileAsynchronously('login.html', function(caller) {
@@ -84,7 +87,6 @@ function renderInfoContainer(e){
 }
 
 function renderStatisticsContainer(e){
-    e.stopPropagation();
     let courseNameOfCurrentItem = e.target.getAttribute('button-of');
     let listItem = document.getElementById("list-item-" + courseNameOfCurrentItem);
     if(listItem.getAttribute("has-statistics-container") === "yes"){
@@ -94,7 +96,6 @@ function renderStatisticsContainer(e){
     if(listItem.getAttribute("has-info-container") === "yes"){
         closeInfoContainer(listItem, courseNameOfCurrentItem);
     }
-
     requestFileAsynchronously('statistics-container.html', function(caller){
         let statisticsContainer = HTMLToElement(caller.responseText);
         createStat1(courseNameOfCurrentItem, function(statistic1){
@@ -102,7 +103,6 @@ function renderStatisticsContainer(e){
             statisticsContainer.setAttribute('id', "statistics-container-" + courseNameOfCurrentItem);
             insertAfter(statisticsContainer, document.getElementById('list-item-' + courseNameOfCurrentItem));
             listItem.setAttribute("has-statistics-container", "yes");
-            //focusElement('statistics-container-' + courseNameOfCurrentItem);
         });
 
     });
@@ -132,12 +132,23 @@ function createListCourseElement(courseObject, elementToInitialize){
     return elementToInitialize;
 }
 
+function handleBackButton(e){
+    e.target.removeEventListener("click", handleBackButton);
+    getUserById(auth.currentUser.uid, function(user){
+        renderLandingPage(user.isAdmin);
+    });
+}
+
 function renderCourseCreationContainer(){
+    if (document.getElementById("course-creation-container")){
+        return;
+    }
     requestFileAsynchronously("course-creation-container.html", function(caller){
         let courseCreationContainer = HTMLToElement(caller.responseText);
         hideAddCourseContainer();
         document.getElementById("main-container").prepend(courseCreationContainer);
         document.getElementById("course-creation-form").onsubmit = handleCourseCreation;
+        document.getElementById("back-button-course-creation").addEventListener("click", handleBackButton);
 
     });
 }
@@ -145,7 +156,7 @@ function renderCourseCreationContainer(){
 function handleCourseCreation(e){
     e.preventDefault();
     let courseTitle = document.getElementById("course-title").value;
-    createCourse(courseTitle, [], [], function(){
+    createCourse(courseTitle, null, null, function(){
         getUserById(auth.currentUser.uid, function(user){
             renderLandingPage(user.isAdmin);
         });
@@ -162,7 +173,7 @@ function renderLandingPage(isAdmin){
         document.getElementById('root').innerHTML= caller.responseText;
         document.getElementById("logout").addEventListener("click", handleLogout);
         document.getElementById("register").addEventListener("click", renderRegistrationPage);
-        document.getElementById("appName").addEventListener("click", renderLandingPage);
+        document.getElementById("appName").addEventListener("click", renderLandingPageDistinctly);
         document.getElementById("add-course-p").addEventListener("click", renderCourseCreationContainer);
         let courseItemFile = isAdmin ? "course-item-admin.html" : "course-item-user.html";
         requestFileAsynchronously(courseItemFile, function(caller){
@@ -177,7 +188,8 @@ function renderLandingPage(isAdmin){
                 });
             }
             else{
-                getCoursesOfUser(function(courses){
+                getCoursesOfCurrentUser(auth.currentUser.uid, function(courses){
+                    console.log(courses);
                     courses.forEach(course => {
                         let item = createListCourseElement(course, itemTemplate.cloneNode(true));
                         courseList.appendChild(item);
@@ -193,11 +205,15 @@ function renderRegistrationPage(){
     if (document.getElementById("registration-container")){
         return;
     }
+    if (document.getElementById("course-creation-container")){
+        removeElementByID("course-creation-container");
+    }
     requestFileAsynchronously("registration-container.html", function(caller){
         hideCourseList();
         let registerBox = HTMLToElement(caller.responseText);
         document.getElementById("main-container").appendChild(registerBox);
         document.getElementById("registration-form").onsubmit = handleRegister;
+        document.getElementById("back-button-registration").addEventListener("click", handleBackButton);
     })
 }
 

@@ -1,5 +1,5 @@
 const courseRef = firestore.collection("courses");
-var courses = [];
+//var courses = [];
 
 //class course object TODO maybe name not needed
 class Course {
@@ -51,7 +51,7 @@ function addParticipant(name, coursename) {
 }
 
 //This function gets all courses of the current user
-function getCoursesOfUser(userid) {
+function getCoursesOfUser(userid, callback) {
     courseRef.where("participants", "array-contains", userid)
         .get().then(snapshot => {
         let coursesList = [];
@@ -60,7 +60,7 @@ function getCoursesOfUser(userid) {
             getStatisticByCourseName(doc.data().name, function(statistic) {
                 coursesList.push(new Course(doc.data().name, doc.data().dates, doc.data().participants, statistic));
                 if (coursesList.length === numberOfCourses){
-                    courses = coursesList;
+                    callback(coursesList);
                 }
             });
         });
@@ -126,9 +126,14 @@ function getCourseDataByCoursName(courseName, callback) {
     docRef.get().then(function(doc) {
         if (doc.exists) {
             console.log("Document data:", doc.data());
-            let participants = doc.data().participants.sort();
-            let timestamps = doc.data().dates.sort();
-            callback(participants, timestamps);
+            getObjectListFromRefList(doc.data().participants, function(users){
+                let names = [];
+                users.forEach(user => {
+                   names.push(user.firstName + " " + user.lastName);
+                });
+                let timestamps = doc.data().dates.sort();
+                callback(names.sort(), timestamps);
+            });
         } else {
             console.log("No such document!");
         }

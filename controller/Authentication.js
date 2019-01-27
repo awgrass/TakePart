@@ -24,7 +24,7 @@ function handleLogin(){
                 let days = 7;
                 setCookie("session", cookieVal, days);
             }
-            getUserById(auth.currentUser.uid, renderLandingPage);
+            getUserById(auth.currentUser.uid, renderLandingPageDistinctly);
         } else {
             console.log("Authentication failed.");
         }
@@ -71,28 +71,37 @@ function passwordInvalid(){
 
 function handleRegister(e){
     e.preventDefault();
-    let firstName = document.getElementById("first-name");
-    let lastName = document.getElementById("last-name");
-    let email = document.getElementById("email");
-    let password = document.getElementById("password");
-    let password_check = document.getElementById("password-check");
+    let verified = false;
+    let firstName = document.getElementById("first-name").value;
+    let lastName = document.getElementById("last-name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+    let password_check = document.getElementById("password-check").value;
     let isAdmin = document.getElementById("is-admin-check").checked;
 
     if (password !== password_check){
-        passwordInvalid();
+        console.log("passsword do not match");
+        document.getElementById("password").classList.add('has-error');
+        document.getElementById("password-check").classList.add('has-error');
     }
-    registerUser(firstName, lastName, email, password, isAdmin);
+    console.log("input: " + firstName, lastName, email, password, isAdmin);
+    registerUser(firstName, lastName, email, password, isAdmin, handleRegister);
+    renderLandingPageDistinctly();
+
 }
 
-function registerUser(firstName, lastName, email, password, isAdmin) {
+function registerUser(firstName, lastName, email, password, isAdmin, callback) {
     auth.createUserWithEmailAndPassword(email, password)
         .then(function(userData) {
             console.log("Registered");
             console.log(userData);
-            let user = new User(userData.user.uid, firstName, lastName, email, isAdmin);
+            let user = new User(userData.user.uid, firstName, lastName, email, [], isAdmin);
             writeUser(user);
         })
-        .catch(function (error){console.log(error);});
+        .catch(function (error){
+            console.log(error);
+            callback();
+        });
 }
 
 
