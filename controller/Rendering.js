@@ -44,6 +44,11 @@ function closeAddAttendeeContainer(listItem, itemCourseName){
     listItem.setAttribute("has-attendees-container", "no");
 }
 
+function closeDatesAddDatesContainer(listItem, itemCourseName){
+    removeElementByID('add-dates-container-' + itemCourseName);
+    listItem.setAttribute("has-dates-container", "no");
+}
+
 function renderInfoContainerContent(courseName){
     let infoContainer = document.getElementById("info-container-" + courseName);
     getCourseDataByCoursName(courseName, function(participants, timestamps){
@@ -80,10 +85,10 @@ function genericAddListItem(list, classNameArray, value, id, isDraggable){
 function handleAddDates(courseName){
 }
 
-function renderAttendeesContainer(attendeesContainerElement, courseName, courseItemNode){
+function renderAttendeesContainer(attendeesContainer, courseName, courseItemNode){
 
-    getChildByClassName(attendeesContainerElement, "course-name").innerHTML = courseName;
-    let userListElement = getChildByClassName(attendeesContainerElement, "user-list");
+    getChildByClassName(attendeesContainer, "course-name").innerHTML = courseName;
+    let userListElement = getChildByClassName(attendeesContainer, "user-list");
     // 1)get course object
     getCourseByName(courseName, function(course){
         // 2)get all participants of the course
@@ -98,7 +103,7 @@ function renderAttendeesContainer(attendeesContainerElement, courseName, courseI
                     }
                 });
 
-                insertAfter(attendeesContainerElement, courseItemNode);
+                insertAfter(attendeesContainer, courseItemNode);
                 courseItemNode.setAttribute("has-attendees-container", "yes");
                 removeElementByID("info-container-" + courseName);
                 courseItemNode.setAttribute("has-info-container", "no");
@@ -108,8 +113,12 @@ function renderAttendeesContainer(attendeesContainerElement, courseName, courseI
     });
 }
 
-function renderDatesContainer(datesContainerElement, courseNameOfCurrentItem, courseItemNode){
-    getChildByClassName(datesContainer, )
+function renderDatesContainer(datesContainer, courseName, courseItemNode){
+    //getChildByClassName(datesContainer, "form-group");
+    insertAfter(datesContainer, courseItemNode);
+    courseItemNode.setAttribute("has-dates-container", "yes");
+    removeElementByID("info-container-" + courseName);
+    courseItemNode.setAttribute("has-info-container", "no");
 }
 
 function renderInfoContainer(e){
@@ -126,6 +135,10 @@ function renderInfoContainer(e){
     if (courseItemNode.getAttribute("has-attendees-container") === "yes"){
         closeAddAttendeeContainer(courseItemNode, courseNameOfCurrentItem);
     }
+    if (courseItemNode.getAttribute("has-dates-container") === "yes"){
+        closeDatesAddDatesContainer(courseItemNode, courseNameOfCurrentItem);
+    }
+
     requestFileAsynchronously('info-container.html', function(caller){
         let infoContainer = HTMLToElement(caller.responseText);
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
@@ -141,7 +154,7 @@ function renderInfoContainer(e){
             });
         }, {once: true});
         //add-date
-        getChildByClassName(infoContainer, "add-dates").addEventListener("click", function(){
+        getChildByClassName(infoContainer, "dates-list").addEventListener("click", function(){
             requestFileAsynchronously("add-dates-container.html", function(caller){
                 let datesContainer = HTMLToElement(caller.responseText);
                 datesContainer.setAttribute("id", "add-dates-container-" + courseNameOfCurrentItem);
@@ -164,6 +177,9 @@ function renderStatisticsContainer(e){
     }
     if (listItem.getAttribute("has-attendees-container") === "yes"){
         closeAddAttendeeContainer(listItem, courseNameOfCurrentItem);
+    }
+    if (listItem.getAttribute("has-dates-container") === "yes"){
+        closeDatesAddDatesContainer(listItem, courseNameOfCurrentItem);
     }
     requestFileAsynchronously('statistics-container.html', function(caller){
         let statisticsContainer = HTMLToElement(caller.responseText);
