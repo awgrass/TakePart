@@ -47,10 +47,22 @@ p {
     color: #FFFFFF;
 }
 
+.list-top-margin {
+    margin-top: 4%;
+}
+
 .container-margins {
     margin-bottom: 2.5rem;
 }
 
+.container-style {
+    box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: 0.1rem;
+    border-color: black;
+    width: auto;
+}
 /* header styles */
 
 #appName {
@@ -80,6 +92,15 @@ p {
     cursor: pointer;
     padding: 1rem 2rem;
     border-radius: 0.5rem;
+}
+
+/* container header styles */
+.container-header {
+    background-color: #0e3e6b;
+    margin-left: 0;
+    margin-right: 0;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
 }
 
 /* list item container styles */

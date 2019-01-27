@@ -4,29 +4,12 @@ label {
 }
 
 /* container styles */
-.registration-list {
-    margin-top: 4%;
-}
 
 .registration-container {
     height: 45rem;
-    box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
-    border-radius: 1rem;
-    border-style: solid;
-    border-width: 0.1rem;
-    border-color: black;
-    width: auto;
 }
 
 /* inside container */
-
-.registration-title {
-    background-color: #0e3e6b;
-    margin-left: 0;
-    margin-right: 0;
-    border-top-left-radius: 0.5rem;
-    border-top-right-radius: 0.5rem;
-}
 
 #creation-title {
     font-size: 3rem;
