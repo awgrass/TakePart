@@ -109,6 +109,7 @@ function renderStatisticsContainer(e){
 }
 
 function createListCourseElement(courseObject, elementToInitialize){
+    console.log(courseObject);
     let title = courseObject.name;
     let numParticipants = courseObject.participants.length;
     let nextDate = courseObject.dates.sort()[courseObject.dates.length - 1];
@@ -118,7 +119,9 @@ function createListCourseElement(courseObject, elementToInitialize){
     titleParagraph.innerHTML = title;
 
     elementToInitialize.getElementsByClassName('course-attendees')[0].innerHTML = numParticipants.toString();
-    elementToInitialize.getElementsByClassName('course-date')[0].innerHTML = timestampToDate(nextDate);
+    if(nextDate){
+        elementToInitialize.getElementsByClassName('course-date')[0].innerHTML = timestampToDate(nextDate);
+    }
 
     let button = elementToInitialize.getElementsByClassName('statistics-button')[0];
     button.setAttribute('button-of', title);
@@ -156,7 +159,7 @@ function renderCourseCreationContainer(){
 function handleCourseCreation(e){
     e.preventDefault();
     let courseTitle = document.getElementById("course-title").value;
-    createCourse(courseTitle, null, null, function(){
+    createCourse(courseTitle, [], [], function(){
         getUserById(auth.currentUser.uid, function(user){
             renderLandingPage(user.isAdmin);
         });
