@@ -103,11 +103,14 @@ p {
     border-top-right-radius: 0.5rem;
 }
 
+.container-header-font {
+    font-size: 3rem;
+}
+
 /* list item container styles */
 
 .list-item {
     margin-top: 4%;
-    //display: none;
 }
 
 
