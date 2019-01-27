@@ -44,6 +44,7 @@ function getChildByClassName(node, classNameOfChild){
 
 function getObjectListFromRefList(refList, callback){
     let objectList = [];
+
     refList.forEach(ref => {
         ref.get().then(function(doc){
             objectList.push(doc.data());
@@ -51,7 +52,10 @@ function getObjectListFromRefList(refList, callback){
                 callback(objectList);
             }
         })
-    })
+    });
+    if (refList.length === 0){
+        callback(objectList);
+    }
 }
 
 function isSameUser(user1, user2){

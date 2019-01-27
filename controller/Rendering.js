@@ -39,6 +39,10 @@ function closeStatisticsContainer(listItem, itemCourseName){
     listItem.setAttribute("has-statistics-container", "no");
 }
 
+function closeAddAttendeeContainer(listItem, itemCourseName){
+    removeElementByID('add-attendees-container-' + itemCourseName);
+    listItem.setAttribute("has-attendees-container", "no");
+}
 
 function renderInfoContainerContent(courseName){
     let infoContainer = document.getElementById("info-container-" + courseName);
@@ -72,17 +76,12 @@ function genericAddListItem(list, classNameArray, value, id, isDraggable){
     list.appendChild(listEntry);
 }
 
-function handleAddAttendees(){
-    requestFileAsynchronously("add-attendee-container.html", function(caller){
-        let attendeeContainer = HTMLToElement(caller.responseText);
-        getChildByClassName(attendeeContainer, "course-name").innerHTML = courseName;
-    });
-}
 
 function handleAddDates(courseName){
 }
 
 function renderAttendeesContainer(attendeesContainerElement, courseName, courseItemNode){
+
     getChildByClassName(attendeesContainerElement, "course-name").innerHTML = courseName;
     let userListElement = getChildByClassName(attendeesContainerElement, "user-list");
     // 1)get course object
@@ -98,13 +97,19 @@ function renderAttendeesContainer(attendeesContainerElement, courseName, courseI
                         genericAddListItem(userListElement, ["user-list-element"], userName, user.uID, true);
                     }
                 });
-                //let mainContainer = document.getElementById("main-container");
+
                 insertAfter(attendeesContainerElement, courseItemNode);
+                courseItemNode.setAttribute("has-attendees-container", "yes");
                 removeElementByID("info-container-" + courseName);
+                courseItemNode.setAttribute("has-info-container", "no");
             });
 
         });
     });
+}
+
+function renderDatesContainer(datesContainerElement, courseNameOfCurrentItem, courseItemNode){
+    getChildByClassName(datesContainer, )
 }
 
 function renderInfoContainer(e){
@@ -115,9 +120,11 @@ function renderInfoContainer(e){
         closeInfoContainer(courseItemNode, courseNameOfCurrentItem);
         return;
     }
-    console.log(courseName + "====" + courseNameOfCurrentItem);
     if (courseItemNode.getAttribute("has-statistics-container") === "yes"){
         closeStatisticsContainer(courseItemNode, courseNameOfCurrentItem);
+    }
+    if (courseItemNode.getAttribute("has-attendees-container") === "yes"){
+        closeAddAttendeeContainer(courseItemNode, courseNameOfCurrentItem);
     }
     requestFileAsynchronously('info-container.html', function(caller){
         let infoContainer = HTMLToElement(caller.responseText);
@@ -125,15 +132,22 @@ function renderInfoContainer(e){
         insertAfter(infoContainer, courseItemNode);
         courseItemNode.setAttribute("has-info-container", "yes");
         //add-attendeee
-        getChildByClassName(infoContainer, "add-attendees").addEventListener("click", function(){
+        getChildByClassName(infoContainer, "attendees-list").addEventListener("click", function(){
             requestFileAsynchronously("add-attendee-container.html", function(caller){
                 let attendeesContainer = HTMLToElement(caller.responseText);
+                attendeesContainer.setAttribute("id", "add-attendees-container-" + courseNameOfCurrentItem);
                 renderAttendeesContainer(attendeesContainer, courseNameOfCurrentItem, courseItemNode);
 
             });
-        });
+        }, {once: true});
         //add-date
-        getChildByClassName(infoContainer, "add-dates").addEventListener("click", handleAddDates);
+        getChildByClassName(infoContainer, "add-dates").addEventListener("click", function(){
+            requestFileAsynchronously("add-dates-container.html", function(caller){
+                let datesContainer = HTMLToElement(caller.responseText);
+                datesContainer.setAttribute("id", "add-dates-container-" + courseNameOfCurrentItem);
+                renderDatesContainer(datesContainer, courseNameOfCurrentItem, courseItemNode);
+            });
+        }, {once: true});
         renderInfoContainerContent(courseName);
     });
 }
@@ -147,6 +161,9 @@ function renderStatisticsContainer(e){
     }
     if(listItem.getAttribute("has-info-container") === "yes"){
         closeInfoContainer(listItem, courseNameOfCurrentItem);
+    }
+    if (listItem.getAttribute("has-attendees-container") === "yes"){
+        closeAddAttendeeContainer(listItem, courseNameOfCurrentItem);
     }
     requestFileAsynchronously('statistics-container.html', function(caller){
         let statisticsContainer = HTMLToElement(caller.responseText);
