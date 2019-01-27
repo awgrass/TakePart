@@ -4,7 +4,7 @@
 }
 
 .add-attendee-container {
-    height: 40em;
+    height: 58rem;
     box-shadow: 0.9rem 1rem 0.5rem -0.2rem rgba(0,0,0,0.63);
     border-radius: 1rem;
     border-style: solid;
@@ -26,13 +26,13 @@
 .user-list-container {
     overflow: scroll;
     margin-top: 4%;
-    height: 26em;
+    height: 36rem;
     float: left;
     width: 50%;
 }
 
 .user-list-element {
-    padding: 1em 0 1em 0;
+    padding: 2rem 0 2rem 0;
     border-left: 1px solid black;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
@@ -40,6 +40,7 @@
     text-align: center;
     width: 100%;
     color: #114e87;
+    font-size: 1.5rem;
 }
 
 .user-list-element:hover {
@@ -58,26 +59,27 @@
 
 .drag-box {
     border: 1px solid white;
-    height: 36.4rem;
+    height: 36rem;
     width: 90%;
     margin-top: 8%;
     margin-left: 2%;
 }
 
-.submit-adding-attendees {
+/* button styles */
+
+.add-attendee-button-layout {
     color: #337ab7;
-    font-size: 1.5rem;
     width: 8em;
+    margin: 3em 2.4em 0 3em;
+    font-size: 1.5rem;
+}
+
+.submit-adding-attendees {
     float: right;
-    margin: 2em 2.4em 2em 2em;
 }
 
 .back-adding-attendees {
-    color: #337ab7;
-    font-size: 1.5rem;
-    width: 8em;
     float: left;
-    margin: 2em 2em 2em 3em;
 }
 
 @media (min-width:360px) and (max-width: 992px)
