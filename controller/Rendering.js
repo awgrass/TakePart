@@ -262,10 +262,13 @@ function renderInfoContainer(e){
     ]);
     requestFileAsynchronously('info-container.html', function(caller){
         let infoContainer = HTMLToElement(caller.responseText);
+        if(getUserById(auth.currentUser.uid, ).isAdmin){
+            let plusIcon = genericCreateElement("i", ["fas", "fa-plus-circle"], []);
+        }
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
         insertAfter(infoContainer, courseItemNode);
         courseItemNode.setAttribute("has-info-container", "yes");
-        attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentItem, courseItemNode)
+        attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentItem, courseItemNode);
         renderInfoContainerContent(courseName);
     });
 }
@@ -368,38 +371,90 @@ function hideAddCourseContainer(){
 
 function renderLandingPage(isAdmin){
     requestFileAsynchronously('landing-page.html', function(caller) {
-        document.getElementById('root').innerHTML= caller.responseText;
-        attachEventListenersToLandingPage();
-        let courseItemFile = isAdmin ? "course-item-admin.html" : "course-item-user-ready.html";
-        requestFileAsynchronously(courseItemFile, function(caller){
-            let courseList = document.getElementById('course-list');
-            let courseContainerTemplate = HTMLToElement(caller.responseText);
-            if(isAdmin){
-                getAllCourses(function(courseObjects){
-                    courseObjects.forEach(courseObj => {
-                        let courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
-                        courseList.appendChild(courseContainer);
-                    });
-                });
-            }
-            else{
-                getCoursesOfCurrentUser(auth.currentUser.uid, function(courseObjects){
-                    courseObjects.forEach(courseObj => {
-                        let courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
-                        courseList.appendChild(courseContainer);
-                    });
-                });
-            }
+        document.getElementById('root').innerHTML = caller.responseText;
+        let header = document.getElementById("header-right");
+        if (isAdmin){
+            renderAdminLandingPage(header);
+        }
+        else{
+            renderUserLandingPage(header);
+        }
+    });
+}
 
+function renderUserLandingPage(header){
+    let profileField = genericCreateElement("p", ["right-elements"], [["id", "profile"]]);
+    profileField.innerHTML = "Profil";
+    header.prepend(profileField);
+    attachUserEventListenersToLandingPage();
+    let courseItemFile = "course-item-user-ready.html";
+    requestFileAsynchronously(courseItemFile, function(caller){
+        let courseList = document.getElementById('course-list');
+        let courseContainerTemplate = HTMLToElement(caller.responseText);
+        getCoursesOfCurrentUser(auth.currentUser.uid, function(courseObjects){
+            courseObjects.forEach(courseObj => {
+                let courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
+                courseList.appendChild(courseContainer);
+            });
         });
     });
 }
 
-function attachEventListenersToLandingPage(){
+function renderAdminLandingPage(header){
+    let courseList = document.getElementById("course-list");
+    requestFileAsynchronously("add-course.html", function(caller){
+        let addCourseContainer = HTMLToElement(caller.responseText);
+        courseList.appendChild(addCourseContainer);
+        let registerField = genericCreateElement("p", ["right-elements"], [["id", "register"]]);
+        registerField.innerHTML = "Neue Registrierung";
+        header.prepend(registerField);
+        attachAdminEventListenersToLandingPage();
+        let courseItemFile = "course-item-admin.html";
+        requestFileAsynchronously(courseItemFile, function(caller) {
+            let courseList = document.getElementById('course-list');
+            let courseContainerTemplate = HTMLToElement(caller.responseText);
+            getAllCourses(function(courseObjects){
+                courseObjects.forEach(courseObj => {
+                    let courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
+                    courseList.appendChild(courseContainer);
+                });
+            });
+        });
+    });
+}
+
+function attachCommonEventListenersToLandingPage(){
     document.getElementById("logout").addEventListener("click", handleLogout);
-    document.getElementById("register").addEventListener("click", renderRegistrationPage);
     document.getElementById("appName").addEventListener("click", renderLandingPageDistinctly);
+}
+
+function attachAdminEventListenersToLandingPage(){
+    attachCommonEventListenersToLandingPage();
+    document.getElementById("register").addEventListener("click", renderRegistrationPage);
     document.getElementById("add-course-p").addEventListener("click", renderCourseCreationContainer);
+}
+
+function attachUserEventListenersToLandingPage(){
+    attachCommonEventListenersToLandingPage();
+    document.getElementById("profile").addEventListener("click", renderProfilePage);
+}
+
+function renderProfilePage(){
+    if (document.getElementById("user-profile")){
+        return;
+    }
+    requestFileAsynchronously("profile-container.html", function(caller){
+       let profileContainer = HTMLToElement(caller.responseText);
+       getUserById(auth.currentUser.uid, function(user){
+           let nameField = getChildByClassName(profileContainer, "user-name");
+           let emailField = getChildByClassName(profileContainer, "user-mail");
+           nameField.innerHTML = user.firstName + " " + user.lastName;
+           emailField.innerHTML = user.email;
+           hideCourseList();
+           document.getElementById("main-container").appendChild(profileContainer);
+           //document.getElementById("back-button-profile").addEventListener("click", handleBackButton);
+       });
+    });
 }
 
 function renderRegistrationPage(){
@@ -410,8 +465,8 @@ function renderRegistrationPage(){
         removeElementByID("course-creation-container");
     }
     requestFileAsynchronously("registration-container.html", function(caller){
-        hideCourseList();
         let registerContainer = HTMLToElement(caller.responseText);
+        hideCourseList();
         document.getElementById("main-container").appendChild(registerContainer);
         document.getElementById("registration-form").onsubmit = handleRegister;
         document.getElementById("back-button-registration").addEventListener("click", handleBackButton);
