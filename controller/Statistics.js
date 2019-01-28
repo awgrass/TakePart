@@ -15,7 +15,11 @@ function createLine(x1, y1, x2, y2){
     line.setAttribute("y1", y1);
     line.setAttribute("x2", x2);
     line.setAttribute("y2", y2);
-    line.setAttribute("stroke", "red");
+    line.setAttribute("stroke", "#0F4170");
+    line.setAttribute("stroke-linecap", "round");
+    line.setAttribute("stroke-width", "1");
+    line.setAttribute("stroke-linejoin", "miter");
+
     return line;
 }
 
@@ -32,7 +36,7 @@ function createCircle(x, y, r){
     circle.setAttribute("cx", x);
     circle.setAttribute("cy", y);
     circle.setAttribute("r", r);
-    circle.setAttribute("fill", "black");
+    circle.setAttribute("fill", "white");
     return circle;
 }
 
@@ -42,7 +46,7 @@ function createGraphTitle(title){
 
 function createXLabel(xCoord, text){
     let offset = 5; //offset to place label in the middle
-    return createText(xCoord-offset, 115, text);
+    return createText(xCoord-offset, 117, text);
 }
 
 function convertRatioToRealY(ratio){

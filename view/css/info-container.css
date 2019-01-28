@@ -31,6 +31,10 @@ li.add-feature-row {
     width: auto;
 }
 
+svg {
+    margin-top: 1%;
+}
+
 .scrollable {
     overflow: scroll;
     height: 65%;
