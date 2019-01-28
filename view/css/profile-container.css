@@ -13,7 +13,7 @@
     margin-top: 4%;
 }
 
-#avatar-image {
+#avatar-image-input {
     margin-top: 10px;
 }
 
@@ -36,6 +36,9 @@
 
 .user-photo {
     border-radius: 1rem;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .user-name, .user-mail {
@@ -50,4 +53,9 @@
 
 #back-button-profile:hover {
     color: #0e3e6b;
+}
+
+.image-container {
+    width: 150px;
+    height: 150px;
 }
