@@ -262,14 +262,30 @@ function renderInfoContainer(e){
     ]);
     requestFileAsynchronously('info-container.html', function(caller){
         let infoContainer = HTMLToElement(caller.responseText);
-        if(getUserById(auth.currentUser.uid, ).isAdmin){
-            let plusIcon = genericCreateElement("i", ["fas", "fa-plus-circle"], []);
-        }
-        infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
-        insertAfter(infoContainer, courseItemNode);
-        courseItemNode.setAttribute("has-info-container", "yes");
-        attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentItem, courseItemNode);
-        renderInfoContainerContent(courseName);
+        getUserById(auth.currentUser.uid, function(user){
+            let attendeesField = getChildByClassName(infoContainer, "add-attendees");
+            let datesField = getChildByClassName(infoContainer, "add-dates");
+            if(user.isAdmin){
+                let plusIcon1 = genericCreateElement("i", ["fas", "fa-plus-circle", "plus-icon-info"], []);
+                let plusIcon2 = genericCreateElement("i", ["fas", "fa-plus-circle", "plus-icon-info"], []);
+
+                let attendeesList = getChildByClassName(infoContainer, "attendees-list");
+                attendeesList.prepend(plusIcon1);
+                let datesList = getChildByClassName(infoContainer, "dates-list");
+                datesList.prepend(plusIcon2);
+                attendeesField.innerHTML = "Teilnehmer hinzufügen";
+                datesField.innerHTML = "Termin hinzufügen";
+                attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentItem, courseItemNode);
+            }
+            else{
+                attendeesField.innerHTML = "Teilnehmer";
+                datesField.innerHTML = "Termine";
+            }
+            infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
+            insertAfter(infoContainer, courseItemNode);
+            courseItemNode.setAttribute("has-info-container", "yes");
+            renderInfoContainerContent(courseName);
+        });
     });
 }
 
