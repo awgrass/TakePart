@@ -1,13 +1,15 @@
-.vertical-center {
-    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-    min-height: 100vh; /* These two lines are counted as one :-)       */
+.login-container {
+    min-height: 100%;
+    min-height: 100vh;
 
     display: flex;
     align-items: center;
+    justify-content: center;
+    background-color: #FFFFFF;
 }
 
 .panel-heading {
-    font-size: 20px;
+    font-size: 2rem;
     text-align: center;
 }
 
@@ -22,8 +24,13 @@
 
 }
 
+.form-check {
+    margin-left: 10%;
+}
+
 .rememberPw {
-    font-size: 11px;
+    font-size: 1.2rem;
+    margin-left: 5px;
 }
 
 .login-button {
