@@ -49,13 +49,3 @@ label {
 .back:hover {
     color: #0e3e6b;
 }
-
-@media (min-width:360px) and (max-width: 992px)
-{
-    .submit-creation {
-        //width: 7em;
-    }
-    .back {
-        //width: 5em;
-    }
-}

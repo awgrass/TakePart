@@ -1,22 +1,21 @@
 .login-container {
     min-height: 100%;
     min-height: 100vh;
-
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #FFFFFF;
 }
 
-.panel-heading {
-    font-size: 2rem;
-    text-align: center;
+.login {
+    height: 40rem;
 }
 
-.input-group {
-    margin-bottom: 10px;
-    width: 75%;
-    margin-left: 10%;
+.login-form {
+    width: 40%;
+}
+
+div.height {
+    height: 70%;
 }
 
 #remember {
@@ -24,16 +23,29 @@
 
 }
 
-.form-check {
-    margin-left: 10%;
-}
-
 .rememberPw {
     font-size: 1.2rem;
     margin-left: 5px;
 }
 
+.glyphicon-lock, .glyphicon-user {
+    color: #337ab7;
+
+}
+
+.white-background {
+    background-color: #FFFFFF;
+}
+
 .login-button {
-    width: 75%;
-    margin-left: 10%;
+    color: #337ab7;
+    width: 100%;
+}
+
+.login-button:hover {
+    color: #0e3e6b;
+}
+
+.bottom-margin {
+    margin-bottom: 0.5rem;
 }
