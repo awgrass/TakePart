@@ -22,6 +22,10 @@ function writeUser(user){
     }).then(console.log("ok"));
 }
 
+function getUserRefByID(ID){
+    return firebase.firestore().doc("users/" + ID);
+}
+
 function getUserById(userID, onSuccess){
     let docRef = userRef.doc(userID);
     docRef.get().then(function(doc) {

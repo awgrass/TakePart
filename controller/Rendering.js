@@ -157,6 +157,24 @@ function renderAttendeesContainer(courseName, courseItemNode){
         let attendeesContainer = HTMLToElement(caller.responseText);
         attendeesContainer.setAttribute("id", "add-attendees-container-" + courseName);
 
+        let okButton = getChildByClassName(attendeesContainer, "submit-adding-attendees");
+        okButton.addEventListener("click", function(){
+            dropBox = document.getElementById("drop-box-" + courseName);
+            for(let child = dropBox.firstChild.nextSibling; child !== null; child=child.nextSibling) {
+                let userID = child.getAttribute("user-id");
+                let userPath = getUserRefByID(userID);
+                console.log(userPath);
+                addParticipant(userPath,courseName);
+
+            }
+
+
+
+                //
+                //);
+            //})
+        });
+
         let dropBox = getChildByClassName(attendeesContainer, "drop-box");
         let userList = getChildByClassName(attendeesContainer, "user-list");
         dropBox.addEventListener("dragover", handleOnDragOver);
@@ -165,7 +183,6 @@ function renderAttendeesContainer(courseName, courseItemNode){
         userList.addEventListener("drop", handleOnDrop);
         userList.addEventListener("dragover", handleOnDragOver);
         userList.setAttribute("id", "user-list-" + courseName);
-
 
         getChildByClassName(attendeesContainer, "course-name").innerHTML = courseName;
         let userListElement = getChildByClassName(attendeesContainer, "user-list");
@@ -188,25 +205,32 @@ function renderAttendeesContainer(courseName, courseItemNode){
     });
 }
 
+function getDateFromDateTimePicker(datetimepickerID){
+    return new firebase.firestore.Timestamp($("#"+datetimepickerID).data('DateTimePicker').getDate().unix(),0);
+}
+
+function initDatetimepicker(datetimepickerID){
+    $("#"+datetimepickerID).datetimepicker({
+        format: 'DD/MM/YYYY HH:mm',
+    });
+}
+
 function renderDatesContainer(courseName, courseItemNode){
     requestFileAsynchronously("add-dates-container.html", function(caller){
         let datesContainer = HTMLToElement(caller.responseText);
         let datesContainerID = "add-dates-container-" + courseName;
         datesContainer.setAttribute("id", datesContainerID);
-        let dateForm = getChildByClassName(datesContainer, "form-group");
-        let dateCount = 0;
-        dateForm.append(createAddDateField());
+        let dateForm = getChildByClassName(datesContainer, "create-date");
+        let datetimepickerID = "datetimepicker-" + courseName;
+        dateForm.prepend(createAddDateField(datetimepickerID));
         dateForm.onsubmit = function(e){
             e.preventDefault();
-            document.getElementById("")
+            let newDate = getDateFromDateTimePicker(datetimepickerID);
+            addDate(newDate, courseName);
+            closeContainers(courseItemNode, courseName, [closeAddDatesContainer]);
         };
         insertAfter(datesContainer, courseItemNode);
-        $('.date-picker').datepicker({
-            endDate: new Date(),
-            autoclose: true,
-        }).on('changeDate', function(ev){
-            console.log(ev.target.value);
-        });
+        initDatetimepicker(datetimepickerID);
         courseItemNode.setAttribute("has-dates-container", "yes");
         removeElementByID("info-container-" + courseName);
         courseItemNode.setAttribute("has-info-container", "no");
@@ -214,14 +238,16 @@ function renderDatesContainer(courseName, courseItemNode){
 }
 
 function createAddDateField(inputID){
-    let div = genericCreateElement("div", ["input-group", "date"], []);
-    let input = genericCreateElement("input", ["form-control", "date-picker"], [["data-provide", "datepicker"], ["id", inputID]]);
+    let outerDiv = genericCreateElement("div", ["form-group"], []);
+    let innerDiv = genericCreateElement("div", ["input-group", "date"], []);
+    let input = genericCreateElement("input", ["form-control", "form_datetime"], [["id", inputID]]);
     let outerSpan = genericCreateElement("span", ["input-group-addon"], []);
     let innerSpan = genericCreateElement("span", ["glyphicon", "glyphicon-calendar"], []);
-    div.appendChild(input);
+    outerDiv.appendChild(innerDiv);
+    innerDiv.appendChild(input);
     outerSpan.appendChild(innerSpan);
-    div.appendChild(outerSpan);
-    return div;
+    innerDiv.appendChild(outerSpan);
+    return outerDiv;
 }
 
 function handleAddDate(e){

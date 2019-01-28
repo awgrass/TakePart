@@ -41,10 +41,10 @@ function addDate(date, name) {
 }
 
 //This function add a user to a specific course
-function addParticipant(name, coursename) {
-    let course = courseRef.doc(name);
+function addParticipant(participantRef, courseName) {
+    let course = courseRef.doc(courseName);
     course.update({
-        participants: firebase.firestore.FieldValue.arrayUnion(name)
+        participants: firebase.firestore.FieldValue.arrayUnion(participantRef)
     }).then(function() {
         console.log("Participant added.");
     });
