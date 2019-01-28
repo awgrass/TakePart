@@ -406,6 +406,17 @@ function renderUserLandingPage(header){
         getCoursesOfCurrentUser(auth.currentUser.uid, function(courseObjects){
             courseObjects.forEach(courseObj => {
                 let courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
+                let confirmationButton = getChildByClassName(courseContainer, "attendance-confirmation");
+                confirmationButton.addEventListener("click", function(){
+                   courseItemFile =  "course-item-user-accepted.html";
+                    requestFileAsynchronously(courseItemFile, function(caller){
+                        removeElementByID("list-item-" + courseObj.name);
+                        courseContainerTemplate = HTMLToElement(caller.responseText);
+                        courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
+                        courseList.appendChild(courseContainer);
+                    });
+
+                });
                 courseList.appendChild(courseContainer);
             });
         });

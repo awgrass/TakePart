@@ -139,7 +139,7 @@ p {
 /* TODO: maybe separate css file */
 /* styling for the attendance button */
 
-.attendance-affirmation {
+.attendance-confirmation {
     border: 1px solid black;
     height: 100%;
     border-bottom-right-radius: 0.5rem;
@@ -151,7 +151,7 @@ p {
     font-size: 2rem;
 }
 
-.attendance-affirmation:hover {
+.attendance-confirmation:hover {
     cursor: pointer;
 }
 
