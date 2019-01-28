@@ -1,7 +1,7 @@
 /* container styles */
 
 .user-profile-container {
-    height: 40rem;
+    height: 44rem;
 }
 
 .photo {
@@ -43,6 +43,16 @@
 
 .user-name, .user-mail {
     margin-left: 1rem;
+}
+
+#back-button-profile {
+    color: #337ab7;
+    float: right;
+    margin-right: 2%;
+}
+
+#back-button-profile:hover {
+    color: #0e3e6b;
 }
 
 .image-container {
