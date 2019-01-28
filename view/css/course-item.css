@@ -26,6 +26,11 @@ ul {
     margin-top: 3rem;
 }
 
+.fa-chevron-circle-down {
+    font-size: 2rem;
+    margin-left: 4px;
+}
+
 .course-title {
     font-size: 2.4rem;
     font-weight: bold;

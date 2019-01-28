@@ -64,6 +64,61 @@ function renderInfoContainerContent(courseName){
     });
 }
 
+
+function handleOnDragStart(event) {
+    this.style.opacity = '0.4';
+    event.dataTransfer.setData('text', event.target.id);
+}
+
+function handleOnDrop(event) {
+    event.preventDefault();
+    let data = event.dataTransfer.getData("text");
+    let element = document.getElementById(data);
+    let courseName = data.split("to-");
+    element.style.opacity = '1';
+
+    let eventId = event.target.getAttribute("id");
+    if(eventId.includes("drop-box") && eventId.includes(courseName[1])) {
+        event.target.appendChild(element);
+    } else if (eventId.includes("user-list") && eventId.includes(courseName[1])) {
+        event.target.appendChild(element);
+    }
+}
+
+function handleOnDragOver(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+}
+
+function addAttendees(list, classNameArray, value, courseName, id) {
+    let listEntry = document.createElement("li");
+    let userName = value.replace(/\s/g,"");
+    classNameArray.forEach(className => {
+        listEntry.classList.add(className);
+    });
+    let i = document.createElement("i");
+    i.setAttribute("class", "fas fa-arrows-alt");
+
+    let p = document.createElement("p");
+    p.innerHTML = value;
+    p.setAttribute("class", "user-elements");
+
+    let div = document.createElement("div");
+    div.setAttribute("class", "user-name-container");
+    div.appendChild(p);
+    div.appendChild(i);
+    listEntry.setAttribute("draggable", "true");
+
+    if(id){
+        listEntry.setAttribute("user-id", id);
+    }
+    listEntry.setAttribute("id", "add-" + userName + "-to-" + courseName);
+    listEntry.appendChild(div);
+    listEntry.addEventListener("dragstart", handleOnDragStart);
+
+    list.appendChild(listEntry);
+}
+
 function genericAddListItem(list, classNameArray, value, id, isDraggable){
     let listEntry = document.createElement("li");
     classNameArray.forEach(className => {
@@ -86,6 +141,14 @@ function handleAddDates(courseName){
 }
 
 function renderAttendeesContainer(attendeesContainer, courseName, courseItemNode){
+    let dropBox = getChildByClassName(attendeesContainer, "drop-box");
+    let userList = getChildByClassName(attendeesContainer, "user-list");
+    dropBox.addEventListener("dragover", handleOnDragOver);
+    dropBox.setAttribute("id", "drop-box-" + courseName);
+    dropBox.addEventListener("drop", handleOnDrop);
+    userList.addEventListener("drop", handleOnDrop);
+    userList.addEventListener("dragover", handleOnDragOver);
+    userList.setAttribute("id", "user-list-" + courseName);
 
     getChildByClassName(attendeesContainer, "course-name").innerHTML = courseName;
     let userListElement = getChildByClassName(attendeesContainer, "user-list");
@@ -99,7 +162,7 @@ function renderAttendeesContainer(attendeesContainer, courseName, courseItemNode
                     if (!participants.some(participant => isSameUser(participant, user))){
                         let userName = user.firstName + " " + user.lastName;
                         // 4)add user difference between 3) and 2) to attendeesContainer
-                        genericAddListItem(userListElement, ["user-list-element"], userName, user.uID, true);
+                        addAttendees(userListElement, ["user-list-element"], userName, courseName, user.uID);
                     }
                 });
 
