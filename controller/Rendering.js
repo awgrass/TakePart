@@ -243,10 +243,6 @@ function createAddDateField(inputID){
     return outerDiv;
 }
 
-function handleAddDate(e){
-
-}
-
 function renderInfoContainer(e){
     let courseName = e.target.innerHTML;
     let courseItemNode = document.getElementById("list-item-" + courseName);
@@ -461,13 +457,31 @@ function renderProfilePage(){
     }
     requestFileAsynchronously("profile-container.html", function(caller){
        let profileContainer = HTMLToElement(caller.responseText);
+        hideCourseList();
+        document.getElementById("main-container").appendChild(profileContainer);
        getUserById(auth.currentUser.uid, function(user){
            let nameField = getChildByClassName(profileContainer, "user-name");
            let emailField = getChildByClassName(profileContainer, "user-mail");
            nameField.innerHTML = user.firstName + " " + user.lastName;
            emailField.innerHTML = user.email;
-           hideCourseList();
-           document.getElementById("main-container").appendChild(profileContainer);
+           let imageTag = document.getElementById("avatar-image");
+           storageRef.child("/images/" + auth.currentUser.uid + "/avatar.jpg").getDownloadURL().then(function(url) {
+               imageTag.src = url;
+           });
+           document.getElementById("avatar-image-input").onchange = function(e){
+               let file = e.target.files[0];
+               let fileReader = new FileReader();
+
+               fileReader.onload = function(e){
+                   imageTag.src = e.target.result;
+                   let imgRef = storageRef.child("/images/" + auth.currentUser.uid + "/avatar.jpg");
+                   imgRef.put(file).then(function(snapshot) {
+                       console.log('Uploaded a blob or file!');
+                   });
+               };
+               fileReader.readAsDataURL(file);
+           };
+
            //document.getElementById("back-button-profile").addEventListener("click", handleBackButton);
        });
     });

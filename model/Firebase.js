@@ -11,3 +11,9 @@ firebase.initializeApp(config);
 const firestore = firebase.firestore();
 const settings = {timestampsInSnapshots: true};
 firestore.settings(settings);
+
+const storage = firebase.storage();
+const storageRef = storage.ref();
+let img = storageRef.child('images/7I9XFpj.jpg');
+
+console.log(img.fullPath);
