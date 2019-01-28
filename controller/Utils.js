@@ -61,3 +61,18 @@ function getObjectListFromRefList(refList, callback){
 function isSameUser(user1, user2){
     return user1.uID === user2.uID;
 }
+
+function hideElementWithoutSpaceUse(id){
+    document.getElementById(id).style.display = "none";
+}
+
+function genericCreateElement(tagName, classNames, attributeTuples){
+    let element = document.createElement(tagName);
+    if(classNames){
+        classNames.forEach(className => {element.classList.add(className);});
+    }
+    if(attributeTuples){
+        attributeTuples.forEach(attributeTuple => {element.setAttribute(attributeTuple[0], attributeTuple[1]);});
+    }
+    return element;
+}

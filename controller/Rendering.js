@@ -30,23 +30,35 @@ function renderLogin(){
 }
 
 function closeInfoContainer(listItem, itemCourseName){
-    removeElementByID('info-container-' + itemCourseName);
-    listItem.setAttribute("has-info-container", "no");
+    if (listItem.getAttribute("has-info-container") === "yes") {
+        removeElementByID('info-container-' + itemCourseName);
+        listItem.setAttribute("has-info-container", "no");
+    }
 }
 
 function closeStatisticsContainer(listItem, itemCourseName){
-    removeElementByID('statistics-container-' + itemCourseName);
-    listItem.setAttribute("has-statistics-container", "no");
+    if (listItem.getAttribute("has-statistics-container") === "yes") {
+        removeElementByID('statistics-container-' + itemCourseName);
+        listItem.setAttribute("has-statistics-container", "no");
+    }
 }
 
-function closeAddAttendeeContainer(listItem, itemCourseName){
-    removeElementByID('add-attendees-container-' + itemCourseName);
-    listItem.setAttribute("has-attendees-container", "no");
+function closeAddAttendeesContainer(listItem, itemCourseName){
+    if (listItem.getAttribute("has-attendees-container") === "yes") {
+        removeElementByID('add-attendees-container-' + itemCourseName);
+        listItem.setAttribute("has-attendees-container", "no");
+    }
 }
 
-function closeDatesAddDatesContainer(listItem, itemCourseName){
-    removeElementByID('add-dates-container-' + itemCourseName);
-    listItem.setAttribute("has-dates-container", "no");
+function closeAddDatesContainer(listItem, itemCourseName){
+    if (listItem.getAttribute("has-dates-container") === "yes") {
+        removeElementByID('add-dates-container-' + itemCourseName);
+        listItem.setAttribute("has-dates-container", "no");
+    }
+}
+
+function closeContainers(listItem, itemCourseName, closeContainerFunctions){
+    closeContainerFunctions.forEach(func => func(listItem, itemCourseName));
 }
 
 function renderInfoContainerContent(courseName){
@@ -82,43 +94,69 @@ function genericAddListItem(list, classNameArray, value, id, isDraggable){
 }
 
 
-function handleAddDates(courseName){
-}
-
-function renderAttendeesContainer(attendeesContainer, courseName, courseItemNode){
-
-    getChildByClassName(attendeesContainer, "course-name").innerHTML = courseName;
-    let userListElement = getChildByClassName(attendeesContainer, "user-list");
-    // 1)get course object
-    getCourseByName(courseName, function(course){
-        // 2)get all participants of the course
-        getObjectListFromRefList(course.participants, function(participants){
-            // 3)get all users
-            getUsers(function(users){
-                users.forEach(user => {
-                    if (!participants.some(participant => isSameUser(participant, user))){
-                        let userName = user.firstName + " " + user.lastName;
-                        // 4)add user difference between 3) and 2) to attendeesContainer
-                        genericAddListItem(userListElement, ["user-list-element"], userName, user.uID, true);
-                    }
+function renderAttendeesContainer(courseName, courseItemNode) {
+    requestFileAsynchronously("add-attendee-container.html", function (caller) {
+        let attendeesContainer = HTMLToElement(caller.responseText);
+        attendeesContainer.setAttribute("id", "add-attendees-container-" + courseName);
+        getChildByClassName(attendeesContainer, "course-name").innerHTML = courseName;
+        let userListElement = getChildByClassName(attendeesContainer, "user-list");
+        getCourseByName(courseName, function (course) {
+            getObjectListFromRefList(course.participants, function (participants) {
+                getUsers(function (users) {
+                    users.forEach(user => {
+                        if (!participants.some(participant => isSameUser(participant, user))) {
+                            let userName = user.firstName + " " + user.lastName;
+                            genericAddListItem(userListElement, ["user-list-element"], userName, user.uID, true);
+                        }
+                    });
+                    insertAfter(attendeesContainer, courseItemNode);
+                    courseItemNode.setAttribute("has-attendees-container", "yes");
+                    removeElementByID("info-container-" + courseName);
+                    courseItemNode.setAttribute("has-info-container", "no");
                 });
-
-                insertAfter(attendeesContainer, courseItemNode);
-                courseItemNode.setAttribute("has-attendees-container", "yes");
-                removeElementByID("info-container-" + courseName);
-                courseItemNode.setAttribute("has-info-container", "no");
             });
-
         });
     });
 }
 
-function renderDatesContainer(datesContainer, courseName, courseItemNode){
-    //getChildByClassName(datesContainer, "form-group");
-    insertAfter(datesContainer, courseItemNode);
-    courseItemNode.setAttribute("has-dates-container", "yes");
-    removeElementByID("info-container-" + courseName);
-    courseItemNode.setAttribute("has-info-container", "no");
+function renderDatesContainer(courseName, courseItemNode){
+    requestFileAsynchronously("add-dates-container.html", function(caller){
+        let datesContainer = HTMLToElement(caller.responseText);
+        let datesContainerID = "add-dates-container-" + courseName;
+        datesContainer.setAttribute("id", datesContainerID);
+        let dateForm = getChildByClassName(datesContainer, "form-group");
+        let dateCount = 0;
+        dateForm.append(createAddDateField());
+        dateForm.onsubmit = function(e){
+            e.preventDefault();
+            document.getElementById("")
+        };
+        insertAfter(datesContainer, courseItemNode);
+        $('.date-picker').datepicker({
+            endDate: new Date(),
+            autoclose: true,
+        }).on('changeDate', function(ev){
+            console.log(ev.target.value);
+        });
+        courseItemNode.setAttribute("has-dates-container", "yes");
+        removeElementByID("info-container-" + courseName);
+        courseItemNode.setAttribute("has-info-container", "no");
+    });
+}
+
+function createAddDateField(inputID){
+    let div = genericCreateElement("div", ["input-group", "date"], []);
+    let input = genericCreateElement("input", ["form-control", "date-picker"], [["data-provide", "datepicker"], ["id", inputID]]);
+    let outerSpan = genericCreateElement("span", ["input-group-addon"], []);
+    let innerSpan = genericCreateElement("span", ["glyphicon", "glyphicon-calendar"], []);
+    div.appendChild(input);
+    outerSpan.appendChild(innerSpan);
+    div.appendChild(outerSpan);
+    return div;
+}
+
+function handleAddDate(e){
+
 }
 
 function renderInfoContainer(e){
@@ -129,40 +167,29 @@ function renderInfoContainer(e){
         closeInfoContainer(courseItemNode, courseNameOfCurrentItem);
         return;
     }
-    if (courseItemNode.getAttribute("has-statistics-container") === "yes"){
-        closeStatisticsContainer(courseItemNode, courseNameOfCurrentItem);
-    }
-    if (courseItemNode.getAttribute("has-attendees-container") === "yes"){
-        closeAddAttendeeContainer(courseItemNode, courseNameOfCurrentItem);
-    }
-    if (courseItemNode.getAttribute("has-dates-container") === "yes"){
-        closeDatesAddDatesContainer(courseItemNode, courseNameOfCurrentItem);
-    }
-
+    closeContainers(courseItemNode, courseNameOfCurrentItem,[
+        closeStatisticsContainer,
+        closeAddAttendeesContainer,
+        closeAddDatesContainer
+    ]);
     requestFileAsynchronously('info-container.html', function(caller){
         let infoContainer = HTMLToElement(caller.responseText);
         infoContainer.setAttribute("id", "info-container-" + courseNameOfCurrentItem);
         insertAfter(infoContainer, courseItemNode);
         courseItemNode.setAttribute("has-info-container", "yes");
-        //add-attendeee
-        getChildByClassName(infoContainer, "attendees-list").addEventListener("click", function(){
-            requestFileAsynchronously("add-attendee-container.html", function(caller){
-                let attendeesContainer = HTMLToElement(caller.responseText);
-                attendeesContainer.setAttribute("id", "add-attendees-container-" + courseNameOfCurrentItem);
-                renderAttendeesContainer(attendeesContainer, courseNameOfCurrentItem, courseItemNode);
-
-            });
-        }, {once: true});
-        //add-date
-        getChildByClassName(infoContainer, "dates-list").addEventListener("click", function(){
-            requestFileAsynchronously("add-dates-container.html", function(caller){
-                let datesContainer = HTMLToElement(caller.responseText);
-                datesContainer.setAttribute("id", "add-dates-container-" + courseNameOfCurrentItem);
-                renderDatesContainer(datesContainer, courseNameOfCurrentItem, courseItemNode);
-            });
-        }, {once: true});
+        attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentItem, courseItemNode)
         renderInfoContainerContent(courseName);
     });
+}
+
+function attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentItem, courseItemNode){
+    getChildByClassName(infoContainer, "attendees-list").addEventListener("click", function(){
+        renderAttendeesContainer(courseNameOfCurrentItem, courseItemNode);
+    }, {once: true});
+
+    getChildByClassName(infoContainer, "dates-list").addEventListener("click", function(){
+        renderDatesContainer(courseNameOfCurrentItem, courseItemNode);
+    }, {once: true});
 }
 
 function renderStatisticsContainer(e){
@@ -172,15 +199,11 @@ function renderStatisticsContainer(e){
         closeStatisticsContainer(listItem, courseNameOfCurrentItem);
         return;
     }
-    if(listItem.getAttribute("has-info-container") === "yes"){
-        closeInfoContainer(listItem, courseNameOfCurrentItem);
-    }
-    if (listItem.getAttribute("has-attendees-container") === "yes"){
-        closeAddAttendeeContainer(listItem, courseNameOfCurrentItem);
-    }
-    if (listItem.getAttribute("has-dates-container") === "yes"){
-        closeDatesAddDatesContainer(listItem, courseNameOfCurrentItem);
-    }
+    closeContainers(listItem, courseNameOfCurrentItem,[
+        closeInfoContainer,
+        closeAddAttendeesContainer,
+        closeAddDatesContainer
+    ]);
     requestFileAsynchronously('statistics-container.html', function(caller){
         let statisticsContainer = HTMLToElement(caller.responseText);
         createStat1(courseNameOfCurrentItem, function(statistic1){
@@ -193,8 +216,7 @@ function renderStatisticsContainer(e){
     });
 }
 
-function createListCourseElement(courseObject, elementToInitialize){
-    console.log(courseObject);
+function initializeCourseContainerFromCourseObject(courseObject, elementToInitialize){
     let title = courseObject.name;
     let numParticipants = courseObject.participants.length;
     let nextDate = courseObject.dates.sort()[courseObject.dates.length - 1];
@@ -259,34 +281,37 @@ function hideAddCourseContainer(){
 function renderLandingPage(isAdmin){
     requestFileAsynchronously('landing-page.html', function(caller) {
         document.getElementById('root').innerHTML= caller.responseText;
-        document.getElementById("logout").addEventListener("click", handleLogout);
-        document.getElementById("register").addEventListener("click", renderRegistrationPage);
-        document.getElementById("appName").addEventListener("click", renderLandingPageDistinctly);
-        document.getElementById("add-course-p").addEventListener("click", renderCourseCreationContainer);
+        attachEventListenersToLandingPage();
         let courseItemFile = isAdmin ? "course-item-admin.html" : "course-item-user.html";
         requestFileAsynchronously(courseItemFile, function(caller){
             let courseList = document.getElementById('course-list');
-            let itemTemplate = HTMLToElement(caller.responseText);
+            let courseContainerTemplate = HTMLToElement(caller.responseText);
             if(isAdmin){
-                getAllCourses(function(courses){
-                    courses.forEach(course => {
-                        let item = createListCourseElement(course, itemTemplate.cloneNode(true));
-                        courseList.appendChild(item);
+                getAllCourses(function(courseObjects){
+                    courseObjects.forEach(courseObj => {
+                        let courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
+                        courseList.appendChild(courseContainer);
                     });
                 });
             }
             else{
-                getCoursesOfCurrentUser(auth.currentUser.uid, function(courses){
-                    console.log(courses);
-                    courses.forEach(course => {
-                        let item = createListCourseElement(course, itemTemplate.cloneNode(true));
-                        courseList.appendChild(item);
+                getCoursesOfCurrentUser(auth.currentUser.uid, function(courseObjects){
+                    courseObjects.forEach(courseObj => {
+                        let courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
+                        courseList.appendChild(courseContainer);
                     });
                 });
             }
 
         });
     });
+}
+
+function attachEventListenersToLandingPage(){
+    document.getElementById("logout").addEventListener("click", handleLogout);
+    document.getElementById("register").addEventListener("click", renderRegistrationPage);
+    document.getElementById("appName").addEventListener("click", renderLandingPageDistinctly);
+    document.getElementById("add-course-p").addEventListener("click", renderCourseCreationContainer);
 }
 
 function renderRegistrationPage(){
@@ -298,13 +323,13 @@ function renderRegistrationPage(){
     }
     requestFileAsynchronously("registration-container.html", function(caller){
         hideCourseList();
-        let registerBox = HTMLToElement(caller.responseText);
-        document.getElementById("main-container").appendChild(registerBox);
+        let registerContainer = HTMLToElement(caller.responseText);
+        document.getElementById("main-container").appendChild(registerContainer);
         document.getElementById("registration-form").onsubmit = handleRegister;
         document.getElementById("back-button-registration").addEventListener("click", handleBackButton);
     })
 }
 
 function hideCourseList(){
-    document.getElementById("course-list").style.display = "none";
+    hideElementWithoutSpaceUse("course-list");
 }
