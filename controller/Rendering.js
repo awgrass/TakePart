@@ -160,19 +160,12 @@ function renderAttendeesContainer(courseName, courseItemNode){
         let okButton = getChildByClassName(attendeesContainer, "submit-adding-attendees");
         okButton.addEventListener("click", function(){
             dropBox = document.getElementById("drop-box-" + courseName);
-            for(let child = dropBox.firstChild.nextSibling; child !== null; child=child.nextSibling) {
+            for(let child = dropBox.firstChild.nextSibling; child !== null; child=child.nextSibling){
                 let userID = child.getAttribute("user-id");
                 let userPath = getUserRefByID(userID);
-                console.log(userPath);
                 addParticipant(userPath,courseName);
-
+                closeContainers(courseItemNode, courseName, [closeAddAttendeesContainer]);
             }
-
-
-
-                //
-                //);
-            //})
         });
 
         let dropBox = getChildByClassName(attendeesContainer, "drop-box");
@@ -377,7 +370,7 @@ function renderLandingPage(isAdmin){
     requestFileAsynchronously('landing-page.html', function(caller) {
         document.getElementById('root').innerHTML= caller.responseText;
         attachEventListenersToLandingPage();
-        let courseItemFile = isAdmin ? "course-item-admin.html" : "course-item-user.html";
+        let courseItemFile = isAdmin ? "course-item-admin.html" : "course-item-user-ready.html";
         requestFileAsynchronously(courseItemFile, function(caller){
             let courseList = document.getElementById('course-list');
             let courseContainerTemplate = HTMLToElement(caller.responseText);

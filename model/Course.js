@@ -46,7 +46,6 @@ function addParticipant(participantRef, courseName) {
     course.update({
         participants: firebase.firestore.FieldValue.arrayUnion(participantRef)
     }).then(function() {
-        console.log("Participant added.");
     });
 }
 
