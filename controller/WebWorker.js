@@ -22,7 +22,6 @@ function initializeOrUpdateWorker(){
         });
 }
 
-
 async function work() {
     while (run) {
         if (courseDates.size > 0) {
