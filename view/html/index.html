@@ -54,7 +54,13 @@
             if (typeof(worker) == "undefined") {
                 worker = new Worker("../../controller/WebWorker.js");
             }
-            console.log("Web worker started to work.")
+            console.log("Web worker started to work.");
+            worker.onmessage = function(e) {
+                if (e.data.msg !== undefined) {
+                    renderUserLandingPage(e.data.msg);
+                }
+                console.log(e.data);
+            };
         } else {
             console.log("Web workers not supported from browser.")
         }
