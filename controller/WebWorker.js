@@ -38,7 +38,6 @@ async function work() {
             postMessage({'msg': showableCourses});
         }
         await sleep(5000);
-        initializeOrUpdateWorker();
     }
 }
 
@@ -50,10 +49,11 @@ self.addEventListener('message', function(e) {
     let data = e.data;
     switch (data.cmd) {
         case 'start':
-            //if (!data.admin) workerRef = workerRef.where("participants", "array-contains", "users/" + data.msg);
+            if (data.admin === undefined)
+                workerRef = workerRef.where("participants", "array-contains", "users/" + data.msg);
             initializeOrUpdateWorker();
             work();
-            //addWorkerListener();
+            addWorkerListener();
             break;
         case 'stop':
             self.close(); // Terminates the worker.
@@ -64,16 +64,10 @@ self.addEventListener('message', function(e) {
 }, false);
 
 function addWorkerListener() {
-    workerRef.get()
-        .then(function(snap){
-            snap.forEach(function(doc) {
-                workerRef.doc(doc.id).collection("statistics")
-                    .onSnapshot(function(snapshot) {
-                        snapshot.docChanges().forEach(function(change) {
-                            console.log(change.doc.data());
-                            initializeOrUpdateWorker();
-                        });
-                    });
+    firestore.collection("courses").onSnapshot(function(snapshot) {
+            snapshot.docChanges().forEach(function(change) {
+                console.log(change.doc.data());
+                initializeOrUpdateWorker();
             });
         });
 }
