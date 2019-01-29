@@ -16,7 +16,6 @@ window.onload = function(){
 
 function renderLandingPageDistinctly(){
     getUserById(auth.currentUser.uid, function(user){
-        worker.postMessage({'cmd': 'start', 'msg': user.id, 'admin': user.isAdmin});
         console.log(user);
         renderLandingPage(user.isAdmin);
     });
@@ -394,6 +393,7 @@ function renderLandingPage(isAdmin){
             renderAdminLandingPage(header);
         }
         else{
+            worker.postMessage({'cmd': 'start', 'msg': currentUser.id, 'admin': currentUser.isAdmin});
             let profileField = genericCreateElement("p", ["right-elements"], [["id", "profile"]]);
             profileField.innerHTML = "Profil";
             header.prepend(profileField);
@@ -423,6 +423,7 @@ function renderUserLandingPage(courseObjects) {
 
             });
             courseList.appendChild(courseContainer);
+            addStatistic(courseObj.name, courseObj.date, courseObj.num);
         });
     });
 }
