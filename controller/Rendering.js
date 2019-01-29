@@ -159,7 +159,6 @@ function renderAttendeesContainer(courseName, courseItemNode){
         let okButton = getChildByClassName(attendeesContainer, "submit-adding-attendees");
         okButton.addEventListener("click", function(){
             dropBox = document.getElementById("drop-box-" + courseName);
-            console.log(dropBox);
             for(let child = dropBox.firstElementChild; child !== null; child=child.nextSibling){
                 let userID = child.getAttribute("user-id");
                 let userPath = getUserRefByID(userID);
@@ -200,11 +199,12 @@ function renderAttendeesContainer(courseName, courseItemNode){
 }
 
 function getDateFromDateTimePicker(datetimepickerID){
-    return new firebase.firestore.Timestamp($("#"+datetimepickerID).data('DateTimePicker').getDate().unix(),0);
+    return new firebase.firestore.Timestamp($("[id='" + datetimepickerID + "']").data('DateTimePicker').getDate().unix(),0);
 }
 
 function initDatetimepicker(datetimepickerID){
-    $("#"+datetimepickerID).datetimepicker({
+
+    $("[id='" + datetimepickerID + "']").datetimepicker({
         format: 'DD/MM/YYYY HH:mm',
     });
 }
