@@ -143,25 +143,26 @@ function getCourseDataByCoursName(courseName, callback) {
     });
 }
 
-function addStatisticListenter() {
-    courseRef.where("participants", "array-contains", userid)
-        .get()
+function addStatisticListener() {
+    courseRef.get()
         .then(function(snap){
             snap.forEach(function(doc) {
                 courseRef.doc(doc.id).collection("statistics")
                     .onSnapshot(function(snapshot) {
                         snapshot.docChanges().forEach(function(change) {
+                            console.log(change.doc.data())
                             if (change.type === "added") {
-                                console.log("New city: ", change.doc.data());
+                                //updateCourse(doc.id);
                             }
                             if (change.type === "modified") {
-                                console.log("Modified city: ", change.doc.data());
+                                //updateCourse(doc.id);
                             }
                             if (change.type === "removed") {
-                                console.log("Removed city: ", change.doc.data());
+                                //updateCourse(doc.id);
                             }
                         });
                     });
             });
         });
 }
+

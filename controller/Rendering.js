@@ -16,6 +16,7 @@ window.onload = function(){
 
 function renderLandingPageDistinctly(){
     getUserById(auth.currentUser.uid, function(user){
+        worker.postMessage({'cmd': 'start', 'msg': user.id, 'admin': user.isAdmin});
         console.log(user);
         renderLandingPage(user.isAdmin);
     });
