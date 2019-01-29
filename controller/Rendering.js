@@ -400,7 +400,11 @@ function renderLandingPage(isAdmin){
 function renderUserLandingPage(header){
     let profileField = genericCreateElement("p", ["right-elements"], [["id", "profile"]]);
     profileField.innerHTML = "Profil";
+    let mobileProfileField = genericCreateElement("p", ["element"], [["id", "profileMobile"]]);
+    mobileProfileField.innerHTML = "Profil";
     header.prepend(profileField);
+    let mobileHeaderElement = document.getElementById("mobile-bar-elements");
+    mobileHeaderElement.prepend(mobileProfileField);
     attachUserEventListenersToLandingPage();
     let courseItemFile = "course-item-user-ready.html";
     requestFileAsynchronously(courseItemFile, function(caller){
@@ -426,13 +430,26 @@ function renderUserLandingPage(header){
     });
 }
 
+function handleOnClickBurgerButton() {
+    let mobileBar = document.getElementById("mobile-bar");
+    if (mobileBar.style.display === "block") {
+        mobileBar.style.display = "none";
+    } else {
+        mobileBar.style.display = "block";
+    }
+}
+
 function renderAdminLandingPage(header){
     let courseList = document.getElementById("course-list");
     requestFileAsynchronously("add-course.html", function(caller){
         let addCourseContainer = HTMLToElement(caller.responseText);
         courseList.appendChild(addCourseContainer);
         let registerField = genericCreateElement("p", ["right-elements"], [["id", "register"]]);
+        let mobileRegisterField = genericCreateElement("p", ["element"], [["id", "registerMobile"]]);
+        mobileRegisterField.innerHTML = "Neue Registrierung";
         registerField.innerHTML = "Neue Registrierung";
+        let mobileHeaderElement = document.getElementById("mobile-bar-elements");
+        mobileHeaderElement.prepend(mobileRegisterField);
         header.prepend(registerField);
         attachAdminEventListenersToLandingPage();
         let courseItemFile = "course-item-admin.html";
@@ -451,21 +468,26 @@ function renderAdminLandingPage(header){
 
 function attachCommonEventListenersToLandingPage(){
     document.getElementById("logout").addEventListener("click", handleLogout);
+    document.getElementById("logoutMobile").addEventListener("click", handleLogout);
     document.getElementById("appName").addEventListener("click", renderLandingPageDistinctly);
+    document.getElementById("burger-button").addEventListener("click", handleOnClickBurgerButton);
 }
 
 function attachAdminEventListenersToLandingPage(){
     attachCommonEventListenersToLandingPage();
     document.getElementById("register").addEventListener("click", renderRegistrationPage);
+    document.getElementById("registerMobile").addEventListener("click", renderRegistrationPage);
     document.getElementById("add-course-p").addEventListener("click", renderCourseCreationContainer);
 }
 
 function attachUserEventListenersToLandingPage(){
     attachCommonEventListenersToLandingPage();
     document.getElementById("profile").addEventListener("click", renderProfilePage);
+    document.getElementById("profileMobile").addEventListener("click", renderProfilePage);
 }
 
 function renderProfilePage(){
+    document.getElementById("mobile-bar").style.display = "none";
     if (document.getElementById("user-profile")){
         return;
     }
@@ -502,6 +524,7 @@ function renderProfilePage(){
 }
 
 function renderRegistrationPage(){
+    document.getElementById("mobile-bar").style.display = "none";
     if (document.getElementById("registration-container")){
         return;
     }

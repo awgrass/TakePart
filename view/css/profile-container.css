@@ -4,6 +4,10 @@
     height: 44rem;
 }
 
+.user-profile {
+    height: 70%;
+}
+
 .photo {
     font-size: 2.5rem;
 }
@@ -58,4 +62,26 @@
 .image-container {
     width: 150px;
     height: 150px;
+}
+@media (min-width:360px) and (max-width: 540px)
+{
+    .photo {
+        font-size: 1.5rem;
+    }
+
+    .user-data {
+        font-size: 1.5rem;
+        margin-left: 10%;
+    }
+
+    #back-button-profile {
+        margin-right: 5%;
+    }
+}
+
+@media (min-width:360px) and (max-width: 992px)
+{
+    .user-data {
+        margin-left: 10%;
+    }
 }
