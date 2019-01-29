@@ -3,12 +3,11 @@ importScripts('../model/Firebase.js');
 let courseDates = new Map();
 let workerRef = firestore.collection("courses");
 let run = true;
-let isAdmin;
 
-function initializeWorker(user){
-    if (!isAdmin) workerRef = workerRef.where("participants", "array-contains", "users/" + user.uID);
+function initializeOrUpdateWorker(){
     workerRef.get()
         .then(snapshot => {
+            courseDates = new Map();
             snapshot.forEach(function(course){
                 let dates = [];
                 for (let key in course.data().dates) {
@@ -16,14 +15,14 @@ function initializeWorker(user){
                     dates.push(obj.seconds);
                 }
                 courseDates.set(course.id, course);
-                //console.log("C: " + courseDates)
             });
-            work();
         })
         .catch(function(error){
             console.log("Error occurred in web worker: " + error);
         });
 }
+
+
 async function work() {
     while (run) {
         if (courseDates.size > 0) {
@@ -38,7 +37,8 @@ async function work() {
             });
             postMessage({'msg': showableCourses});
         }
-        await sleep(2000);
+        await sleep(5000);
+        initializeOrUpdateWorker();
     }
 }
 
@@ -50,16 +50,31 @@ self.addEventListener('message', function(e) {
     let data = e.data;
     switch (data.cmd) {
         case 'start':
-            self.postMessage('WORKER STARTED: ' + data.msg);
-            //workerRef = data.db.collection("courses");
-            isAdmin = data.msg === undefined;
-            initializeWorker(data.msg);
+            //if (!data.admin) workerRef = workerRef.where("participants", "array-contains", "users/" + data.msg);
+            initializeOrUpdateWorker();
+            work();
+            //addWorkerListener();
             break;
         case 'stop':
-            self.postMessage('WORKER STOPPED: ' + data.msg + '. (buttons will no longer work)');
             self.close(); // Terminates the worker.
             break;
         default:
             self.postMessage('Unknown command: ' + data.msg);
     };
 }, false);
+
+function addWorkerListener() {
+    workerRef.get()
+        .then(function(snap){
+            snap.forEach(function(doc) {
+                workerRef.doc(doc.id).collection("statistics")
+                    .onSnapshot(function(snapshot) {
+                        snapshot.docChanges().forEach(function(change) {
+                            console.log(change.doc.data());
+                            initializeOrUpdateWorker();
+                        });
+                    });
+            });
+        });
+}
+

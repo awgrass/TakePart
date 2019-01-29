@@ -143,26 +143,3 @@ function getCourseDataByCoursName(courseName, callback) {
     });
 }
 
-function addStatisticListener() {
-    courseRef.get()
-        .then(function(snap){
-            snap.forEach(function(doc) {
-                courseRef.doc(doc.id).collection("statistics")
-                    .onSnapshot(function(snapshot) {
-                        snapshot.docChanges().forEach(function(change) {
-                            console.log(change.doc.data())
-                            if (change.type === "added") {
-                                //updateCourse(doc.id);
-                            }
-                            if (change.type === "modified") {
-                                //updateCourse(doc.id);
-                            }
-                            if (change.type === "removed") {
-                                //updateCourse(doc.id);
-                            }
-                        });
-                    });
-            });
-        });
-}
-
