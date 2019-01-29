@@ -49,3 +49,10 @@ div.height {
 .bottom-margin {
     margin-bottom: 0.5rem;
 }
+
+@media (min-width:360px) and (max-width: 540px)
+{
+    .login-form {
+        width: auto;
+    }
+}

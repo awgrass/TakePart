@@ -97,14 +97,6 @@ svg {
     .attendees-list-view, .dates-list-view {
         font-size: 1rem;
     }
-
-    .dates-information {
-        width: 54%;
-    }
-
-    .attendees-information {
-        width: 46%;
-    }
 }
 
 @media (max-width:361px) {
