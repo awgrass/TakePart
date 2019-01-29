@@ -40,6 +40,10 @@ function addDate(date, name) {
     });
 }
 
+function getCourseRefBycourseName(courseName){
+    return firebase.firestore().doc("courses/" + courseName);
+}
+
 //This function add a user to a specific course
 function addParticipant(participantRef, courseName) {
     let course = courseRef.doc(courseName);

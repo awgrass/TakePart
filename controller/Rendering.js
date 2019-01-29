@@ -160,10 +160,12 @@ function renderAttendeesContainer(courseName, courseItemNode){
         let okButton = getChildByClassName(attendeesContainer, "submit-adding-attendees");
         okButton.addEventListener("click", function(){
             dropBox = document.getElementById("drop-box-" + courseName);
-            for(let child = dropBox.firstChild.nextSibling; child !== null; child=child.nextSibling){
+            console.log(dropBox);
+            for(let child = dropBox.firstElementChild; child !== null; child=child.nextSibling){
                 let userID = child.getAttribute("user-id");
                 let userPath = getUserRefByID(userID);
                 addParticipant(userPath,courseName);
+                addCourseToUserByID(userID, getCourseRefBycourseName(courseName));
                 closeContainers(courseItemNode, courseName, [closeAddAttendeesContainer]);
             }
         });

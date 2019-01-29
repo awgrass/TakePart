@@ -48,6 +48,15 @@ function getCoursesOfCurrentUser(userID, callback){
     });
 }
 
+function addCourseToUserByID(userID, courseRef){
+    let user = userRef.doc(userID);
+    user.update({
+        courses: firebase.firestore.FieldValue.arrayUnion(courseRef)
+    }).then(function() {
+        console.log("course added");
+    });
+}
+
 function getUsers(callback) {
     userRef.get().then(snapshot => {
         let users = [];
