@@ -1,9 +1,18 @@
 <svg viewBox="0 0 220 120" width="auto" height="95%" shape-rendering="optimizeSpeed">
     <rect x="10" y="10" width="200" height="100" fill="#ffffff59"></rect>
     <style>
-        .y-labels { font: italic 0.3vw sans-serif; fill: #FFFFFF; stroke: black; stroke-width: 0.1;}
-        .x-labels { font: italic 0.3vw sans-serif; fill: #FFFFFF; stroke: black; stroke-width: 0.1;}
-        .stat1-title { font: 0.5vw sans-serif; fill: #FFFFFF; stroke: black; stroke-width: 0.2;}
+        .y-labels { font: italic 0.5rem sans-serif; fill: #FFFFFF; stroke: black; stroke-width: 0.1;}
+        .x-labels { font: italic 0.5rem sans-serif; fill: #FFFFFF; stroke: black; stroke-width: 0.1;}
+        .stat1-title { font: 0.8rem sans-serif; fill: #FFFFFF; stroke: black; stroke-width: 0.2;}
+        @media (min-width:360px) and (max-width: 992px)
+        {
+            .y-labels { font: italic 0.4em sans-serif;}
+            .x-labels { font: italic 0.4em sans-serif;}
+            .stat1-title { font: 0.7em sans-serif;}
+            svg {
+                width: 90%;
+            }
+        }
     </style>
 
     <g class="stat1-title">
