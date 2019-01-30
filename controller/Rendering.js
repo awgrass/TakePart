@@ -393,7 +393,9 @@ function renderLandingPage(isAdmin){
             renderAdminLandingPage(header);
         }
         else{
-            worker.postMessage({'cmd': 'start', 'msg': currentUser.id, 'admin': currentUser.isAdmin});
+            getUserById(currentUser.uid, function (user) {
+                worker.postMessage({'cmd': 'start', 'msg': user.uID, 'admin': user.isAdmin});
+            });
             let profileField = genericCreateElement("p", ["right-elements"], [["id", "profile"]]);
             profileField.innerHTML = "Profil";
             header.prepend(profileField);
