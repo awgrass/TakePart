@@ -64,3 +64,44 @@ ul {
 .statistics-button:hover {
     color: #0e3e6b;
 }
+
+@media (min-width:360px) and (max-width: 540px)
+{
+    .top-margin {
+        margin-top: 2rem;
+    }
+
+    .statistics-button {
+        font-size: 1rem;
+    }
+
+    .statistics-button-ready {
+        width: 6em;
+        margin-top: 5em;
+        padding-left: 7px;
+        font-size: 0.9rem;
+    }
+
+    .list-element {
+        font-size: 1.2rem;
+    }
+
+    .course-title {
+        font-size: 2rem;
+    }
+
+    .fa-chevron-circle-down {
+        font-size: 1.5rem;
+    }
+
+    .course-data-ready, .course-data-accepted {
+        padding: 1.2em 0 0 1.2em;
+    }
+}
+
+@media (min-width:360px) and (max-width: 992px)
+{
+    .desktop-view {
+        display: none;
+    }
+}

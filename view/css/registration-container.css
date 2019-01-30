@@ -49,3 +49,30 @@ label {
 .back:hover {
     color: #0e3e6b;
 }
+
+@media (min-width:360px) and (max-width: 540px)
+{
+    .back {
+        font-size: 1rem;
+    }
+
+    .submit-creation {
+        font-size: 1rem;
+    }
+
+    #creation-title {
+        font-size: 2rem;
+    }
+
+    .form-container {
+        height: auto;
+    }
+
+    .registration {
+        width: 60%;
+    }
+
+    .label-mobile-font-size {
+        font-size: 1.2rem;
+    }
+}
