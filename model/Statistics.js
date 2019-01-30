@@ -1,3 +1,7 @@
+/*
+Class: Statistics
+Statistic Object containing its properties
+*/
 class Statistics {
     constructor(date, participated, registeredAtThisTime, participants) {
         this.date = date;
@@ -7,9 +11,15 @@ class Statistics {
     }
 }
 
+/*
+Function: addStatistic
+Adds a statistic document to a course into the database
 
-// Function: addStatistic
-// Adds a statistic document to a course into the database
+Parameters:
+{String} name - Course name
+{Date} date - Date
+{Integer} registeredAtThisTime - Amount registered people
+*/
 function addStatistic(name, date, registeredAtThisTime){
     let ref = firestore
         .collection("courses")
@@ -32,8 +42,16 @@ function addStatistic(name, date, registeredAtThisTime){
         });
 }
 
-// Function: updateStatistic
-// Updates a statistic document increasing the partecipation count
+/*
+Function: updateStatistic
+Updates a statistic document increasing the partecipation count
+
+
+Parameters:
+{String} name - Course name
+{Date} date - Date
+{Boolean} increase - true if increase/false if decrease
+*/
 function updateStatistic(name, date, increase) {
     let ref = firestore
         .collection("courses")
