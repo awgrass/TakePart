@@ -46,25 +46,8 @@
     <!--Datepicker-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.1.4/js/bootstrap-datetimepicker.min.js"></script>
 
-
     <!-- WebWorker -->
-    <script>
-        let worker;
-        if (typeof(Worker) !== "undefined") {
-            if (typeof(worker) == "undefined") {
-                worker = new Worker("../../controller/WebWorker.js");
-            }
-            console.log("Web worker started to work.");
-            worker.onmessage = function(e) {
-                if (e.data.msg !== undefined) {
-                    renderUserLandingPage(e.data.msg);
-                }
-                console.log(e.data);
-            };
-        } else {
-            console.log("Web workers not supported from browser.")
-        }
-    </script>
+    <script src="../../controller/WebWorker.js"></script>
 
 </head>
 <body>
