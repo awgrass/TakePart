@@ -147,9 +147,6 @@ function genericAddListItem(list, classNameArray, value, id, isDraggable){
     list.appendChild(listEntry);
 }
 
-function handleAddDates(courseName){
-}
-
 function renderAttendeesContainer(courseName, courseItemNode){
     requestFileAsynchronously("add-attendee-container.html", function (caller) {
         let attendeesContainer = HTMLToElement(caller.responseText);
@@ -163,8 +160,11 @@ function renderAttendeesContainer(courseName, courseItemNode){
                 let userPath = getUserRefByID(userID);
                 addParticipant(userPath,courseName);
                 addCourseToUserByID(userID, getCourseRefBycourseName(courseName));
-                closeContainers(courseItemNode, courseName, [closeAddAttendeesContainer]);
             }
+            updateAttendeesCount(courseName, courseItemNode);
+            closeContainers(courseItemNode, courseName, [closeAddAttendeesContainer]);
+
+
         });
 
         let dropBox = getChildByClassName(attendeesContainer, "drop-box");
@@ -197,6 +197,14 @@ function renderAttendeesContainer(courseName, courseItemNode){
     });
 }
 
+function updateAttendeesCount(courseName, courseItemNode){
+    let courseAttendeesField = getChildByClassName(courseItemNode, "course-attendees");
+    getCourseByName(courseName, function(course){
+        courseAttendeesField.innerHTML = course.participants.length ? course.participants.length : 0;
+    });
+
+}
+
 function getDateFromDateTimePicker(datetimepickerID){
     return new firebase.firestore.Timestamp($("[id='" + datetimepickerID + "']").data('DateTimePicker').getDate().unix(),0);
 }
@@ -220,6 +228,7 @@ function renderDatesContainer(courseName, courseItemNode){
             e.preventDefault();
             let newDate = getDateFromDateTimePicker(datetimepickerID);
             addDate(newDate, courseName);
+            updateNextDate(courseName, courseItemNode);
             closeContainers(courseItemNode, courseName, [closeAddDatesContainer]);
         };
         insertAfter(datesContainer, courseItemNode);
@@ -227,6 +236,14 @@ function renderDatesContainer(courseName, courseItemNode){
         courseItemNode.setAttribute("has-dates-container", "yes");
         removeElementByID("info-container-" + courseName);
         courseItemNode.setAttribute("has-info-container", "no");
+    });
+}
+
+function updateNextDate(courseName, courseItemNode){
+    let courseDateField = getChildByClassName(courseItemNode, "course-date");
+    getCourseByName(courseName, function(course){
+        let nextDate = course.dates[0];
+        courseDateField.innerHTML = nextDate ? timestampToDate(nextDate) : "";
     });
 }
 

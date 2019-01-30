@@ -109,7 +109,7 @@ function getCourseByName(courseName, callback){
                 });
                 callback(new Course(
                     doc.data().name,
-                    doc.data().dates,
+                    doc.data().dates.sort(),
                     doc.data().participants,
                     stats.sort(function(a,b){return a.date.seconds - b.date.seconds})
                 ));
