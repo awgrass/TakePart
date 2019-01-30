@@ -1,15 +1,27 @@
 let worker;
-if (typeof(Worker) !== "undefined") {
-    if (typeof(worker) == "undefined") {
-        worker = new Worker("../../controller/UserCourseUpdateWorker.js");
-    }
-    console.log("Web worker started to work.");
-    worker.onmessage = function(e) {
-        if (e.data.msg !== undefined) {
-            renderUserLandingPage(e.data.msg);
+
+function startWorker() {
+    if (typeof(Worker) !== "undefined") {
+        if (typeof(worker) == "undefined") {
+            worker = new Worker("../../controller/UserCourseUpdateWorker.js");
         }
-        console.log(e.data);
-    };
-} else {
-    console.log("Web workers not supported from browser.")
+        getUserById(currentUser.uid, function (user) {
+            worker.postMessage({'cmd': 'start', 'msg': user.uID});
+        });
+        console.log("Web worker started to work.");
+        worker.onmessage = function(e) {
+            if (e.data.msg !== undefined) {
+                renderUserLandingPage(e.data.msg);
+            }
+            console.log(e.data);
+        };
+    } else {
+        console.log("Web workers not supported from browser.")
+    }
+}
+
+function stopWorker() {
+    worker.terminate();
+    worker = undefined;
+    console.log("Woker terminated.")
 }

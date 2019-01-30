@@ -33,7 +33,7 @@ function handleLogin(){
 
 function handleLogout(){
     setCookie("session", "", -1);
-    worker.postMessage({'cmd': 'stop'});
+    if (worker !== undefined) stopWorker();
     signOutUser();
     renderLogin();
 }

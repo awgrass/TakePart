@@ -63,7 +63,8 @@ self.addEventListener('message', function(e) {
             addWorkerListener();
             break;
         case 'stop':
-            self.close(); // Terminates the worker.
+            self.terminate();
+            console.log("Worker terminated")
             break;
         default:
             self.postMessage('Unknown command: ' + data.msg);
