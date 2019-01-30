@@ -1,9 +1,16 @@
 var auth = firebase.auth();
 var currentUser = null;
 
+/*
 
-// Function: authenticateUser
-// Authenticates the user through the firebase web service
+Function: authenticateUser
+Authenticates the user through the firebase web service
+
+Parameters:
+{String} email - Email of user
+{String] password - Password of user
+{Function} handleSuccessfullAuthentication - Callback function
+ */
 function authenticateUser(email, password, handleSuccessfullAuthentication) {
     auth.signInWithEmailAndPassword(email, password)
         .then(function(){
@@ -106,8 +113,19 @@ function handleRegister(e){
 }
 
 
-// Function: registerUser
-// Registers the user through the authentication service of firebase
+/*
+
+Function: registerUSer
+Registers the user through the firebase service
+
+Parameters:
+{String} firstName - First name of user
+{String] lastName - lastName of user
+{String} email - Email of user
+{String} password - Password of user
+{Boolean} isAdmin - If user is admin or not
+{Function} callback - Callback function
+ */
 function registerUser(firstName, lastName, email, password, isAdmin, callback) {
     auth.createUserWithEmailAndPassword(email, password)
         .then(function(userData) {
@@ -121,5 +139,3 @@ function registerUser(firstName, lastName, email, password, isAdmin, callback) {
             callback();
         });
 }
-
-
