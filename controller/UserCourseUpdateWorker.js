@@ -43,7 +43,7 @@ async function work() {
             });
             postMessage({'msg': showableCourses});
         }
-        await sleep(5000);
+        await sleep(60000);
     }
 }
 
