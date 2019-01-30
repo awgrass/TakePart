@@ -11,15 +11,19 @@ function addStatistic(name, date, registeredAtThisTime){
         .collection("courses")
         .doc(name).collection("statistics");
 
-    // Add a new document with a generated id.
-    ref.add({
-        date: date,
-        participated: 0,
-        registeredAtThisTime: registeredAtThisTime
-    }).then(function(docRef) {
-            console.log("Statistic written ", docRef.id);
-        }).catch(function(error) {
-            console.error("Error adding statistic: ", error);
+    ref.doc(date.seconds.toString())
+        .update({participated: 0})
+        .then(() => {
+            // document exists
+            console.log("exists");
+        })
+        .catch((error) => {
+            ref.doc(date.seconds.toString())
+                .set({
+                    date: date,
+                    participated: 0,
+                    registeredAtThisTime: registeredAtThisTime
+                });
         });
 }
 
@@ -31,7 +35,7 @@ function updateStatistic(name, date, increase) {
 
         ref.get().then(function(querySnapshot) {
             querySnapshot.forEach(function(doc) {
-                if (date.getTime() / 1000 !== doc.data().date.seconds)return;
+                if (date.seconds !== doc.data().date.seconds)return;
                 if (increase && doc.data().participated >= doc.data().registeredAtThisTime)
                     throw "Cant be more participants than registered people.";
                 else if (!increase && doc.data().participated <= 0)
