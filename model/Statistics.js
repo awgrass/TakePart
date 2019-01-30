@@ -22,6 +22,7 @@ function addStatistic(name, date, registeredAtThisTime){
                 .set({
                     date: date,
                     participated: 0,
+                    participants: [],
                     registeredAtThisTime: registeredAtThisTime
                 });
         });
@@ -42,6 +43,7 @@ function updateStatistic(name, date, increase) {
                     throw "Cant be less than 0 participants.";
 
                 ref.doc(doc.id).update({
+                    participants: doc.data().participants.push("users/" + currentUser.uid),
                     participated: increase ? doc.data().participated + 1 : doc.data().participated - 1
                 })
                 .then(function() {
