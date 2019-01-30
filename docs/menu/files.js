@@ -1,1 +1,1 @@
-NDMenu.OnSectionLoaded("files.js",[[1,"Rendering.js"]]);
+NDMenu.OnSectionLoaded("files.js",[[2,"controller","File:controller/",[[1,"Authentication.js"],[1,"Rendering.js"],[1,"Statistics.js"],[1,"UserCourseUpdateWorker.js"],[1,"Utils.js"],[1,"WebWorker.js"]]],[2,"model","File:model/",[[1,"Course.js"],[1,"Statistics.js"],[1,"User.js"]]]]);

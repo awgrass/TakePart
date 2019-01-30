@@ -141,11 +141,11 @@ function renderInfoContainerContent(courseName){
     getCourseDataByCoursName(courseName, function(participants, timestamps){
         let attendeesList = infoContainer.getElementsByClassName("attendees-list-view")[0];
         participants.forEach(name => {
-            genericAddListItem(attendeesList, ["attendees-list"], name, null, false);
+            genericAddListItem(attendeesList, ["attendees-list"], name, null);
         });
         let datesList = infoContainer.getElementsByClassName("dates-list-view")[0];
         timestamps.forEach(timestamp => {
-            genericAddListItem(datesList, ["dates-list", "row"], timestampToDate(timestamp), null, false);
+            genericAddListItem(datesList, ["dates-list", "row"], timestampToDate(timestamp), null);
         });
 
     });
@@ -205,14 +205,15 @@ function handleOnDragOver(event) {
 /*
 
 Function: addAttendees
-Adding attendees to the list.
+Adding attendees to the list and setting the elements to draggable.
+The EventListener for onDragStart is set.
 
 Parameters:
-{HTMLElement} list -
+{HTMLElement} list - The list is added to this node
 {Array} classNameArray - Containing {String} names of html classes which are added to the list elements
 {String} value - The name of the user, who should be added to the course
 {String} courseName -  The course name to which the user should be added
-{String} id -  a unique  id which identifies the user
+{String} id -  A unique  id which identifies the user
 
 */
 function addAttendees(list, classNameArray, value, courseName, id) {
@@ -244,16 +245,26 @@ function addAttendees(list, classNameArray, value, courseName, id) {
     list.appendChild(listEntry);
 }
 
-function genericAddListItem(list, classNameArray, value, id, isDraggable){
+/*
+
+Function: genericAddListItem
+Adding attendees to list without setting them to draggable.
+
+Parameters:
+{HTMLElement} list - The list is added to this node
+{Array} classNameArray - Containing {String} names of html classes which are added to the list elements
+{String} value - The name of the user, who should be added to the course
+{String} courseName -  The course name to which the user should be added
+{String} id -  A unique  id which identifies the user
+
+*/
+function genericAddListItem(list, classNameArray, value, id){
     let listEntry = document.createElement("li");
     classNameArray.forEach(className => {
         listEntry.classList.add(className);
     });
     let p = document.createElement("p");
     p.innerHTML = value;
-    if (isDraggable){
-        listEntry.setAttribute("draggable", "true");
-    }
     if(id){
         listEntry.setAttribute("user-id", id);
     }
@@ -261,6 +272,16 @@ function genericAddListItem(list, classNameArray, value, id, isDraggable){
     list.appendChild(listEntry);
 }
 
+/*
+
+Function: handleDragAndDrop
+HelperFunction to attach all necessary drag and drop EventListener and id attributes.
+
+Parameters:
+{HTMLElement} container - The container in which the drag and drop is happening
+{Array} courseName - The name of the course in which the attendees are dragged.
+
+*/
 function handleDragAndDrop(container, courseName) {
     //TODO: EMAIL statt NAME für die id, weil Namen doppelt vorkommen können
     let dropBox = getChildByClassName(container, "drop-box");
@@ -273,6 +294,17 @@ function handleDragAndDrop(container, courseName) {
     userList.setAttribute("id", "user-list-" + courseName);
 }
 
+/*
+
+Function: renderAttendeesContainer
+Renders the container in which the attendees from the chosen course are shown and the box for drag and drop.
+The drag and drop handler function is called.
+
+Parameters:
+{String} courseName - The name of the course
+{HTMLElement} courseItemNode - The course node
+
+*/
 function renderAttendeesContainer(courseName, courseItemNode){
     requestFileAsynchronously("add-attendee-container.html", function (caller) {
         let attendeesContainer = HTMLToElement(caller.responseText);
@@ -318,6 +350,16 @@ function renderAttendeesContainer(courseName, courseItemNode){
     });
 }
 
+/*
+
+Function: updateAttendeesCount
+Updates the attendees number information if attendees are added to the course.
+
+Parameters:
+{String} courseName - The name of the course
+{HTMLElement} courseItemNode - The course node
+
+*/
 function updateAttendeesCount(courseName, courseItemNode){
     let courseAttendeesField = getChildByClassName(courseItemNode, "course-attendees");
     getCourseByName(courseName, function(course){
@@ -326,10 +368,32 @@ function updateAttendeesCount(courseName, courseItemNode){
 
 }
 
+
+/*
+
+Function: getDateFromDateTimePicker
+Fetches the date which are added in the datepicker.
+
+Parameters:
+{String} datetimepickerID - the unique id of the datepicker
+
+Returns:
+    A firestore timestamp
+
+*/
 function getDateFromDateTimePicker(datetimepickerID){
     return new firebase.firestore.Timestamp($("[id='" + datetimepickerID + "']").data('DateTimePicker').getDate().unix(),0);
 }
 
+/*
+
+Function: initDatetimepicker
+Initializes the datetimepicker.
+
+Parameters:
+{String} datetimepickerID - the unique id of the datepicker
+
+*/
 function initDatetimepicker(datetimepickerID){
 
     $("[id='" + datetimepickerID + "']").datetimepicker({
@@ -337,6 +401,19 @@ function initDatetimepicker(datetimepickerID){
     });
 }
 
+
+/*
+
+Function: renderDatesContainer
+Renders the container for adding dates.
+Functions considering the datepicker are called.
+
+
+Parameters:
+{String} courseName - The name of the course
+{HTMLElement} courseItemNode - The course node
+
+*/
 function renderDatesContainer(courseName, courseItemNode){
     requestFileAsynchronously("add-dates-container.html", function(caller){
         let datesContainer = HTMLToElement(caller.responseText);
@@ -361,6 +438,17 @@ function renderDatesContainer(courseName, courseItemNode){
     });
 }
 
+
+/*
+
+Function: updateNextDate
+Updates the date of the course container if a new date is added and is the next which will happen.
+
+Parameters:
+{String} courseName - The name of the course
+{HTMLElement} courseItemNode - The course node
+
+*/
 function updateNextDate(courseName, courseItemNode){
     let courseDateField = getChildByClassName(courseItemNode, "course-date");
     getCourseByName(courseName, function(course){
@@ -369,6 +457,14 @@ function updateNextDate(courseName, courseItemNode){
     });
 }
 
+/*
+
+Function: createAddDateField
+Adds the input field and other necessary html elements and classes for adding dates to a course.
+
+Parameters:
+{String} inputID -  The unique id of the input field
+*/
 function createAddDateField(inputID){
     let outerDiv = genericCreateElement("div", ["form-group"], []);
     let innerDiv = genericCreateElement("div", ["input-group", "date"], []);
@@ -382,6 +478,15 @@ function createAddDateField(inputID){
     return outerDiv;
 }
 
+
+/*
+
+Function: renderInfoContainer
+EventListener function which renders the info container that gets attached after clicking on the course name.
+
+Parameters:
+{Event} e - Click event
+*/
 function renderInfoContainer(e){
     let courseName = e.target.innerHTML;
     let courseItemNode = document.getElementById("list-item-" + courseName);
@@ -424,6 +529,18 @@ function renderInfoContainer(e){
     });
 }
 
+
+
+/*
+
+Function: attachInfoContainerEventListeners
+Attaches EventListener for adding attendees and adding dates to the info container.
+
+Parameters:
+{HTMLElement} infoContainer - The info container element
+{String} courseNameOfCurrentItem - The name of the current course item
+{HTMLElement} courseItemNode - The node of the course item
+*/
 function attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentItem, courseItemNode){
     getChildByClassName(infoContainer, "attendees-list").addEventListener("click", function(){
         renderAttendeesContainer(courseNameOfCurrentItem, courseItemNode);
@@ -434,6 +551,16 @@ function attachInfoContainerEventListeners(infoContainer, courseNameOfCurrentIte
     }, {once: true});
 }
 
+
+
+/*
+
+Function: renderStatisticsContainer
+EventListener function which renders the statistics container that gets attached after clicking on the statistics button.
+
+Parameters:
+{Event} e - Click event
+*/
 function renderStatisticsContainer(e){
     let courseNameOfCurrentItem = e.target.getAttribute('button-of');
     let listItem = document.getElementById("list-item-" + courseNameOfCurrentItem);
@@ -458,6 +585,17 @@ function renderStatisticsContainer(e){
     });
 }
 
+
+
+/*
+
+Function: initializeCourseContainerFromCourseObject
+Initializes the course container corresponding to the course object.
+
+Parameters:
+{Object} courseObject - The course object which contains name, num, participants and dates
+{HTMLElement} elementToInitialize - The element which should be initialized
+*/
 function initializeCourseContainerFromCourseObject(courseObject, elementToInitialize){
     let title = courseObject.name;
     let numParticipants = courseObject.participants === undefined
@@ -488,6 +626,14 @@ function initializeCourseContainerFromCourseObject(courseObject, elementToInitia
     return elementToInitialize;
 }
 
+/*
+
+Function: handleBackButton
+Handles if the back button is clicked. The EventListener is removed after clicking the button.
+
+Parameters:
+{Event} e - Click Event
+*/
 function handleBackButton(e){
     e.target.removeEventListener("click", handleBackButton);
     getUserById(auth.currentUser.uid, function(user){
@@ -495,6 +641,14 @@ function handleBackButton(e){
     });
 }
 
+
+
+/*
+
+Function: renderCourseCreationContainer
+Renders the container for creating a new course. Attaches EventListeners to the container.
+
+*/
 function renderCourseCreationContainer(){
     if (document.getElementById("course-creation-container")){
         return;
@@ -509,6 +663,13 @@ function renderCourseCreationContainer(){
     });
 }
 
+/*
+
+Function: handleCourseCreation
+Handles if a new course is created. Calls the renderLandingPage function so that the new course is shown in the view.
+Parameters:
+{Event} e - Click Event
+*/
 function handleCourseCreation(e){
     e.preventDefault();
     let courseTitle = document.getElementById("course-title").value;
@@ -520,10 +681,25 @@ function handleCourseCreation(e){
     });
 }
 
+/*
+
+Function: hideAddCourseContainer
+Sets the AddCourseContainer to display "none".
+*/
 function hideAddCourseContainer(){
     document.getElementById("add-course").style.display = "none";
 }
 
+
+
+/*
+
+Function: renderLandingPage
+Renders the landing page and starts the WebWorker.
+
+Parameters:
+{Bool} isAdmin - Boolean to check if user is Admin
+*/
 function renderLandingPage(isAdmin){
     requestFileAsynchronously('landing-page.html', function(caller) {
         document.getElementById('root').innerHTML = caller.responseText;
@@ -545,6 +721,14 @@ function renderLandingPage(isAdmin){
     });
 }
 
+/*
+
+Function: renderUserLandingPage
+Renders the landing page for the user
+
+Parameters:
+{Array} courseObjects - contains the course objects which should be shown to the user
+*/
 function renderUserLandingPage(courseObjects) {
     let courseItemFile = "course-item-user-ready.html";
     requestFileAsynchronously(courseItemFile, function(caller){
@@ -572,6 +756,14 @@ function renderUserLandingPage(courseObjects) {
     });
 }
 
+/*
+
+Function: getAllCurrentlyActiveCourseContainers
+Gets all courses which were currently active
+
+Parameters:
+{Function} callback - contains the course objects which should be shown to the user
+*/
 function getAllCurrentlyActiveCourseContainers(callback){
     getAllCourses(function(courses){
         let activeCourses = [];
@@ -584,12 +776,28 @@ function getAllCurrentlyActiveCourseContainers(callback){
     });
 }
 
+/*
+
+Function: removeCourseContainerAndAllItsSubContainers
+Removes the Course Container and all sub containers of that course.
+
+Parameters:
+{String} courseName - Name of the course which should be removed
+*/
 function removeCourseContainerAndAllItsSubContainers(courseName){
     tryRemoveElementByID("list-item-" + courseName);
     tryRemoveElementByID("statistics-container-" + courseName);
     tryRemoveElementByID("info-container-" + courseName);
 }
 
+/*
+
+Function: closeOutdatedContainers
+Closes all outdated containers for the user.
+
+Parameters:
+{Array} courseObjects - contains the course objects which should be closed
+*/
 function closeOutdatedContainers(courseObjects){
     getAllCurrentlyActiveCourseContainers(function(activeCourses){
             activeCourses.forEach(activeCourse => {
@@ -600,6 +808,13 @@ function closeOutdatedContainers(courseObjects){
     });
 }
 
+
+/*
+
+Function: handleOnClickBurgerButton
+Handles the burger button for the mobile view. Opens and closes menu.
+
+*/
 function handleOnClickBurgerButton() {
     let mobileBar = document.getElementById("mobile-bar");
     if (mobileBar.style.display === "block") {
@@ -609,6 +824,17 @@ function handleOnClickBurgerButton() {
     }
 }
 
+
+/*
+
+Function: renderAdminLandingPage
+Renders the landing page for the admin.
+Function for attaching EventListeners for the admin is called.
+
+
+Parameters:
+{HTMLElement} header - The header element
+*/
 function renderAdminLandingPage(header){
     let courseList = document.getElementById("course-list");
     requestFileAsynchronously("add-course.html", function(caller){
@@ -636,6 +862,11 @@ function renderAdminLandingPage(header){
     });
 }
 
+/*
+
+Function: attachCommonEventListenersToLandingPage
+Attaches all relevant EventListeners for user and admin.
+*/
 function attachCommonEventListenersToLandingPage(){
     document.getElementById("logout").addEventListener("click", handleLogout);
     document.getElementById("logoutMobile").addEventListener("click", handleLogout);
@@ -643,6 +874,11 @@ function attachCommonEventListenersToLandingPage(){
     document.getElementById("burger-button").addEventListener("click", handleOnClickBurgerButton);
 }
 
+/*
+
+Function: attachAdminEventListenersToLandingPage
+Attaches all relevant EventListeners for the admin.
+*/
 function attachAdminEventListenersToLandingPage(){
     attachCommonEventListenersToLandingPage();
     document.getElementById("register").addEventListener("click", renderRegistrationPage);
@@ -650,12 +886,22 @@ function attachAdminEventListenersToLandingPage(){
     document.getElementById("add-course-p").addEventListener("click", renderCourseCreationContainer);
 }
 
+/*
+
+Function: attachUserEventListenersToLandingPage
+Attaches all relevant EventListeners for the user.
+*/
 function attachUserEventListenersToLandingPage(){
     attachCommonEventListenersToLandingPage();
     document.getElementById("profile").addEventListener("click", renderProfilePage);
     document.getElementById("profileMobile").addEventListener("click", renderProfilePage);
 }
 
+/*
+
+Function: renderProfilePage
+Renders the profile container for the user if he clicks at "Profil" in the header.
+*/
 function renderProfilePage(){
     document.getElementById("mobile-bar").style.display = "none";
     if (document.getElementById("user-profile")){
@@ -692,6 +938,11 @@ function renderProfilePage(){
     });
 }
 
+/*
+
+Function: renderRegistrationPage
+Renders the registration container for the admin if he clicks at "Neue Registrierung" in the header.
+*/
 function renderRegistrationPage(){
     document.getElementById("mobile-bar").style.display = "none";
     if (document.getElementById("registration-container")){
@@ -709,6 +960,11 @@ function renderRegistrationPage(){
     })
 }
 
+/*
+
+Function: hideCourseList
+Hides the course list.
+*/
 function hideCourseList(){
     hideElementWithoutSpaceUse("course-list");
 }

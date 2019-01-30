@@ -23,7 +23,7 @@ function startWorker() {
 }
 
 
-// Function: renderLogin
+// Function: stopWorker
 // Terminates the Web Worker
 function stopWorker() {
     worker.terminate();

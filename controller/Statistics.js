@@ -1,3 +1,13 @@
+/*
+
+Function: getXTicks
+Function evaluating how to evenly divide the space on the x-axis for the ticks.
+
+Parameters:
+{Number} start - the start of the x axis
+{Number} stop - the end of the x axis
+{Number} amount - number of ticks
+*/
 function getXTicks(start, stop, amount){
     let ticks = [];
     let currValue = start;
@@ -8,7 +18,17 @@ function getXTicks(start, stop, amount){
     return ticks;
 }
 
+/*
 
+Function: createLine
+Creates a SVG line element.
+
+Parameters:
+{Number} x1 - x coordinate of line begin
+{Number} y1 - y coordinate of line begin
+{Number} x2 - x coordinate of line end
+{Number} y2 - y coordinate of line end
+*/
 function createLine(x1, y1, x2, y2){
     let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     line.setAttribute("x1", x1);
@@ -23,6 +43,16 @@ function createLine(x1, y1, x2, y2){
     return line;
 }
 
+/*
+
+Function: createText
+Creates a SVG Text element.
+
+Parameters:
+{Number} x - x coordinate of text start
+{Number} y - y coordinate of text start
+{String} text - text
+*/
 function createText(x, y, text){
     let textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     textElement.setAttribute("x", x);
@@ -31,6 +61,16 @@ function createText(x, y, text){
     return textElement;
 }
 
+/*
+
+Function: createCircle
+Creates a SVG circle element.
+
+Parameters:
+{Number} x - x coordinate of circle center
+{Number} y - y coordinate of circle center
+{Number} r - radius
+*/
 function createCircle(x, y, r){
     let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttribute("cx", x);
@@ -40,19 +80,52 @@ function createCircle(x, y, r){
     return circle;
 }
 
+/*
+
+Function: createGraphTitle
+Creates the graph title.
+
+Parameters:
+{String} title - title
+*/
 function createGraphTitle(title){
     return createText(45, 7.5, title);
 }
 
+/*
+
+Function: createXLabel
+Creates a label on the x axis.
+
+Parameters:
+{Number} xCoord - coordinate on the x axis
+{String} text - label
+*/
 function createXLabel(xCoord, text){
     let offset = 5; //offset to place label in the middle
     return createText(xCoord-offset, 117, text);
 }
 
+/*
+
+Function: convertRatioToRealY
+Converts the attendee ration to the corresponding point on the y axis.
+
+Parameters:
+{Number} ratio - ratio (participants/registered)
+*/
 function convertRatioToRealY(ratio){
     return 100 - (ratio * 100) + 10;
 }
 
+/*
+
+Function: getMaximalShowableDates
+Get maximal number of showable points until statistic view looks bad.
+
+Parameters:
+{Course} course - the course object which holds the statistic data
+*/
 function getMaximalShowableDates(course){
     let maximalShowableEventsTillViewGetsBad = 8;
     return course.statistics.length >= maximalShowableEventsTillViewGetsBad ?
@@ -60,6 +133,15 @@ function getMaximalShowableDates(course){
         course.statistics.length;
 }
 
+/*
+
+Function: createStat1
+Creates the Statistic 1 of the app.
+
+Parameters:
+{Course} courseName - course name of the course which holds the statistic
+{Function} callback - callback
+*/
 function createStat1(courseName, callback){
     requestFileAsynchronously("stat1.html", function(caller){
         let svgElement = HTMLToElement(caller.responseText);
