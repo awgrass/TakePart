@@ -105,7 +105,10 @@ function getCourseByName(courseName, callback){
             docRef.collection("statistics").get().then((snap) => {
                 let stats = [];
                 snap.forEach(function(doc) {
-                    stats.push(new Statistics(doc.data().date, doc.data().participated, doc.data().registeredAtThisTime));
+                    stats.push(new Statistics(doc.data().date,
+                        doc.data().participated,
+                        doc.data().registeredAtThisTime,
+                        doc.data().participants));
                 });
                 callback(new Course(
                     doc.data().name,

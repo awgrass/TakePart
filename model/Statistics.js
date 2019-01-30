@@ -1,8 +1,9 @@
 class Statistics {
-    constructor(date, participated, registeredAtThisTime) {
+    constructor(date, participated, registeredAtThisTime, participants) {
         this.date = date;
         this.participated = participated;
         this.registeredAtThisTime = registeredAtThisTime;
+        this.participants = participants;
     }
 }
 
@@ -22,10 +23,13 @@ function addStatistic(name, date, registeredAtThisTime){
                 .set({
                     date: date,
                     participated: 0,
+                    participants: [],
                     registeredAtThisTime: registeredAtThisTime
                 });
         });
 }
+
+
 
 //Function works but is to be optimized. It decreases or increases amount of participants.
 function updateStatistic(name, date, increase) {
@@ -41,7 +45,9 @@ function updateStatistic(name, date, increase) {
                 else if (!increase && doc.data().participated <= 0)
                     throw "Cant be less than 0 participants.";
 
+                let participantRef = getUserRefByID(auth.currentUser.uid);
                 ref.doc(doc.id).update({
+                    participants: firebase.firestore.FieldValue.arrayUnion(participantRef),
                     participated: increase ? doc.data().participated + 1 : doc.data().participated - 1
                 })
                 .then(function() {
