@@ -31,28 +31,28 @@ function renderLogin(){
 
 function closeInfoContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-info-container") === "yes") {
-        removeElementByID('info-container-' + itemCourseName);
+        tryRemoveElementByID('info-container-' + itemCourseName);
         listItem.setAttribute("has-info-container", "no");
     }
 }
 
 function closeStatisticsContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-statistics-container") === "yes") {
-        removeElementByID('statistics-container-' + itemCourseName);
+        tryRemoveElementByID('statistics-container-' + itemCourseName);
         listItem.setAttribute("has-statistics-container", "no");
     }
 }
 
 function closeAddAttendeesContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-attendees-container") === "yes") {
-        removeElementByID('add-attendees-container-' + itemCourseName);
+        tryRemoveElementByID('add-attendees-container-' + itemCourseName);
         listItem.setAttribute("has-attendees-container", "no");
     }
 }
 
 function closeAddDatesContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-dates-container") === "yes") {
-        removeElementByID('add-dates-container-' + itemCourseName);
+        tryRemoveElementByID('add-dates-container-' + itemCourseName);
         listItem.setAttribute("has-dates-container", "no");
     }
 }
@@ -189,7 +189,7 @@ function renderAttendeesContainer(courseName, courseItemNode){
                     });
                     insertAfter(attendeesContainer, courseItemNode);
                     courseItemNode.setAttribute("has-attendees-container", "yes");
-                    removeElementByID("info-container-" + courseName);
+                    tryRemoveElementByID("info-container-" + courseName);
                     courseItemNode.setAttribute("has-info-container", "no");
                 });
             });
@@ -226,6 +226,7 @@ function renderDatesContainer(courseName, courseItemNode){
         dateForm.prepend(createAddDateField(datetimepickerID));
         dateForm.onsubmit = function(e){
             e.preventDefault();
+            //TODO: date should be in future!
             let newDate = getDateFromDateTimePicker(datetimepickerID);
             addDate(newDate, courseName);
             updateNextDate(courseName, courseItemNode);
@@ -234,7 +235,7 @@ function renderDatesContainer(courseName, courseItemNode){
         insertAfter(datesContainer, courseItemNode);
         initDatetimepicker(datetimepickerID);
         courseItemNode.setAttribute("has-dates-container", "yes");
-        removeElementByID("info-container-" + courseName);
+        tryRemoveElementByID("info-container-" + courseName);
         courseItemNode.setAttribute("has-info-container", "no");
     });
 }
@@ -438,7 +439,7 @@ function renderUserLandingPage(courseObjects) {
                 updateStatistic(courseObj.name, courseObj.date, true);
                 courseItemFile =  "course-item-user-accepted.html";
                 requestFileAsynchronously(courseItemFile, function(caller){
-                    removeElementByID("list-item-" + courseObj.name);
+                    tryRemoveElementByID("list-item-" + courseObj.name);
                     courseContainerTemplate = HTMLToElement(caller.responseText);
                     courseContainer = initializeCourseContainerFromCourseObject(courseObj, courseContainerTemplate.cloneNode(true));
                     courseList.appendChild(courseContainer);
@@ -447,6 +448,35 @@ function renderUserLandingPage(courseObjects) {
             });
             courseList.appendChild(courseContainer);
             addStatistic(courseObj.name, courseObj.date, courseObj.num);
+        });
+        closeOutdatedContainers(courseObjects);
+    });
+}
+
+function getAllCurrentlyActiveCourseContainers(callback){
+    getAllCourses(function(courses){
+        let activeCourses = [];
+        courses.forEach(course => {
+            if (document.getElementById("list-item-" + course.name)){
+                activeCourses.push(course);
+            }
+        });
+        callback(activeCourses);
+    });
+}
+
+function removeCourseContainerAndAllItsSubContainers(courseName){
+    tryRemoveElementByID("list-item-" + courseName);
+    tryRemoveElementByID("statistics-container-" + courseName);
+    tryRemoveElementByID("info-container-" + courseName);
+}
+
+function closeOutdatedContainers(courseObjects){
+    getAllCurrentlyActiveCourseContainers(function(activeCourses){
+            activeCourses.forEach(activeCourse => {
+                if (!courseListContainsCourse(courseObjects, activeCourse)){
+                    removeCourseContainerAndAllItsSubContainers(activeCourse.name);
+                }
         });
     });
 }
@@ -550,7 +580,7 @@ function renderRegistrationPage(){
         return;
     }
     if (document.getElementById("course-creation-container")){
-        removeElementByID("course-creation-container");
+        tryRemoveElementByID("course-creation-container");
     }
     requestFileAsynchronously("registration-container.html", function(caller){
         let registerContainer = HTMLToElement(caller.responseText);

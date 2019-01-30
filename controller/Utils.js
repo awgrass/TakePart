@@ -25,8 +25,11 @@ function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
-function removeElementByID(id){
-    document.getElementById(id).outerHTML = "";
+function tryRemoveElementByID(id){
+    if (document.getElementById(id)){
+        document.getElementById(id).outerHTML = "";
+    }
+
 }
 
 function disableButton(buttonID){
@@ -75,4 +78,14 @@ function genericCreateElement(tagName, classNames, attributeTuples){
         attributeTuples.forEach(attributeTuple => {element.setAttribute(attributeTuple[0], attributeTuple[1]);});
     }
     return element;
+}
+
+function courseListContainsCourse(courseList, courseToCheck){
+    let contains = false;
+    courseList.forEach(course => {
+        if (course.name === courseToCheck.name){
+            contains = true;
+        }
+    });
+    return contains;
 }
