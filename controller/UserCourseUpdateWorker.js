@@ -68,6 +68,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+//EventListener: Communication with main thread.
 self.addEventListener('message', function(e) {
     let data = e.data;
     switch (data.cmd) {
