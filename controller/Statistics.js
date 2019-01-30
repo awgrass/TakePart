@@ -41,7 +41,7 @@ function createCircle(x, y, r){
 }
 
 function createGraphTitle(title){
-    return createText(60, 7.5, title);
+    return createText(45, 7.5, title);
 }
 
 function createXLabel(xCoord, text){
