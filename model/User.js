@@ -1,5 +1,7 @@
 var userRef = firestore.collection("users");
 
+// Class: User
+// User Object containing his properties
 class User {
     constructor(uID, firstName, lastName, email, courses, isAdmin) {
         this.uID = uID;
@@ -11,6 +13,8 @@ class User {
     }
 }
 
+// Function: writeUser
+// Adds an user into the database
 function writeUser(user){
     userRef.doc(user.uID).set({
         uID: user.uID,
@@ -22,10 +26,14 @@ function writeUser(user){
     }).then(console.log("ok"));
 }
 
+// Function: getUserRefByID
+// Gets the user reference given his id
 function getUserRefByID(ID){
     return firebase.firestore().doc("users/" + ID);
 }
 
+// Function: getUserById
+// Gets a user given his id
 function getUserById(userID, onSuccess){
     let docRef = userRef.doc(userID);
     docRef.get().then(function(doc) {
@@ -42,12 +50,8 @@ function getUserById(userID, onSuccess){
     });
 }
 
-function getCoursesOfCurrentUser(userID, callback){
-    getUserById(userID, function(user){
-        getObjectListFromRefList(user.courses, callback);
-    });
-}
-
+// Function: addCourseToUserByID
+// Adds a course to an user
 function addCourseToUserByID(userID, courseRef){
     let user = userRef.doc(userID);
     user.update({
@@ -57,6 +61,8 @@ function addCourseToUserByID(userID, courseRef){
     });
 }
 
+// Function: getUsers
+// Gets all registered users
 function getUsers(callback) {
     userRef.get().then(snapshot => {
         let users = [];

@@ -2,6 +2,8 @@ var auth = firebase.auth();
 var currentUser = null;
 
 
+// Function: authenticateUser
+// Authenticates the user through the firebase web service
 function authenticateUser(email, password, handleSuccessfullAuthentication) {
     auth.signInWithEmailAndPassword(email, password)
         .then(function(){
@@ -11,6 +13,8 @@ function authenticateUser(email, password, handleSuccessfullAuthentication) {
         .catch(function (error){console.log(error);});
 }
 
+// Function: handleLogin
+// Gets the user login data from the page and calls the authenticateUser function.
 function handleLogin(){
     let email = document.getElementById('email').value;
     let password = document.getElementById('password').value;
@@ -31,6 +35,9 @@ function handleLogin(){
     });
 }
 
+
+// Function: handleLogout
+// Function that handles logout process
 function handleLogout(){
     setCookie("session", "", -1);
     if (worker !== undefined) stopWorker();
@@ -38,6 +45,8 @@ function handleLogout(){
     renderLogin();
 }
 
+// Function: signOutUser
+// Signs out the user from the authentication service
 function signOutUser() {
     auth.signOut().catch(function (err) {})
         .then(function() { console.log('Signed Out');},
@@ -45,6 +54,9 @@ function signOutUser() {
             });
 }
 
+
+// Function: setCookie
+// Sets the user cookie
 function setCookie(name,value,days) {
     var expires = "";
     if (days) {
@@ -55,6 +67,9 @@ function setCookie(name,value,days) {
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 }
 
+
+// Function: getCookie
+// Gets the saved cookie
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -66,10 +81,9 @@ function getCookie(name) {
     return null;
 }
 
-function passwordInvalid(){
-    //TODO: implement
-}
 
+// Function: handleRegister
+// Handles the registration process of an user
 function handleRegister(e){
     e.preventDefault();
     let verified = false;
@@ -91,6 +105,9 @@ function handleRegister(e){
 
 }
 
+
+// Function: registerUser
+// Registers the user through the authentication service of firebase
 function registerUser(firstName, lastName, email, password, isAdmin, callback) {
     auth.createUserWithEmailAndPassword(email, password)
         .then(function(userData) {

@@ -1,5 +1,7 @@
 let worker;
 
+// Function: startWorker
+// Starts the Web Worker
 function startWorker() {
     if (typeof(Worker) !== "undefined") {
         if (typeof(worker) == "undefined") {
@@ -20,6 +22,9 @@ function startWorker() {
     }
 }
 
+
+// Function: renderLogin
+// Terminates the Web Worker
 function stopWorker() {
     worker.terminate();
     worker = undefined;

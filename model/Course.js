@@ -1,7 +1,7 @@
 const courseRef = firestore.collection("courses");
-//var courses = [];
 
-//class course object TODO maybe name not needed
+// Class: Course
+// Class object with its properties
 class Course {
     constructor(name, dates, participants, statistics) {
         this.name = name;
@@ -11,6 +11,7 @@ class Course {
     }
 }
 
+// Function: createCourse
 //This function creates a new course in the database
 function createCourse(name, dates, participants, callback){
     let newCourseRef = courseRef.doc(name);
@@ -30,6 +31,7 @@ function createCourse(name, dates, participants, callback){
     callback();
 }
 
+// Function: addDate
 //This function adds a course date to a specific course
 function addDate(date, name) {
     let course = courseRef.doc(name);
@@ -40,10 +42,13 @@ function addDate(date, name) {
     });
 }
 
+// Function: getCourseRefBycourseName
+// This function gets the course reference given its name
 function getCourseRefBycourseName(courseName){
     return firebase.firestore().doc("courses/" + courseName);
 }
 
+// Function: addParticipant
 //This function add a user to a specific course
 function addParticipant(participantRef, courseName) {
     let course = courseRef.doc(courseName);
@@ -53,23 +58,8 @@ function addParticipant(participantRef, courseName) {
     });
 }
 
-//This function gets all courses of the current user
-function getCoursesOfUser(userid, callback) {
-    courseRef.where("participants", "array-contains", userid)
-        .get().then(snapshot => {
-        let coursesList = [];
-        let numberOfCourses = snapshot.docs.length;
-        snapshot.forEach(doc => {
-            getStatisticByCourseName(doc.data().name, function(statistic) {
-                coursesList.push(new Course(doc.data().name, doc.data().dates, doc.data().participants, statistic));
-                if (coursesList.length === numberOfCourses){
-                    callback(coursesList);
-                }
-            });
-        });
-    });
-}
-
+// Function: getStatisticByCourseName
+// This function gets all the statistics of a course
 function getStatisticByCourseName(courseName, callback){
     const statCollection = "courses/" + courseName + "/statistics";
     let statisticsRef = firestore.collection(statCollection);
@@ -83,6 +73,8 @@ function getStatisticByCourseName(courseName, callback){
 
 }
 
+// Function: getAllCourses
+// This function gets all available courses
 function getAllCourses(onSuccess) {
     courseRef.get().then(snapshot => {
         let coursesList = [];
@@ -98,6 +90,8 @@ function getAllCourses(onSuccess) {
     });
 }
 
+// Function: getCourseByName
+// This function gets the course object given its name
 function getCourseByName(courseName, callback){
     let docRef = courseRef.doc(courseName);
     docRef.get().then((doc) => {
@@ -124,7 +118,8 @@ function getCourseByName(courseName, callback){
     });
 }
 
-//This function gets two arrays ( one with sorted users of this course and second with sorted timestamps)
+// Function: getCourseDataByCoursName
+// This function gets two arrays ( one with sorted users of this course and second with sorted timestamps)
 function getCourseDataByCoursName(courseName, callback) {
     let docRef = courseRef.doc(courseName);
     docRef.get().then(function(doc) {

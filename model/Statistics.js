@@ -7,6 +7,9 @@ class Statistics {
     }
 }
 
+
+// Function: addStatistic
+// Adds a statistic document to a course into the database
 function addStatistic(name, date, registeredAtThisTime){
     let ref = firestore
         .collection("courses")
@@ -29,9 +32,8 @@ function addStatistic(name, date, registeredAtThisTime){
         });
 }
 
-
-
-//Function works but is to be optimized. It decreases or increases amount of participants.
+// Function: updateStatistic
+// Updates a statistic document increasing the partecipation count
 function updateStatistic(name, date, increase) {
     let ref = firestore
         .collection("courses")
