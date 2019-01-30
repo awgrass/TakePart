@@ -1,10 +1,10 @@
 var config = {
-  apiKey: "AIzaSyCtulKNvt3Ja3aQOxaDf7UWJ3HtbfIthDQ",
-  authDomain: "wt01-59106.firebaseapp.com",
-  databaseURL: "https://wt01-59106.firebaseio.com",
-  projectId: "wt01-59106",
-  storageBucket: "wt01-59106.appspot.com",
-  messagingSenderId: "600195730115"
+  apiKey: "AIzaSyDmMse1ds7BnysMdjEgS-4jb38asiC_ooE",
+  authDomain: "takepart-attendees.firebaseapp.com",
+  databaseURL: "https://takepart-attendees.firebaseio.com",
+  projectId: "takepart-attendees",
+  storageBucket: "takepart-attendees.appspot.com",
+  messagingSenderId: "482659385948"
 };
 firebase.initializeApp(config);
 
