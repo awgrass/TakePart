@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sta",["Function","Class"],[["startWorker",,[[,,,,0,"File:controller/WebWorker.js:startWorker"]]],["Statistics",,[[,,,,1,"File:model/Statistics.js:Statistics","JavaScriptClass:Statistics"]]]]);

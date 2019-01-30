@@ -1,0 +1,1 @@
+NDMenu.OnSectionLoaded("classes.js",[[1,"Course"],[1,"Statistics"],[1,"User"]]);

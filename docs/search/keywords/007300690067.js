@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sig",["Function"],[["signOutUser",,[[,,,,0,"File:controller/Authentication.js:signOutUser"]]]]);

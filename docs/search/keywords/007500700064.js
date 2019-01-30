@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("upd",["Function"],[["updateAttendeesCount",,[[,,,,0,"File:controller/Rendering.js:updateAttendeesCount"]]],["updateNextDate",,[[,,,,0,"File:controller/Rendering.js:updateNextDate"]]],["updateStatistic",,[["Statistics",,,,0,"File:model/Statistics.js:Statistics.updateStatistic","JavaScriptClass:Statistics:updateStatistic"]]]]);

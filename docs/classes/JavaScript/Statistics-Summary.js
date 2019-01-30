@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("JavaScriptClass:Statistics","Statistics");NDSummary.OnSummaryLoaded("JavaScriptClass:Statistics",[["JavaScript","JavaScript"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[2,0,0,"Statistics"],[3,0,2,"Functions","Functions"],[4,0,1,"addStatistic","addStatistic"],[5,0,1,"updateStatistic","updateStatistic"]]);

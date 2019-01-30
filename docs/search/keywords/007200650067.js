@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("reg",["Function"],[["registerUSer",,[[,,,,0,"File:controller/Authentication.js:registerUSer"]]]]);

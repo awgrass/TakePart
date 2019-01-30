@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("hid",["Function"],[["hideAddCourseContainer",,[[,,,,0,"File:controller/Rendering.js:hideAddCourseContainer"]]],["hideCourseList",,[[,,,,0,"File:controller/Rendering.js:hideCourseList"]]],["hideElementWithoutSpaceUse",,[[,,,,0,"File:controller/Utils.js:hideElementWithoutSpaceUse"]]]]);

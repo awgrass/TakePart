@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("rem",["Function"],[["removeCourseContainerAndAllItsSubContainers",,[[,,,,0,"File:controller/Rendering.js:removeCourseContainerAndAllItsSubContainers"]]]]);

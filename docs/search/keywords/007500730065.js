@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("use",["Class"],[["User",,[[,,,,0,"File:model/User.js:User","JavaScriptClass:User"]]]]);

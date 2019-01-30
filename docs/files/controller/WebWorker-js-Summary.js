@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File:controller/WebWorker.js","WebWorker.js");NDSummary.OnSummaryLoaded("File:controller/WebWorker.js",[["JavaScript","JavaScript"]],[["Functions","Function"],["Groups","Group"]],[[36,0,1,"Functions","Functions"],[37,0,0,"startWorker","startWorker"],[10,0,0,"stopWorker","stopWorker"]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("wri",["Function"],[["writeUser",,[["User",,,,0,"File:model/User.js:User.writeUser","JavaScriptClass:User:writeUser"]]]]);
