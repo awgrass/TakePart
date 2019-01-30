@@ -14,6 +14,14 @@ window.onload = function(){
     }
 };
 
+
+/*
+
+Function: renderLandingPageDistinctly
+Renders the landing page distinctly.
+Calls the renderLandingPage function.
+
+ */
 function renderLandingPageDistinctly(){
     getUserById(auth.currentUser.uid, function(user){
         console.log(user);
@@ -21,7 +29,12 @@ function renderLandingPageDistinctly(){
     });
 }
 
-function renderLogin(){
+
+// Function: renderLogin
+// Loads the login.html in the root element of the index.html.
+// Attaches the EventListener for the submit button.
+function renderLogin()
+{
     requestFileAsynchronously('login.html', function(caller) {
         document.getElementById('root').innerHTML= caller.responseText;
         document.getElementById('submit-button').addEventListener('click', handleLogin);
@@ -29,6 +42,18 @@ function renderLogin(){
     });
 }
 
+
+/*
+
+Function: closeInfoContainer
+Closes the info container by checking if the container has attribute "has-info-container" set to yes.
+After closing the attribute "has-info-container" is set to no.
+
+Parameters:
+{HTMLElement} listItem - The node which should be closed
+{String} itemCourseName  - The course name of the item
+
+ */
 function closeInfoContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-info-container") === "yes") {
         tryRemoveElementByID('info-container-' + itemCourseName);
@@ -36,6 +61,16 @@ function closeInfoContainer(listItem, itemCourseName){
     }
 }
 
+/*
+
+Function: closeStatisticsContainer
+Closes the statistics container by checking if the container has attribute "has-info-container" set to yes.
+After closing the attribute "has-info-container" is set to no.
+
+Parameters:
+{HTMLElement} listItem - The node which should be closed
+{String} itemCourseName -  The course name of the item
+ */
 function closeStatisticsContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-statistics-container") === "yes") {
         tryRemoveElementByID('statistics-container-' + itemCourseName);
@@ -43,6 +78,17 @@ function closeStatisticsContainer(listItem, itemCourseName){
     }
 }
 
+/*
+
+Function: closeAddAttendeesContainer
+Closes the attendees container for adding participants by checking if the container has attribute "has-info-container" set to yes.
+After closing the attribute "has-info-container" is set to no.
+
+Parameters:
+{HTMLElement} listItem - The node which should be closed
+{String} itemCourseName -  The course name of the item
+
+ */
 function closeAddAttendeesContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-attendees-container") === "yes") {
         tryRemoveElementByID('add-attendees-container-' + itemCourseName);
@@ -50,6 +96,16 @@ function closeAddAttendeesContainer(listItem, itemCourseName){
     }
 }
 
+/*
+
+Function: closeAddDatesContainer
+Closes the dates container for adding dates by checking if the container has attribute "has-info-container" set to yes.
+After closing the attribute "has-info-container" is set to no.
+
+Parameters:
+{HTMLElement} listItem - The node which should be closed
+{String} itemCourseName - The course name of the item
+ */
 function closeAddDatesContainer(listItem, itemCourseName){
     if (listItem.getAttribute("has-dates-container") === "yes") {
         tryRemoveElementByID('add-dates-container-' + itemCourseName);
@@ -57,10 +113,29 @@ function closeAddDatesContainer(listItem, itemCourseName){
     }
 }
 
+/*
+
+Function: closeContainers
+The function calls other closing functions which are explained above.
+Helper for closing more than one container.
+
+Parameters:
+{HTMLElement} listItem - The node which should be closed
+{String} itemCourseName - The course name of the item
+{Array} closeContainerFunctions -  Contains closing functions which are called within
+ */
 function closeContainers(listItem, itemCourseName, closeContainerFunctions){
     closeContainerFunctions.forEach(func => func(listItem, itemCourseName));
 }
 
+/*
+
+Function: renderInfoContainerContent
+Renders the info container which should be opened if someone clicks on it.
+
+Parameters:
+{String} courseName - The name of the course from which the info container should be opened
+ */
 function renderInfoContainerContent(courseName){
     let infoContainer = document.getElementById("info-container-" + courseName);
     getCourseDataByCoursName(courseName, function(participants, timestamps){
@@ -76,11 +151,29 @@ function renderInfoContainerContent(courseName){
     });
 }
 
+/*
+
+Function: handleOnDragStart
+Handles the onDrag EventListener. Sets the opacity of the dragged item and data to identify the
+element in the Drop EventListener.
+
+Parameters:
+{Event} event - The event which is triggered
+ */
 function handleOnDragStart(event) {
     this.style.opacity = '0.4';
     event.dataTransfer.setData('text', event.target.id);
 }
 
+/*
+
+Function: handleOnDrop
+Handles the onDrop EventListener. Sets the opacity back to one and checks if the elements can be
+added to the drop target or not.
+
+Parameters:
+{Event} event - The event which is triggered
+ */
 function handleOnDrop(event) {
     event.preventDefault();
     let data = event.dataTransfer.getData("text");
@@ -96,11 +189,32 @@ function handleOnDrop(event) {
     }
 }
 
+/*
+
+Function: handleOnDragOver
+Handles the onDragOver EventListener. Sets the dropEffect to copy.
+
+Parameters:
+{Event} event - The event which is triggered
+*/
 function handleOnDragOver(event) {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
 }
 
+/*
+
+Function: addAttendees
+Adding attendees to the list.
+
+Parameters:
+{HTMLElement} list -
+{Array} classNameArray - Containing {String} names of html classes which are added to the list elements
+{String} value - The name of the user, who should be added to the course
+{String} courseName -  The course name to which the user should be added
+{String} id -  a unique  id which identifies the user
+
+*/
 function addAttendees(list, classNameArray, value, courseName, id) {
     let listEntry = document.createElement("li");
     let userName = value.replace(/\s/g,"");
