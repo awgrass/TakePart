@@ -411,7 +411,7 @@ function renderLandingPage(isAdmin){
         }
         else{
             getUserById(currentUser.uid, function (user) {
-                worker.postMessage({'cmd': 'start', 'msg': user.uID, 'admin': user.isAdmin});
+                worker.postMessage({'cmd': 'start', 'msg': user.uID});
             });
             let profileField = genericCreateElement("p", ["right-elements"], [["id", "profile"]]);
             profileField.innerHTML = "Profil";
@@ -426,10 +426,6 @@ function renderLandingPage(isAdmin){
 }
 
 function renderUserLandingPage(courseObjects) {
-    let profileField = genericCreateElement("p", ["right-elements"], [["id", "profile"]]);
-    profileField.innerHTML = "Profil";
-    header.prepend(profileField);
-    attachUserEventListenersToLandingPage();
     let courseItemFile = "course-item-user-ready.html";
     requestFileAsynchronously(courseItemFile, function(caller){
         let courseList = document.getElementById('course-list');
