@@ -6,6 +6,10 @@ let courseDates = new Map();
 let run = true;
 let userID;
 
+/*
+Function: initializeOrUpdateWorker
+Initialized the worker by retrieving all user relevant courses
+*/
 function initializeOrUpdateWorker(){
     firestore.collection("users").doc(userID).get().then(function(doc) {
         if (doc.exists) {
@@ -31,6 +35,10 @@ function initializeOrUpdateWorker(){
     });
 }
 
+/*
+Function: work
+Checks every minute if new courses should be shown on the web page
+*/
 async function work() {
     while (run) {
         if (courseDates.size > 0) {
@@ -49,6 +57,13 @@ async function work() {
     }
 }
 
+/*
+Function: sleep
+Needed for waiting given time
+
+Parameters:
+{Integer} ms - time in miliseconds
+*/
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -71,6 +86,10 @@ self.addEventListener('message', function(e) {
     };
 }, false);
 
+/*
+Function: addWorkerListener
+Listener of database course date changes. Triggers the initializeOrUpdateWorker.
+*/
 function addWorkerListener() {
     firestore.collection("courses").onSnapshot(function(snapshot) {
             snapshot.docChanges().forEach(function(change) {
