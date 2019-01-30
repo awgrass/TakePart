@@ -147,11 +147,24 @@ function genericAddListItem(list, classNameArray, value, id, isDraggable){
     list.appendChild(listEntry);
 }
 
+function handleDragAndDrop(container, courseName) {
+    //TODO: EMAIL statt NAME für die id, weil Namen doppelt vorkommen können
+    let dropBox = getChildByClassName(container, "drop-box");
+    let userList = getChildByClassName(container, "user-list");
+    dropBox.addEventListener("dragover", handleOnDragOver);
+    dropBox.setAttribute("id", "drop-box-" + courseName);
+    dropBox.addEventListener("drop", handleOnDrop);
+    userList.addEventListener("drop", handleOnDrop);
+    userList.addEventListener("dragover", handleOnDragOver);
+    userList.setAttribute("id", "user-list-" + courseName);
+}
+
 function renderAttendeesContainer(courseName, courseItemNode){
     requestFileAsynchronously("add-attendee-container.html", function (caller) {
         let attendeesContainer = HTMLToElement(caller.responseText);
         attendeesContainer.setAttribute("id", "add-attendees-container-" + courseName);
 
+        let cancelButton = getChildByClassName(attendeesContainer, "back-adding-attendees");
         let okButton = getChildByClassName(attendeesContainer, "submit-adding-attendees");
         okButton.addEventListener("click", function(){
             dropBox = document.getElementById("drop-box-" + courseName);
@@ -163,19 +176,13 @@ function renderAttendeesContainer(courseName, courseItemNode){
             }
             updateAttendeesCount(courseName, courseItemNode);
             closeContainers(courseItemNode, courseName, [closeAddAttendeesContainer]);
-
-
         });
 
-        let dropBox = getChildByClassName(attendeesContainer, "drop-box");
-        let userList = getChildByClassName(attendeesContainer, "user-list");
-        dropBox.addEventListener("dragover", handleOnDragOver);
-        dropBox.setAttribute("id", "drop-box-" + courseName);
-        dropBox.addEventListener("drop", handleOnDrop);
-        userList.addEventListener("drop", handleOnDrop);
-        userList.addEventListener("dragover", handleOnDragOver);
-        userList.setAttribute("id", "user-list-" + courseName);
+        cancelButton.addEventListener("click", function () {
+            closeContainers(courseItemNode, courseName, [closeAddAttendeesContainer]);
+        });
 
+        handleDragAndDrop(attendeesContainer, courseName);
         getChildByClassName(attendeesContainer, "course-name").innerHTML = courseName;
         let userListElement = getChildByClassName(attendeesContainer, "user-list");
         getCourseByName(courseName, function (course) {
