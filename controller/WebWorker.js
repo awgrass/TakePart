@@ -48,7 +48,7 @@ self.addEventListener('message', function(e) {
     let data = e.data;
     switch (data.cmd) {
         case 'start':
-            if (data.admin === undefined)
+            if (!data.admin)
                 workerRef = workerRef.where("participants", "array-contains", "users/" + data.msg);
             initializeOrUpdateWorker();
             work();

@@ -13,3 +13,10 @@ div.different-height {
 .create-course {
     width: 40%;
 }
+
+@media (min-width:360px) and (max-width: 768px)
+{
+    .create-course {
+        width: auto;
+    }
+}

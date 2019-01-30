@@ -17,12 +17,20 @@ header {
     height: 10rem;
     overflow: hidden;
     background-color: #114e87;
-    padding: 0 5rem;
+    padding: 0 1.5em;
     box-shadow: 0 0.5rem 0.5rem 0.2rem rgba(0,0,0,0.63);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 p {
     margin-bottom: 0;
+}
+
+
+.header-container {
+    width: 100%;
 }
 
 .text-center {
@@ -75,16 +83,15 @@ p {
 }
 
 .header-right {
-    float: right;
     color: #FFFFFF;
     font-size: 2rem;
-    margin-top: -5.7rem;
+    float: right;
 }
 
 .right-elements {
     display: inline;
-    margin-left: 5rem;
     text-shadow: -0.1rem 0 black, 0 0.1rem black, 0.1rem 0 black, 0 -0.1rem black;
+    margin-left: 1em;
 }
 
 .right-elements:hover {
@@ -92,6 +99,19 @@ p {
     cursor: pointer;
     padding: 1rem 2rem;
     border-radius: 0.5rem;
+}
+
+#mobile-bar {
+    background-color: #0f4170;
+    display: none;
+}
+
+.mobile-bar-elements {
+    color: #FFFFFF;
+}
+
+.element {
+    padding: 0.5em 1.5em;
 }
 
 /* container header styles */
@@ -126,8 +146,8 @@ p {
 #add-course-p {
     font-size: 3rem;
     font-weight: bold;
-    padding-left: 5.5rem;
-    margin-top: 0.5rem;
+    padding-left: 2em;
+    margin-top: 0.2em;
     display: inline-block;
 }
 
@@ -157,4 +177,57 @@ p {
 
 .fa-check-circle {
     padding-right: 0.5em;
+}
+
+/* styling for small devices */
+
+@media (min-width:360px) and (max-width: 768px)
+{
+    #appName {
+        font-size: 3rem;
+    }
+
+    .header-right {
+        font-size: 1.6rem;
+    }
+
+}
+
+@media (min-width:360px) and (max-width: 540px)
+{
+    label {
+        font-size: 1.2rem;
+    }
+
+    .right-elements {
+        display: none;
+    }
+
+    .right-element-mobile {
+        display: block;
+        font-size: 1.5em;
+    }
+
+    #add-course-p {
+        font-size: 2rem;
+    }
+
+    #plus-icon-course {
+        font-size: 3.5rem;
+    }
+
+    .container-header-font {
+        font-size: 2rem;
+    }
+
+    .attendance-confirmation {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width:540px)
+{
+    i.right-element-mobile {
+        display: none;
+    }
 }

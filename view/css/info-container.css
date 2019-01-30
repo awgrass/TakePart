@@ -43,7 +43,7 @@ svg {
 @media (min-width:360px) and (max-width: 992px)
 {
     i.plus-icon-info{
-        margin-left: 4rem;
+        margin-left: 0.5em;
     }
 }
 
@@ -79,3 +79,29 @@ svg {
     float: right;
     width: 50%;
 }
+
+
+@media (min-width:360px) and (max-width: 540px)
+{
+    .information-container {
+        height: 15em;
+    }
+    .add-attendees, .add-dates {
+        font-size: 1rem;
+        margin-left: 0.4em;
+    }
+
+    i.plus-icon-info{
+        font-size: 1rem;
+    }
+    .attendees-list-view, .dates-list-view {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width:361px) {
+    .add-attendees, .add-dates {
+        font-size: 0.9rem;
+    }
+}
+
