@@ -538,8 +538,7 @@ function renderProfilePage(){
                };
                fileReader.readAsDataURL(file);
            };
-
-           //document.getElementById("back-button-profile").addEventListener("click", handleBackButton);
+           document.getElementById("back-button-profile").addEventListener("click", handleBackButton);
        });
     });
 }
