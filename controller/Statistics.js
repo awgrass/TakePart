@@ -41,7 +41,7 @@ function createCircle(x, y, r){
 }
 
 function createGraphTitle(title){
-    return createText(60, 7.5, title);
+    return createText(45, 7.5, title);
 }
 
 function createXLabel(xCoord, text){
@@ -53,12 +53,19 @@ function convertRatioToRealY(ratio){
     return 100 - (ratio * 100) + 10;
 }
 
+function getMaximalShowableDates(course){
+    let maximalShowableEventsTillViewGetsBad = 8;
+    return course.statistics.length >= maximalShowableEventsTillViewGetsBad ?
+        maximalShowableEventsTillViewGetsBad :
+        course.statistics.length;
+}
+
 function createStat1(courseName, callback){
     requestFileAsynchronously("stat1.html", function(caller){
         let svgElement = HTMLToElement(caller.responseText);
         getCourseByName(courseName, function(course){
-            console.log(course);
-            const numberOfPastEvents = course.statistics.length;
+            //TODO: a beautiful solution would be to to scale the fontsize with more and more dates
+            const numberOfPastEvents = getMaximalShowableDates(course);
             const xTicks = getXTicks(15, 205, numberOfPastEvents);
             let dataPoints = [];
             let xLabelsAxis = svgElement.getElementsByClassName("x-labels")[0];
