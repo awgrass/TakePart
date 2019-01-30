@@ -532,9 +532,7 @@ function renderLandingPage(isAdmin){
             renderAdminLandingPage(header);
         }
         else{
-            getUserById(currentUser.uid, function (user) {
-                worker.postMessage({'cmd': 'start', 'msg': user.uID});
-            });
+            startWorker();
             let profileField = genericCreateElement("p", ["right-elements"], [["id", "profile"]]);
             profileField.innerHTML = "Profil";
             let mobileProfileField = genericCreateElement("p", ["element"], [["id", "profileMobile"]]);

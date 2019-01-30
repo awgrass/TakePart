@@ -1,4 +1,6 @@
-importScripts("https://www.gstatic.com/firebasejs/5.5.9/firebase.js");
+importScripts("https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js");
+importScripts("https://www.gstatic.com/firebasejs/5.8.1/firebase-firestore.js");
+importScripts("https://www.gstatic.com/firebasejs/5.8.1/firebase-storage.js");
 importScripts('../model/Firebase.js');
 let courseDates = new Map();
 let run = true;
@@ -43,7 +45,7 @@ async function work() {
             });
             postMessage({'msg': showableCourses});
         }
-        await sleep(5000);
+        await sleep(60000);
     }
 }
 
@@ -61,7 +63,8 @@ self.addEventListener('message', function(e) {
             addWorkerListener();
             break;
         case 'stop':
-            self.close(); // Terminates the worker.
+            self.terminate();
+            console.log("Worker terminated")
             break;
         default:
             self.postMessage('Unknown command: ' + data.msg);
