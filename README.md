@@ -1,5 +1,5 @@
-# attendance-list
-An attendence list for event administrators written in Javascript, HTML and CSS with broad functionality:
+# TakePart
+An attendence webapp for event administrators written in Javascript, HTML and CSS with broad functionality:
 
 - creation of user/admin accounts
 - creation of events and dates the event takes place
@@ -8,4 +8,5 @@ An attendence list for event administrators written in Javascript, HTML and CSS 
 - profile page
 - web worker updating statistics in fixed intervals
 
+App is responsive and mobile optimized.
 
